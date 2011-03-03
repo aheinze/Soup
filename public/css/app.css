@@ -1,0 +1,32 @@
+body {
+	background: #222;
+	color: #fff;
+}
+
+h1, h2 {
+	margin-bottom: 10px;
+}
+
+h2 {
+
+}
+
+#logo {
+	display: inline-block;
+	background: #c30000;
+	padding: 30px 10px 10px 10px;
+}
+
+.wrapper {
+	width: 960px;
+	margin: 0px auto;
+}
+
+#header {
+	margin-bottom: 40px;
+}
+
+#content > .wrapper {
+	padding: 20px;
+	background: #111;
+}
