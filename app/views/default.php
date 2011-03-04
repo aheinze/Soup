@@ -2,9 +2,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Raww2</title>
-	<link rel="stylesheet" type="text/css" href="<?php $this->url("/public/css/base.css");?>" />
-	<link rel="stylesheet" type="text/css" href="<?php $this->url("/public/css/app.css");?>" />
-	<script type="text/javascript" src="<?php $this->url("/public/js/jquery.js");?>"></script>
+	<link rel="stylesheet" type="text/css" href="<?php $this->url("/assets/main.css");?>" />
+	<script type="text/javascript" src="<?php $this->url("/assets/main.js");?>"></script>
 </head>
 <body>
 	<div id="header">

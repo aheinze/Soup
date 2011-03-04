@@ -21,7 +21,10 @@
         $response = Router::dispatch($config['path']);    
         
         if(is_object($response) && method_exists($response, 'flush')) {
+            
+            Event::trigger("raww.before_flush", array($response));
             $response->flush();
+
         } else {
             
             $response = new Response(template("views:error/404.php", array("message"=>$config['path'])), array(

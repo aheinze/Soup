@@ -25,18 +25,25 @@ class Manager {
   *
   */ 
   public static function addReference($name,$options){
-    
     self::$references[$name] = $options;
-    
   }
 
   /**
   * ...
   *
   */ 
-  public static function dump($name, $type="js"){
-    
-    $output = array();
+  public static function dump($name, $type="js", $cache_time = 600){
+
+    if(!isset(self::$assets[$name])) return;
+
+    $cache_key = "asset_".$name."_".$type;
+
+    if($cached = \Raww\Cache::read($cache_key)) {
+      return $cached;
+    }
+
+
+    $output    = array();
 
     foreach (self::$assets[$name] as $asset) {
 
@@ -50,6 +57,7 @@ class Manager {
        self::$dumped_references[$ref_name] = true;
        
        $asset = self::$references[$ref_name];
+
       }
 
       $file    = $asset['file'];
@@ -85,9 +93,11 @@ class Manager {
 
     $response = new \Raww\Response(null,array(
       'body' => implode("",$output[$type]),
-      //'gzip' => true,
-      //'mime' => $type,
+      'gzip' => true,
+      'mime' => $type,
     ));
+
+    \Raww\Cache::write($cache_key, $response, $cache_time);
 
     return $response;
   }

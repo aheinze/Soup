@@ -13,9 +13,9 @@
             "lib"     => __DIR__.'/libraries',
             "config"  => __DIR__.'/app/config',
             "views"   => __DIR__.'/app/views',
+            "tmp"     => __DIR__.'/app/tmp',
             "cache"   => __DIR__.'/app/tmp/cache',
             "locale"  => __DIR__.'/app/locale',
             "modules" => __DIR__.'/app/modules',
-            "tmp"     => __DIR__.'/app/tmp',
         )
     ));
