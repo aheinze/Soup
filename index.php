@@ -15,6 +15,7 @@
             "views"   => __DIR__.'/app/views',
             "cache"   => __DIR__.'/app/tmp/cache',
             "locale"  => __DIR__.'/app/locale',
-            "modules" => __DIR__.'/app/modules'
+            "modules" => __DIR__.'/app/modules',
+            "tmp"     => __DIR__.'/app/tmp',
         )
     ));
