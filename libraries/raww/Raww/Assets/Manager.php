@@ -56,22 +56,24 @@ class Manager {
       $ext     = strtolower(array_pop(explode(".", $file)));
       $content = '';
 
+      if (strpos($file, ':') !== false && $____file = \Raww\Path::get($file)) {
+         $file = $____file;
+      }
+
       if($ext!=$type) continue;
 
       switch ($ext) {
         
         case 'js':
           
-          if (strpos($file, ':') !== false && $____file = \Raww\Path::get($file)) {
-            $file = $____file;
-          }
-          
           $content = file_get_contents($file);
 
           break;
 
         case 'css':
-          # code...
+          
+          $content = self::rewriteCssUrls(file_get_contents($file), dirname($file));
+
           break;
         
         default:
@@ -83,11 +85,33 @@ class Manager {
 
     $response = new \Raww\Response(null,array(
       'body' => implode("",$output[$type]),
-      'gzip' => true,
-      'mime' => $type,
+      //'gzip' => true,
+      //'mime' => $type,
     ));
 
     return $response;
+  }
+
+  protected static function rewriteCssUrls($content, $source_dir){
+
+    preg_match_all('/url\((.*)\)/',$content,$matches);
+
+    $root_dir = dirname($_SERVER['SCRIPT_FILENAME']);
+    $csspath  = "";
+
+    if (strlen($root_dir) < strlen($source_dir)) {
+      $csspath = trim(str_replace($root_dir, '', $source_dir), "/")."/";
+    } else {
+      # todo
+    }
+
+    foreach($matches[1] as $imgpath){
+      if(!preg_match("#^(http|/)#",trim($imgpath))){
+        $content = str_replace('url('.$imgpath.')','url('.$csspath.str_replace('"','',$imgpath).')',$content);
+      }
+    }
+
+    return $content;
   }
 
 }
