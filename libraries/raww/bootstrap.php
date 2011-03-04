@@ -69,7 +69,7 @@
           $output[] = print_r($var, true);
           $output[] = "</pre>";
         $output[] = '<div>';
-        
+
         echo implode("\n",$output);
 	}
     

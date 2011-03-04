@@ -10,8 +10,8 @@ Raww\Router::bind("#/assets/main\.(css|js)#", function($params){
 		array("file" => "root:public/css/base.css"),
 		array("file" => "root:public/css/app.css"),
 	));
-	
-	return Raww\Assets\Manager::dump("main", $params[":captures"][0]);
+
+	return Raww\Assets\Manager::dump("main", $params[":captures"][0], 0);
 });
 
 

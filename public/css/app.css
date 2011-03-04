@@ -1,6 +1,7 @@
+
 body {
-	background: #222;
-	color: #fff;
+	background: #eee;
+	color: #444;
 }
 
 h1, h2 {
@@ -13,8 +14,15 @@ h2 {
 
 #logo {
 	display: inline-block;
-	background: #c30000;
-	padding: 30px 10px 10px 10px;
+	font-size: 20px;
+	font-family: Georgia;
+	font-weight: bold;
+	background: #222;
+	color: #fff;
+	padding: 10px 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .wrapper {
@@ -23,10 +31,18 @@ h2 {
 }
 
 #header {
-	margin-bottom: 40px;
+	margin: 20px 0px 40px 0px;
 }
 
 #content > .wrapper {
 	padding: 20px;
-	background: #111;
+	background: #fff;
+	border: 1px #ccc solid;
+	-webkit-box-shadow: 0px 0px 10px #ccc;
+	-moz-box-shadow: 0px 0px 10px #ccc;
+	box-shadow: 0px 0px 10px #ccc;
+	
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 }

@@ -116,7 +116,7 @@ class Manager {
     }
 
     foreach($matches[1] as $imgpath){
-      if(!preg_match("#^(http|/)#",trim($imgpath))){
+      if(!preg_match("#^(http|/|data\:)#",trim($imgpath))){
         $content = str_replace('url('.$imgpath.')','url('.$csspath.str_replace('"','',$imgpath).')',$content);
       }
     }

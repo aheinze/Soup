@@ -9,7 +9,7 @@
 	<div id="header">
 		<div class="wrapper">
 			<span id="logo">
-				<h1>Raww2</h1>
+				Raww2
 			</span>
 		</div>
 	</div>
