@@ -9,7 +9,13 @@
 <h3>Getting started</h3>
 
 <p>
-	Please make sure that the folder <span class="marked">app/tmp</span> and its sub-folders are writable.
+	<ul class="list">
+		<li>Please make sure that the folder <span class="marked">app/tmp</span> and its sub-folders are writable.</li>
+		<li>You can find the app configuration in  <span class="marked">app/config/bootstrap.php</span></li>
+		<li>You can find the default layout in <span class="marked">app/views/default.php</span></li>
+		<li>You can find the controller for this page in <span class="marked">app/modules/App/Controller/Start.php</span></li>
+		<li>You can find the view for this page in <span class="marked">app/modules/App/views/Start/index.php</span></li>
+	</ul>
 </p>
 
 Need help? <a href="http://d-xp.com" class="button gray">Contact us!</a>

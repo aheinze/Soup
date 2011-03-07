@@ -21,6 +21,14 @@ p {
 	margin-bottom: 20px;
 }
 
+.list {
+	list-style: none;
+}
+
+.list > li {
+	margin-bottom: 5px;
+}
+
 .strong {
 	color: #000;
 }
