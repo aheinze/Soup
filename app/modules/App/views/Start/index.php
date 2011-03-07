@@ -12,4 +12,4 @@
 	Please make sure that the folder <span class="marked">app/tmp</span> and its sub-folders are writable.
 </p>
 
-Need help? <button class="button gray">Contact us!</button>
+Need help? <a href="http://d-xp.com" class="button gray">Contact us!</a>
