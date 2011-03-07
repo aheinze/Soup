@@ -1,20 +1,23 @@
 <?php
+
+use Raww\Router;
+use Raww\Assets\Manager as AssetsManager;
     
-Raww\Router::bind("/", array("controller" => "Start"));
+Router::bind("/", array("controller" => "Start"));
 
+/* Assets */
 
-Raww\Router::bind("#/assets/main\.(css|js)#", function($params){
+AssetsManager::addReference("jquery", array(
+	"file" => "root:public/js/jquery.js"
+));
 
-	Raww\Assets\Manager::register("main", array(
+Router::bind("#/assets/main\.(css|js)#", function($params){
+
+	AssetsManager::register("main", array(
 		array("file" => "ref:jquery"),
 		array("file" => "root:public/css/base.css"),
 		array("file" => "root:public/css/app.css"),
 	));
 
-	return Raww\Assets\Manager::dump("main", $params[":captures"][0], 0);
+	return AssetsManager::dump("main", $params[":captures"][0], 0);
 });
-
-
-\Raww\Assets\Manager::addReference("jquery", array(
-	"file" => "root:public/js/jquery.js"
-));

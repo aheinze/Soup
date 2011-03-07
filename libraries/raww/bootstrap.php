@@ -86,14 +86,12 @@
             }            
         }
         
-        // Autoload module classes
-        if($path = Path::get("modules:".str_replace('\\', '/', $resource).'.php')){
-            include_once($path);
-        }
-
-        // Autoload module classes
-        if($path = Path::get("lib:".str_replace('\\', '/', $resource).'.php')){
-            include_once($path);
+        // Autoload module and lib classes
+        foreach(array('modules', 'lib') as $loc){
+            if($path = Path::get("$loc:".str_replace('\\', '/', $resource).'.php')){
+                include_once($path);
+                return;
+            }
         }
 
     });
