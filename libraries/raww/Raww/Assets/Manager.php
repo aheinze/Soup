@@ -97,8 +97,10 @@ class Manager {
       'mime' => $type,
     ));
 
-    \Raww\Cache::write($cache_key, $response, $cache_time);
-
+    if($cache_time) {
+      \Raww\Cache::write($cache_key, $response, $cache_time);
+    }
+    
     return $response;
   }
 
