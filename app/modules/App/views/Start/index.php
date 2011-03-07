@@ -18,4 +18,8 @@
 	</ul>
 </p>
 
-Need help? <a href="http://d-xp.com" class="button gray">Contact us!</a>
+<h3>Do you need help?</h3> 
+
+<p>
+	Feel free to <a href="http://d-xp.com" class="button gray">Contact us!</a>
+</p>
