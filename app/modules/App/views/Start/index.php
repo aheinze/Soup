@@ -2,7 +2,7 @@
 
 <h2>
 	<span class="strong">Congratulations</span><br /> 
-	<span class="soft">we're ready to start coding the app.</span>
+	<span class="soft">you're ready to start coding your app.</span>
 </h2>
 
 
