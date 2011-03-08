@@ -14,13 +14,25 @@ body {
     color:black;
     background-color:#eee;
 }
-.wrapper{width:640px;margin: 40px auto;padding:20px;background-color:white;}
 h1 { font-size:44px;letter-spacing: -2px;line-height: 1.2em; }
 h2 { font-weight:normal;color:maroon }
 h3 { font-weight:bold;font-size:11pt}
 p  { margin-top: 5px 0px;}
+.wrapper{
+    width:640px;
+    margin:40px auto;
+    padding:20px;
+    background-color:white;
+    border: 1px #ccc solid;
+    -moz-box-shadow:0px 0px 5px #ccc;
+    -webkit-box-shadow:0px 0px 10px #ccc;
+    box-shadow:0px 0px 5px #ccc;
+}
 .version {
-    color: gray;font-size:8pt;border-top:1px solid #aaaaaa;
+    margin-top: 30px;
+    padding-top: 10px;
+    color: gray;font-size:8pt;
+    border-top:1px #ccc dotted;
 }
 </style>
 </head>
@@ -36,7 +48,7 @@ p  { margin-top: 5px 0px;}
             If you think this is a server error, please contact the admin.
         </p>
         <div class="version">
-            <?php echo date('Y-m-d H:i:s'); ?>
+            powered by Raww2
         </div>
     </div>
 </body>
