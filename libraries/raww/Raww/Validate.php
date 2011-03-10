@@ -28,9 +28,25 @@ class Validate {
   * ...
   *
   */ 
+  public static function isUrl($value){
+   
+		return empty($value) || filter_var($value, FILTER_VALIDATE_URL);
+  }
+  /**
+  * ...
+  *
+  */ 
+  public static function isValidIp($value){
+   
+		return empty($value) || filter_var($value, FILTER_VALIDATE_IP);
+  }
+  /**
+  * ...
+  *
+  */ 
   public static function isEmail($value){
    
-		return preg_match('/^[-_a-z0-9\'+*$^&%=~!?{}]++(?:\.[-_a-z0-9\'+*$^&%=~!?{}]+)*+@(?:(?![-.])[-a-z0-9.]+(?<![-.])\.[a-z]{2,6}|\d{1,3}(?:\.\d{1,3}){3})(?::\d++)?$/iD', (string) $value);
+		return filter_var($value, FILTER_VALIDATE_EMAIL);
   }
   /**
   * ...
@@ -39,6 +55,27 @@ class Validate {
   public static function isBoolean($value) {
 		return in_array($value, array(0, 1, '0', '1', true, false), true);
 	}
+  /**
+  * ...
+  *
+  */ 
+  public static function isNumeric($value) {
+    return is_numeric($value);
+  }
+  /**
+  * ...
+  *
+  */ 
+  public static function isFloat($value) {
+    return is_float($value);
+  }
+  /**
+  * ...
+  *
+  */ 
+  public static function isInt($value) {
+    return is_int($value);
+  }
   /**
   * ...
   *

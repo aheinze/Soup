@@ -41,5 +41,21 @@ class Entity {
   public function getValidationErrors() {
     return $this->_validate_errors;
   }
+
+
+  /**
+  * ...
+  *
+  */ 
+  public function toArray() {
+    
+    $array = array();
+
+    foreach (get_object_vars($this) as $property => $value) {
+      if(substr($property, 0, 1)!=="_") $array[$property] = $value;
+    }
+
+    return $array;
+  }
   
 }
