@@ -7,6 +7,15 @@ class Entity {
 
   protected $_validate_errors;
 
+
+  public function __construct($data = array()) {
+    
+    foreach ($data as $key => $value) {
+      $this->{$key} = $value;
+    }
+    
+  }
+
   /**
   * ...
   *
