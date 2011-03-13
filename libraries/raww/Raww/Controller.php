@@ -7,6 +7,7 @@ class Controller {
     
     public $name       = null;
     public $request    = null;
+    public $invoked_action = null;
     public $params     = array();
     
     /**

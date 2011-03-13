@@ -218,11 +218,11 @@ class Router {
         
         $controller = new $controllerName();
         
-        if(!method_exists($controller,$parsedUri['action'])){
+        if(!method_exists($controller, $parsedUri['action'])){
           return false;
         }
         
-        $controller->action = $parsedUri['action'];
+        $controller->invoked_action = $parsedUri['action'];
         
         if(!$controller->before_filter()) return false;
         
