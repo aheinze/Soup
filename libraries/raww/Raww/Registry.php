@@ -7,7 +7,7 @@ class Registry {
     
     protected static $_storage = array();
     
-    public static function set($key, $val) {
+    public static function set($key, $value) {
         
         self::$_storage[$key] = $value;
     }

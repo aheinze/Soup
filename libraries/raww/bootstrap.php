@@ -6,6 +6,9 @@
         
         if(!isset($config['path'])) $config['path'] = "/";
         
+        Registry::set("raww.path", $config['path']);
+        Registry::set("raww.base_url", $config["base_url"]);
+        
         Router::$base_url = $config["base_url"];
         
         Path::register("views", __DIR__.'/Raww/views');
