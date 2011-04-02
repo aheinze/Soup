@@ -265,6 +265,14 @@ class Pdo {
 
       return $ret_result;
     }
+
+    public function fetchOne($sql){
+        
+        $result = $this->fetchAll($sql);
+
+        return isset($result[0]) ? $result[0]:null;
+
+    }
   
     protected function buildConditions($conditions){
         
@@ -304,5 +312,9 @@ class Pdo {
        $conditions = implode(' ', $_conditions);
        
        return $conditions;
+    }
+
+    protected function formatSql($sql) {
+      return preg_replace('/(select|from|(left |right |natural |inner |outer |cross |straight_)*join|where|limit|update|set|insert|values)/i', "\n$1\n\t",  preg_replace('/\s+/', ' ', $sql));
     }
 }

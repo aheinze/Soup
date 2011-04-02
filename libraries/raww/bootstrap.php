@@ -53,24 +53,29 @@
         return false;
     }
 
-    function template($view, $slots){
+    function template($view, $slots=array()){
         $tpl = new Template();
 
         return $tpl->render($view, $slots);
     }
     
     
-    function debug($var = false) {
-                      
+    function debug() {
+        
+        $vars   = func_get_args();           
         $_from  = debug_backtrace();
         $output = array();
         
         $output[] = '<div class="raww-debug">';
           $output[] = '<strong title="'.$_from[0]['file'].'">' . $_from[0]['file'] . '</strong>';
           $output[] = ' (line: <strong>' . $_from[0]['line'] . '</strong>)';
-          $output[] = '<pre>';
-          $output[] = print_r($var, true);
-          $output[] = "</pre>";
+          
+          foreach ($vars as $var){
+              $output[] = '<pre>';
+              $output[] = print_r($var, true);
+              $output[] = "</pre>";
+          }
+
         $output[] = '<div>';
 
         echo implode("\n",$output);
