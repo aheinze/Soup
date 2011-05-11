@@ -4,6 +4,9 @@
     
     function init($config) {
         
+        Bench::start("rawwbench");
+        
+        
         if(!isset($config['path'])) $config['path'] = "/";
         
         Registry::set("raww.path", $config['path']);
@@ -38,6 +41,8 @@
             
             $response->flush();
         }
+        
+        Bench::stop("rawwbench");
         
         Event::trigger("raww.shutdown", array($response));
     }

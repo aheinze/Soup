@@ -28,7 +28,7 @@ class Bench {
 		if(isset(self::$m[$name]) && self::$m[$name]['stop'] === false){
 			self::$m[$name]['stop'] = microtime(true);
 			self::$m[$name]['memory_stop'] = memory_get_usage();
-			self::$m[$name]['memory_usage'] = self::$m[$name]['memory_stop'] - self::$m[$name]['memory_start'];
+			self::$m[$name]['memory_usage'] = self::formatSize(self::$m[$name]['memory_stop'] - self::$m[$name]['memory_start']);
             self::$m[$name]['duration'] = self::$m[$name]['stop'] - self::$m[$name]['start'];
       
             return self::$m[$name];
@@ -54,4 +54,9 @@ class Bench {
 
 		return self::$m[$name];
 	}
+    
+    protected static function formatSize($size) {
+      $sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
+      return ($size == 0) ? "n/a" : (round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . $sizes[$i]); 
+    }
 }
