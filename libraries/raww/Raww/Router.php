@@ -219,7 +219,12 @@ class Router {
         $controller = new $controllerName();
         
         if(!method_exists($controller, $parsedUri['action'])){
-          return false;
+          if(method_exists($controller, 'index')) {
+			$parsedUri['params'] = array_merge(array($parsedUri['action']), $parsedUri['params']);
+			$parsedUri['action'] = 'index';
+		  }else{
+			return false;
+		  }
         }
         
         $controller->invoked_action = $parsedUri['action'];

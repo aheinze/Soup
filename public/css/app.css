@@ -98,11 +98,11 @@ p {
 	padding: 20px;
 	background: #fff;
 	border: 1px #ccc solid;
-	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.1) inset;
-	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.1) inset;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .35); 
 	
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }

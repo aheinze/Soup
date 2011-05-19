@@ -1,8 +1,14 @@
 <?php
     
     namespace Raww;
-    
+	
     function init($config) {
+        
+		global $raww;
+		
+		$raww = new DI();
+		
+        Bench::start("rawwbench");
         
         if(!isset($config['path'])) $config['path'] = "/";
         
@@ -39,9 +45,10 @@
             $response->flush();
         }
         
+        Bench::stop("rawwbench");
+        
         Event::trigger("raww.shutdown", array($response));
-    }
-    
+    }    
     
     function import($resource) {
         
@@ -88,8 +95,7 @@
             $path = __DIR__.'/'.str_replace('\\', '/', $resource).'.php';
 
             if(file_exists($path)){
-                
-                include_once($path);
+                require($path);
                 return;
             }            
         }
@@ -97,9 +103,8 @@
         // Autoload module and lib classes
         foreach(array('modules', 'lib') as $loc){
             if($path = Path::get("$loc:".str_replace('\\', '/', $resource).'.php')){
-                include_once($path);
+                require($path);
                 return;
             }
         }
-
     });

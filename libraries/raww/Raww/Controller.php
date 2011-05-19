@@ -61,7 +61,7 @@ class Controller {
         return $response;
     }
     
-    function redirect($url) {
+    protected function redirect($url) {
         Router::reroute($url);
     }
 }

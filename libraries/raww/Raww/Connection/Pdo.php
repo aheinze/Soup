@@ -88,7 +88,7 @@ class Pdo {
     
     public function count($table, $conditions = array()) {
         
-        $count = \Raww\Connection::get("default")->read(array(
+        $count = $this->read(array(
                 'fields' => 'COUNT(*) AS C',
                 'table'  => $table,
                 'conditions' => $conditions
@@ -99,13 +99,24 @@ class Pdo {
     
     public function sum($table, $field, $conditions = array()) {
         
-        $sum = \Raww\Connection::get("default")->read(array(
+        $sum = $this->read(array(
                 'fields' => "SUM($field) AS S",
                 'table'  => $table,
                 'conditions' => $conditions
         ));
      
-     return isset($sum[0]['S']) ? $sum[0]['S']:0;
+		return isset($sum[0]['S']) ? $sum[0]['S']:0;
+    }
+    
+    public function max($table, $field, $conditions = array()) {
+        
+        $sum = $this->read(array(
+                'fields' => "Max($field) AS m",
+                'table'  => $table,
+                'conditions' => $conditions
+        ));
+     
+		return isset($sum[0]['m']) ? $sum[0]['m']:0;
     }
     
     public function read($options = array()) {
