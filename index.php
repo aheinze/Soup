@@ -3,10 +3,7 @@
     require_once(__DIR__."/libraries/raww/bootstrap.php");
     
     Raww\init(array(
-        "path"     => ($_SERVER['PATH_INFO'] ?: "/"),
-        "base_url" => implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1)),
-        // "base_url" => $_SERVER['SCRIPT_NAME'], # if !mod_rewite
-        
+        "path"     => ($_SERVER['PATH_INFO'] ?: "/"),        
         "paths"    => array(
             "root"    => __DIR__,
             "app"     => __DIR__.'/app',
