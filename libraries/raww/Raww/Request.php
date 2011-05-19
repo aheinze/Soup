@@ -132,6 +132,10 @@ class Request {
             return $_SERVER['REMOTE_ADDR'];
         }
     }
+	
+	public static function getClientLang() {
+		return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+	}
 
 
     public static function getMimeType($val) {

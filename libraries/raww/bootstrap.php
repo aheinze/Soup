@@ -10,6 +10,7 @@
 		
         Bench::start("rawwbench");
         
+		if(!isset($config['base_url'])) $config['base_url'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
         if(!isset($config['path'])) $config['path'] = "/";
         
         Registry::set("raww.path", $config['path']);
@@ -50,11 +51,15 @@
         Event::trigger("raww.shutdown", array($response));
     }    
     
-    function import($resource) {
+    function import($resource, $once=true) {
         
         if($path = Path::get($resource)) {
-            include_once($path);
-            return true;
+            if($once){
+				include_once($path);
+            }else{
+				include($path);
+			}
+			return true;
         }
         
         return false;

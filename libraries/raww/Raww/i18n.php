@@ -5,7 +5,7 @@ namespace Raww;
 class I18n {
 
   public static $locale      = "en";
-  protected static $engine   = 'I18nArrayEngine';
+  protected static $engine   = '\Raww\I18nArrayEngine';
 
   /**
   * ...
@@ -52,10 +52,10 @@ class I18nArrayEngine{
   * ...
   *
   */ 
-  public function __construct(){
-  
-    
-  }
+	public function __construct(){
+
+
+	}
   
   /**
   * ...
@@ -63,18 +63,20 @@ class I18nArrayEngine{
   */ 
 	public function get($key, $alternative=null){
     
-    if(is_null($alternative)){
-      $alternative = '{'.$key.'}';
-    }
-    
-    if(!isset($this->_languages[I18n::locale])){
-      
-      include(Path::get("locale:".I18n::locale.'/table.php');
-      
-      if(isset($t)) $this->_languages[I18n::locale] = $t;
-    }
-    
-    return isset($this->_languages[I18n::locale][$key]) ? $this->_languages[I18n::locale][$key]:$alternative;
+		if(is_null($alternative)){
+		  $alternative = '{'.$key.'}';
+		}
+		
+		if(!isset($this->_languages[I18n::$locale])){
+
+		  if($path = Path::get("locale:".I18n::$locale.'/table.php')){
+			  include($path);
+			  
+			  if(isset($t)) $this->_languages[I18n::$locale] = $t;
+		  }
+		}
+		
+		return isset($this->_languages[I18n::$locale][$key]) ? $this->_languages[I18n::$locale][$key]:$alternative;
 	}
 
   
