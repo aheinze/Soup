@@ -5,20 +5,20 @@ namespace Raww;
 
 class Event {
   
-  protected static $events = array();
+  protected $events = array();
 
   /**
   * ...
   *
   */ 
-  public static function register($event,$callback,$identifier=null){
+  public function register($event,$callback,$identifier=null){
     
-    if(!isset(self::$events[$event])) self::$events[$event] = array();
+    if(!isset($this->events[$event])) $this->events[$event] = array();
     
     if(!is_null(identifier)){
-      self::$events[$event][$identifier] = $callback;
+      $this->events[$event][$identifier] = $callback;
     }else{
-      self::$events[$event][] = $callback;
+      $this->events[$event][] = $callback;
     }
     
   }
@@ -27,13 +27,13 @@ class Event {
   * ...
   *
   */ 
-  public static function trigger($event,$params=array()){
+  public function trigger($event,$params=array()){
     
-    if(!isset(self::$events[$event])){
+    if(!isset($this->events[$event])){
         return false;
     }
     
-    foreach(self::$events[$event] as $id => $action){
+    foreach($this->events[$event] as $id => $action){
       if(Utils::is_callback($action)){
           call_user_func_array($action, $params);
       }
@@ -47,21 +47,21 @@ class Event {
   * ...
   *
   */ 
-  public static function detach($event,$identifier=null){
+  public function detach($event,$identifier=null){
     
-    if(!isset(self::$events[$event])){
+    if(!isset($this->events[$event])){
         return false;
     }
     
     if(!is_null($identifier)){
-      if(!isset(self::$events[$event][$identifier])){
+      if(!isset($this->events[$event][$identifier])){
         return false;
       }else{
-        unset(self::$events[$event][$identifier]);
+        unset($this->events[$event][$identifier]);
         return true;
       }
     }else{
-      unset(self::$events[$event]);
+      unset($this->events[$event]);
       return true;
     }
     

@@ -2,82 +2,26 @@
 
 namespace Raww;
 
-class I18n {
-
-  public static $locale      = "en";
-  protected static $engine   = '\Raww\I18nArrayEngine';
-
-  /**
-  * ...
-  *
-  */ 
-	public static function get($key, $alternative=null){
-    return I18nEngine::get(self::$engine)->get($key, $alternative);
-	}
-  
-  /**
-  * ...
-  *
-  */ 
-	public static function setLocale($locale){
-      self::$locale = $locale;
-	}
-}
-
-
-class I18nEngine{
-  
-  protected static $__engines = array();
-  
-  /**
-  * ...
-  *
-  */ 
-  public static function get($engine){
-    
-    if(!isset(self::$__engines[$engine])){
-      self::$__engines[$engine] = new $engine();
-    }
-    
-    return self::$__engines[$engine];
-  }
-  
-}
-
-class I18nArrayEngine{
-
+class I18n extends AppContainer {
+	
+	public $locale      = "en";
 	private $_languages = array();
-
-  /**
-  * ...
-  *
-  */ 
-	public function __construct(){
-
-
-	}
-  
-  /**
-  * ...
-  *
-  */ 
+ 
 	public function get($key, $alternative=null){
     
 		if(is_null($alternative)){
 		  $alternative = '{'.$key.'}';
 		}
 		
-		if(!isset($this->_languages[I18n::$locale])){
+		if(!isset($this->_languages[$this->locale])){
 
-		  if($path = Path::get("locale:".I18n::$locale.'/table.php')){
+		  if($path = $this->app["path"]->get("locale:".$this->locale.'/table.php')){
 			  include($path);
 			  
-			  if(isset($t)) $this->_languages[I18n::$locale] = $t;
+			  if(isset($t)) $this->_languages[$this->locale] = $t;
 		  }
 		}
 		
-		return isset($this->_languages[I18n::$locale][$key]) ? $this->_languages[I18n::$locale][$key]:$alternative;
+		return isset($this->_languages[$this->locale][$key]) ? $this->_languages[$this->locale][$key]:$alternative;
 	}
-
-  
 }

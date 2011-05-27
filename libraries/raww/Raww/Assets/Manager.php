@@ -3,19 +3,19 @@
 namespace Raww\Assets;
 
 
-class Manager {
+class Manager extends \Raww\AppContainer {
   
-  protected static $assets = array();
-  protected static $references = array();
-  protected static $dumped_references = array();
+  protected $assets = array();
+  protected $references = array();
+  protected $dumped_references = array();
 
   /**
   * ...
   *
   */ 
-  public static function register($name,$options){
+  public function register($name,$options){
     
-    self::$assets[$name] = $options;
+    $this->assets[$name] = $options;
     
   }
 
@@ -24,39 +24,39 @@ class Manager {
   * ...
   *
   */ 
-  public static function addReference($name,$options){
-    self::$references[$name] = $options;
+  public function addReference($name,$options){
+    $this->references[$name] = $options;
   }
 
   /**
   * ...
   *
   */ 
-  public static function dump($name, $type="js", $cache_time = 600){
+  public function dump($name, $type="js", $cache_time = 600){
 
-    if(!isset(self::$assets[$name])) return;
+    if(!isset($this->assets[$name])) return;
 
     $cache_key = "asset_".$name."_".$type;
 
-    if($cached = \Raww\Cache::read($cache_key)) {
+    if($cached = $this->app['cache']->read($cache_key)) {
       return $cached;
     }
 
 
     $output    = array();
 
-    foreach (self::$assets[$name] as $asset) {
+    foreach ($this->assets[$name] as $asset) {
 
       //handle references
       if(substr($asset['file'], 0,4)=="ref:"){
        
        list($prefix, $ref_name) = explode(":", $asset['file']);
        
-       if(!isset(self::$references[$ref_name]) || isset(self::$dumped_references[$ref_name])) continue;
+       if(!isset($this->references[$ref_name]) || isset($this->dumped_references[$ref_name])) continue;
 
-       self::$dumped_references[$ref_name] = true;
+       $this->dumped_references[$ref_name] = true;
        
-       $asset = self::$references[$ref_name];
+       $asset = $this->references[$ref_name];
 
       }
 
@@ -64,7 +64,7 @@ class Manager {
       $ext     = strtolower(array_pop(explode(".", $file)));
       $content = '';
 
-      if (strpos($file, ':') !== false && $____file = \Raww\Path::get($file)) {
+      if (strpos($file, ':') !== false && $____file = $this->app['path']->get($file)) {
          $file = $____file;
       }
 
@@ -98,7 +98,7 @@ class Manager {
     ));
 
     if($cache_time) {
-      \Raww\Cache::write($cache_key, $response, $cache_time);
+      $this->app['cache']->write($cache_key, $response, $cache_time);
     }
     
     return $response;

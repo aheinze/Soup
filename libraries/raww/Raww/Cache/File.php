@@ -3,7 +3,7 @@
 namespace Raww\Cache;
 
 
-class File {
+class File extends \Raww\AppContainer {
   
   protected $cachePath = null;
 
@@ -11,9 +11,9 @@ class File {
   * ...
   *
   */ 
-  public function __construct(){
-  
-    $this->cachePath = \Raww\Path::get("cache:");
+  public function __construct($app){
+	parent::__construct($app);
+    $this->cachePath = $app['path']->get("cache:");
   }
 
   /**
@@ -62,7 +62,7 @@ class File {
     @unlink($this->cachePath.md5($key));
   }
   
-	public function clear(){
+  public function clear(){
   
   }
 }

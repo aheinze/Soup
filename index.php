@@ -1,10 +1,10 @@
 <?php
     
-    require_once(__DIR__."/libraries/raww/bootstrap.php");
+	require_once(__DIR__."/libraries/raww/bootstrap.php");
     
-    Raww\init(array(
-        "path"     => ($_SERVER['PATH_INFO'] ?: "/"),        
-        "paths"    => array(
+    \Raww\App::init("rawwapp", array(       
+
+		"paths"    => array(
             "root"    => __DIR__,
             "app"     => __DIR__.'/app',
             "lib"     => __DIR__.'/libraries',
@@ -15,4 +15,7 @@
             "locale"  => __DIR__.'/app/locale',
             "modules" => __DIR__.'/app/modules',
         )
-    ));
+		
+    ))->handle( $_SERVER['PATH_INFO'] ?: "/" );
+    
+    //var_dump(\Raww\Bench::get("rawwbench"));

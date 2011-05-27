@@ -3,7 +3,7 @@
 namespace Raww;
 
 
-class Template {
+class Template extends AppContainer {
     
 	/* slots */
 	protected $slots;
@@ -17,7 +17,7 @@ class Template {
 			list($____template, $____layout) = explode(' with ', $____template, 2);
 		}
         
-        if (strpos($____template, ':') !== false && $____file = Path::get($____template)) {
+        if (strpos($____template, ':') !== false && $____file = $this->app["path"]->get($____template)) {
             $____template = $____file;
         }
 
@@ -33,7 +33,7 @@ class Template {
 
 		if ($____layout) {
 		
-			if (strpos($____layout, ':') !== false && $____file = Path::get($____layout)) {
+			if (strpos($____layout, ':') !== false && $____file = $this->app["path"]->get($____layout)) {
 				$____layout = $____file;
 			}
 
@@ -50,7 +50,7 @@ class Template {
 	}
 
 	function url($path, $echo=true) {
-		$url = Router::url($path);
+		$url = $this->app["router"]->url($path);
 
 		if($echo) echo $url;
 		

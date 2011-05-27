@@ -3,38 +3,46 @@
 namespace Raww;
 
 
-class Router {
+class Router extends AppContainer {
     
-    public static $base_url = "/";
+    public $base_url = "/";
     
 	/* routes */
-	protected static $_routes = array();
+	protected $_routes = array();
     
+	
+	public function __construct($app){
+		
+		parent::__construct($app);
+		
+		$this->_container = array();
+		$this->base_url   = $app["base_url"];
+	}
     
-	public static function bind($path, $callback, $condition = true) {
+	public function bind($path, $callback, $condition = true) {
 		
         if (!$condition) return;
         
-		if (!isset(self::$_routes[$path])) {
-			self::$_routes[$path] = array();
+		if (!isset($this->_routes[$path])) {
+			$this->_routes[$path] = array();
 		}
 		
-		self::$_routes[$path] = $callback;
+		$this->_routes[$path] = $callback;
 	}
 
 
-	public static function dispatch($path) {
+	public function dispatch($path) {
              
         $found  = false;
         $params = array();
         
-        if (isset(self::$_routes[$path])) {
+        if (isset($this->_routes[$path])) {
             
             $found = self::render($path, $params);
 
         } else {
                 
-            foreach (self::$_routes as $route => $callback) {
+            foreach ($this->_routes as $route => $callback) {
                 
                 $params = array();
                 
@@ -104,18 +112,18 @@ class Router {
 	}
     
 
-    public static function render($route, $params = array()) {
+    public function render($route, $params = array()) {
         
         $output = false;
         
-        if(isset(self::$_routes[$route])) {
+        if(isset($this->_routes[$route])) {
             
-            if(is_callable(self::$_routes[$route])){
-                $ret = call_user_func(self::$_routes[$route], $params);
+            if(is_callable($this->_routes[$route])){
+                $ret = call_user_func($this->_routes[$route], $params);
             }
             
-            if(is_array(self::$_routes[$route]) && isset(self::$_routes[$route]['controller'])){
-                $ret = self::invokeController(self::$_routes[$route]);
+            if(is_array($this->_routes[$route]) && isset($this->_routes[$route]['controller'])){
+                $ret = $this->invokeController($this->_routes[$route]);
             }
             
 			if( !is_null($ret) ){
@@ -128,19 +136,19 @@ class Router {
     }
     
 
-    public static function url($path) {
+    public function url($path) {
     
-        return Router::$base_url.$path;
+        return $this->base_url.$path;
     }
     
 
-    public static function reroute($path) {
+    public function reroute($path) {
     
         if (strpos($path,'://') === false) {
           if(substr($path,0,1)!='/'){
             $path = '/'.$path;
           }
-          $path = Router::$base_url.$path;
+          $path = $this->base_url.$path;
         }
 
         header('Location: '.$path);
@@ -148,7 +156,7 @@ class Router {
     }
     
     
-	public static function invokeController($path, $params=array(), $modules_path = "modules") {
+	public function invokeController($path, $params=array()) {
 		
         $parsedUri = array(
             'module'     => 'App',
@@ -166,7 +174,7 @@ class Router {
             
             //check for module
             //-----------------------------------------------------
-            if(Path::get("$modules_path:".ucfirst($parts[0]))){
+            if($this->app["path"]->get("modules:".ucfirst($parts[0]))){
 
               $parsedUri['module'] = ucfirst($parts[0]);
               $parts               = array_slice($parts,1);
@@ -178,7 +186,7 @@ class Router {
                 case 1:
                 case 2:
 
-                  if(!Path::get("$modules_path:".$parsedUri['module'].'/Controller/'.ucfirst($parts[0]).'.php')){
+                  if(!$this->app["path"]->get("modules:".$parsedUri['module'].'/Controller/'.ucfirst($parts[0]).'.php')){
                     array_unshift($parts, $parsedUri['module']);
                   }
                   
@@ -207,7 +215,7 @@ class Router {
      
         if(!class_exists($controllerName)){
             
-            if($controllerFile = Path::get("$modules_path:".$parsedUri['module'].'/Controller/'.$parsedUri['controller'].'.php')){
+            if($controllerFile = $this->app["path"]->get("modules:".$parsedUri['module'].'/Controller/'.$parsedUri['controller'].'.php')){
                 require_once($controllerFile);   
             }
         }
@@ -216,7 +224,7 @@ class Router {
             return false;
         }
         
-        $controller = new $controllerName();
+        $controller = new $controllerName($this->app);
         
         if(!method_exists($controller, $parsedUri['action'])){
           if(method_exists($controller, 'index')) {

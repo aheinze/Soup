@@ -1,100 +1,24 @@
 <?php
 
-namespace Raww;
+namespace Raww\Session;
 
-class Session{
-  
-  protected static $engine = 'SessionPhpEngine';
-  
-  /**
-  * ...
-  *
-  */ 
-  public static function setEngine($engine){
-   self::$engine = $engine;
-  }
-  /**
-  * ...
-  *
-  */ 
-  public static function init($engine=null){
-   
-   if(!is_null($engine)) self::setEngine($engine);
-   
-   SessionEngine::get(self::$engine)->init();
-  }
-  /**
-  * ...
-  *
-  */ 
-	public static function write($key, $value, $duration = 0){
-    SessionEngine::get(self::$engine)->write($key, $value, $duration);
-  }
-  /**
-  * ...
-  *
-  */ 
-	public static function read($key, $default=null){
-    return SessionEngine::get(self::$engine)->read($key, $default);
-  }
-  /**
-  * ...
-  *
-  */ 
-	public static function delete($key){
-    SessionEngine::get(self::$engine)->delete($key);
-  }
-  /**
-  * ...
-  *
-  */ 
-	public static function clear(){
-    SessionEngine::get(self::$engine)->clear();
-  }
-  /**
-  * ...
-  *
-  */ 
-	public static function destroy(){
-    SessionEngine::get(self::$engine)->destroy();
-  }
-}
 
-class SessionEngine{
+class Php extends \Raww\AppContainer {
   
-  protected static $__engines = array();
-  /**
-  * ...
-  *
-  */ 
-  public static function get($engine){
-    
-    if(!isset(self::$__engines[$engine])){
-      self::$__engines[$engine] = new $engine();
-    }
-    
-    return self::$__engines[$engine];
-  }
-  
-}
-
-class SessionPhpEngine{
-  /**
-  * ...
-  *
-  */ 
-  public function __construct(){
-  
-    
-  }
   /**
   * ...
   *
   */ 
   public function init(){
-    session_name(Registry::get("session.name", "rawwapp"));
+    
+	if(strlen(session_id())) {
+		session_destroy();
+	}
+	
+	session_name($this->app->get("session.name", $app->name()));
     session_start();
   }
+
   /**
   * ...
   *

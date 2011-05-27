@@ -3,7 +3,7 @@
 namespace Raww;
 
 
-class Controller {
+class Controller extends AppContainer {
     
     public $name       = null;
     public $request    = null;
@@ -34,14 +34,16 @@ class Controller {
 
     }
     
-    public function __construct(){
-
+    public function __construct($app){
+		
+		parent::__construct($app);
+		
         $this->name = get_class($this);
 
     }
 
     protected function db($connection = "default") {
-        return \Raww\Connection::get($connection);
+		return isset($this->app["con:$connection"]) ? $this->app["con:$connection"] : null;
     }
     
     protected function render($view=null, $slots=array(), $options=array()){
@@ -52,8 +54,8 @@ class Controller {
 			$view = "modules:$view";
 		}
         
-        if($path = Path::get($view)){
-            $response->body = template($view, $slots);
+        if($path = $this->app["path"]->get($view)){
+            $response->body = $this->app["tpl"]->render($view, $slots);
         } else {
             $response->body = "$view not found!";
         }
@@ -62,6 +64,6 @@ class Controller {
     }
     
     protected function redirect($url) {
-        Router::reroute($url);
+        $this->app["router"]->reroute($url);
     }
 }

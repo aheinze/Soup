@@ -3,27 +3,27 @@
 namespace Raww;
 
 
-class Registry {
+class Registry extends AppContainer {
     
-    protected static $_storage = array();
+    protected $_storage = array();
     
-    public static function set($key, $value) {
+    public function set($key, $value) {
         
-        self::$_storage[$key] = $value;
+        $this->_storage[$key] = $value;
     }
     
-    public static function get($key, $default=null) {
+    public function get($key, $default=null) {
         
-        return isset(self::$_storage[$key]) ? self::$_storage[$key] : $default;
+        return isset($this->_storage[$key]) ? $this->_storage[$key] : $default;
     }    
     
-    public static function remove($key) {
+    public function remove($key) {
         
-        if(isset(self::$_storage[$key])) unset(self::$_storage[$key]);
+        if(isset($this->_storage[$key])) unset($this->_storage[$key]);
     }
     
-    public static function has($key) {
+    public function has($key) {
         
-        return isset(self::$_storage[$key]);
+        return isset($this->_storage[$key]);
     }
 }
