@@ -6,7 +6,13 @@ class I18n extends AppContainer {
 	
 	public $locale      = "en";
 	private $_languages = array();
- 
+	
+	public function __construct($app){
+		parent::__construct($app);
+		
+		$this->locale = $app['request']->getClientLang()
+	}
+	
 	public function get($key, $alternative=null){
     
 		if(is_null($alternative)){
