@@ -106,7 +106,7 @@ class App extends DI{
 			
 			if ($error && in_array($error['type'], array(E_ERROR,E_CORE_ERROR,E_COMPILE_ERROR,E_USER_ERROR))){
 				
-				$this["event"]->trigger("error", array("error"=>$error));
+				$app["event"]->trigger("error", array("error"=>$error));
 				
 				if(!headers_sent()){
 				
@@ -128,7 +128,6 @@ class App extends DI{
 					}
 					
 					$response->flush();
-					$app["event"]->trigger("fatal_error", array("error"=>$error));
 				}
 				
 				return;
