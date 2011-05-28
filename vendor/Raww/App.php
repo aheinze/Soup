@@ -76,7 +76,7 @@ class App extends DI{
 		$app["event"]    = new Event($app);
 		$app["tpl"]      = new Template($app);
 		$app["i18n"]     = new I18n($app);
-		$app["assets"]   = new Assets\Manager($app);
+		$app["assets"]   = new Assets($app);
 		$app["cache"]    = new Cache\File($app);
 		$app["response"] = function($app){ return new \Raww\Response(); };
 		
