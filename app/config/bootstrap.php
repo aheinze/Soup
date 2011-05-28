@@ -10,6 +10,21 @@ $app['registry']->set("debug", ($_SERVER['REMOTE_ADDR']==="127.0.0.1")); //enabl
 $app["router"]->bind("/", array("controller" => "Start")); // your entry point
 
 
+// db connection
+/*
+$app["con:default"] = $app->share(function() {  // default
+	
+	return new Raww\Connection\Pdo(array(
+      'dns'       => 'mysql:host=127.0.0.1;dbname=DBNAME;port=3306',
+      'user'      => 'USER',
+      'password'  => 'xxx',
+      'options'   => array()
+	));
+	
+});
+*/
+
+
 /* Assets */
 
 $app["assets"]->addReference("jquery", array(
