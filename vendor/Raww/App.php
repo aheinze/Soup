@@ -69,14 +69,16 @@ class App extends DI{
 		
 		$app["base_url"] = $config["base_url"];
 		$app["path"]     = new Path($app);
-		$app["session"]  = new Session\Php($app);
-		$app["registry"] = new Registry($app);
-		$app["router"]   = new Router($app);
-		$app["event"]    = new Event($app);
-		$app["tpl"]      = new Template($app);
-		$app["i18n"]     = new I18n($app);
-		$app["assets"]   = new Assets($app);
-		$app["cache"]    = new Cache\File($app);
+		
+		
+		$app["session"]  = $app->share(function($app){ return new Session\Php($app); });
+		$app["registry"] = $app->share(function($app){ return new Registry($app); });
+		$app["router"]   = $app->share(function($app){ return new Router($app); });
+		$app["event"]    = $app->share(function($app){ return new Event($app); });
+		$app["tpl"]      = $app->share(function($app){ return new Template($app); });
+		$app["i18n"]     = $app->share(function($app){ return new I18n($app); });
+		$app["assets"]   = $app->share(function($app){ return new Assets($app); });
+		$app["cache"]    = $app->share(function($app){ return new Cache\File($app); });
 		$app["response"] = function($app){ return new \Raww\Response(); };
 
 		
@@ -149,14 +151,9 @@ class App extends DI{
 		
 		if(!isset($this["request"])) {
 		
-			$this["request"] = function($app){
-		
-				if(!isset($req)) {
-					static $req;
-					$req = new \Raww\Request();
-				}	
-				return $req; 
-			};
+			$this["request"] = $this->share(function($app){
+				return new \Raww\Request();
+			});
 		}
 		
 		$response = $this["router"]->dispatch($route);

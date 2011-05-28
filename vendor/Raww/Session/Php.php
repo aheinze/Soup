@@ -72,7 +72,7 @@ class Php extends \Raww\AppContainer {
     public function offsetGet($offset) {
         
 		if (!isset($_SESSION[$offset])) {
-			throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
+			throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
         }
 		
 		return $_SESSION[$offset];

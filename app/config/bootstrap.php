@@ -1,6 +1,9 @@
 <?php
 
+// base config
+
 $app['registry']->set("debug", ($_SERVER['REMOTE_ADDR']==="127.0.0.1")); //enable debug mode on localhost
+
 
 // routes
 

@@ -9,7 +9,26 @@ class DI implements \ArrayAccess{
 	public function __construct(){
 	
 		$this->_container = array();
-	}	
+	}
+
+	public function share($callable) {
+        return function ($app) use ($callable) {
+            
+			static $object;
+
+            if (is_null($object)) {
+                $object = $callable($app);
+            }
+
+            return $object;
+        };
+    }
+	
+	public function protect(Closure $callable) {
+        return function ($c) use ($callable) {
+            return $callable;
+        };
+	}
 	
 	// ArrayAccess implementation
 	
@@ -25,7 +44,7 @@ class DI implements \ArrayAccess{
     public function offsetGet($offset) {
         
 		if (!isset($this->_container[$offset])) {
-            throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
+            throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
         }
 		
 		return is_callable($this->_container[$offset]) ? call_user_func($this->_container[$offset], $this) : $this->_container[$offset];

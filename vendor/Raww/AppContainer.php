@@ -32,7 +32,7 @@ class AppContainer implements \ArrayAccess{
 				return $this->app[substr($offset,4)];
 			}
 			
-			throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
+			throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
         }
 		
 		return is_callable($this->_container[$offset]) ? call_user_func($this->_container[$offset], $this) : $this->_container[$offset];
