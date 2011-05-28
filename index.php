@@ -1,13 +1,14 @@
 <?php
     
-	require_once(__DIR__."/libraries/raww/bootstrap.php");
+	require_once(__DIR__."/vendor/Raww/App.php");
     
-    \Raww\App::init("rawwapp", array(       
-
+    Raww\App::init("rawwapp", array(       
+	
 		"paths"    => array(
             "root"    => __DIR__,
             "app"     => __DIR__.'/app',
-            "lib"     => __DIR__.'/libraries',
+            "vendor"  => __DIR__.'/vendor',
+            "lib"     => __DIR__.'/app/libraries',
             "config"  => __DIR__.'/app/config',
             "views"   => __DIR__.'/app/views',
             "tmp"     => __DIR__.'/app/tmp',
