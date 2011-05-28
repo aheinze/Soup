@@ -2,6 +2,15 @@
 
 namespace Raww;
 
+global $_PUT, $_DELETE;
+
+if(Request::is("put")) {
+	parse_str(file_get_contents('php://input'), $_PUT);
+}
+
+if(Request::is("delete")) {
+	parse_str(file_get_contents('php://input'), $_DELETE);
+}
 
 class Request {
     
@@ -133,10 +142,17 @@ class Request {
         }
     }
 	
+	public static function getUserAgent() {
+		return isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	}
+	
+	public static function protocol() {
+		return self::is("ssl") ? 'https' : 'http';
+	}
+	
 	public static function getClientLang() {
 		return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 	}
-
 
     public static function getMimeType($val) {
         
@@ -145,4 +161,34 @@ class Request {
 
         return (isset(self::$mimeTypes[$extension]) ? self::$mimeTypes[$extension]:'text/html');
     }
+	
+	public static function get($index=null, $default = null) {
+		
+		if(!$index) return $_GET;
+		
+		return isset($_GET[$index]) ? $_GET[$index] : $default;
+	}
+	public static function post($index=null, $default = null) {
+		
+		if(!$index) return $_POST;
+		
+		return isset($_POST[$index]) ? $_POST[$index] : $default;
+	}
+	public static function put($index=null, $default = null) {
+		
+		global $_PUT;
+		
+		if(!$index) return $_PUT;
+		
+		return isset($_PUT[$index]) ? $_PUT[$index] : $default;
+	}
+	public static function delete($index=null, $default = null) {
+		
+		global $_DELETE;
+		
+		if(!$index) return $_DELETE;
+		
+		return isset($_DELETE[$index]) ? $_DELETE[$index] : $default;
+	}
+	
 }

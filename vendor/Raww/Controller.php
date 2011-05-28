@@ -66,4 +66,17 @@ class Controller extends AppContainer {
     protected function redirect($url) {
         $this->app["router"]->reroute($url);
     }
+	
+	public static function get($index=null, $default = null) {
+		return $this->app['request']->get($index, $default);
+	}
+	public static function post($index=null, $default = null) {
+		return $this->app['request']->post($index, $default);
+	}
+	public static function put($index=null, $default = null) {
+		return $this->app['request']->put($index, $default);
+	}
+	public static function delete($index=null, $default = null) {
+		return $this->app['request']->delete($index, $default);
+	}
 }

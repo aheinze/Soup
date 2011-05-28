@@ -2,7 +2,6 @@
 
 namespace Raww;
 
-
 function debug() {
 	
 	$vars   = func_get_args();           
@@ -79,8 +78,10 @@ class App extends DI{
 		$app["assets"]   = new Assets($app);
 		$app["cache"]    = new Cache\File($app);
 		$app["response"] = function($app){ return new \Raww\Response(); };
+
 		
 		$app["path"]->register("views", __DIR__.'/views');
+		$app["path"]->register("vendor", __DIR__.'/vendor');
 		
 		foreach($config['paths'] as $name => $path){
 			$app["path"]->register($name, $path);
@@ -89,7 +90,7 @@ class App extends DI{
 		spl_autoload_register(function($resource) use($app){
 			
 			// Autoload module and lib classes
-			foreach(array('modules', 'lib') as $loc){
+			foreach(array('modules', 'lib', 'vendor') as $loc){
 				if($path = $app['path']->get("$loc:".str_replace('\\', '/', $resource).'.php')){
 					require($path);
 					return;
@@ -102,6 +103,9 @@ class App extends DI{
 			$error = error_get_last();
 			
 			if ($error && in_array($error['type'], array(E_ERROR,E_CORE_ERROR,E_COMPILE_ERROR,E_USER_ERROR))){
+				
+				$this["event"]->trigger("error", array("error"=>$error));
+				
 				if(!headers_sent()){
 				
 					ob_end_clean();
@@ -143,11 +147,23 @@ class App extends DI{
 		
 		$this["route"] = $route;
 		
+		if(!isset($this["request"])) {
+		
+			$this["request"] = function($app){
+		
+				if(!isset($req)) {
+					static $req;
+					$req = new \Raww\Request();
+				}	
+				return $req; 
+			};
+		}
+		
 		$response = $this["router"]->dispatch($route);
 		
 		if(is_object($response) && method_exists($response, 'flush')) {
 			
-			$this["event"]->trigger("raww.before_flush", array($response));
+			$this["event"]->trigger("before_flush", array($response));
 			$response->flush();
 
 		} else {
@@ -157,7 +173,7 @@ class App extends DI{
 				"status" => "404"
 			));
 			
-			$this["event"]->trigger("raww.error.404", array("path"=>$route, "response" => $response));
+			$this["event"]->trigger("error_404", array("path"=>$route, "response" => $response));
 			
 			$response->flush();
 		}
