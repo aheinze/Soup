@@ -91,7 +91,7 @@ class Manager extends \Raww\AppContainer {
       $output[$type][] = $content;
     }
 
-    $response = new \Raww\Response(null,array(
+    $response = $this->app["response"]->assign(array(
       'body' => implode("",$output[$type]),
       'gzip' => true,
       'mime' => $type,

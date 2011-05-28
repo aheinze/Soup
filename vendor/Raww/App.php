@@ -78,6 +78,7 @@ class App extends DI{
 		$app["i18n"]     = new I18n($app);
 		$app["assets"]   = new Assets\Manager($app);
 		$app["cache"]    = new Cache\File($app);
+		$app["response"] = function($app){ return new \Raww\Response(); };
 		
 		$app["path"]->register("views", __DIR__.'/views');
 		
@@ -105,18 +106,21 @@ class App extends DI{
 				
 					ob_end_clean();
 					
-					if($app['registry']->get("debug", false)){
-					
-						$response = new Response($app["tpl"]->render("views:error/error.php", array("error"=>$error)), array(
-							"status" => 404
+					if($app['registry']->get("debug", false)){						
+						
+						$response = $app['response']->assign(array(
+							"body" => $app["tpl"]->render("views:error/error.php", array("error"=>$error)),
+							"status" => "500"
 						));
 						
 					}else{
 					
-						$response = new Response($app["tpl"]->render("views:error/404.php", array("message"=>"ooooops!")), array(
-							"status" => 404
+						$response = $app['response']->assign(array(
+							"body" => $app["tpl"]->render("views:error/404.php", array("message"=>"ooooops!")),
+							"status" => "500"
 						));
 					}
+					
 					$response->flush();
 					$app["event"]->trigger("fatal_error", array("error"=>$error));
 				}
@@ -147,9 +151,10 @@ class App extends DI{
 			$response->flush();
 
 		} else {
-			
-			$response = new Response($this["tpl"]->render("views:error/404.php", array("message"=>$route)), array(
-				"status" => 404
+
+			$response = $this['response']->assign(array(
+				"body" => $this["tpl"]->render("views:error/404.php", array("message"=>$route)),
+				"status" => "404"
 			));
 			
 			$this["event"]->trigger("raww.error.404", array("path"=>$route, "response" => $response));

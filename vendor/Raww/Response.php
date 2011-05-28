@@ -66,12 +66,18 @@ class Response {
         
         $options = array_merge(array("body" => $body), $options);
         
+		$this->assign($options);
+    }
+	
+	public function assign($options = array()){
         if(count($options)){
             foreach($options as $name => $value) {
                 $this->{$name} = $value;
             }
         }
-    }
+		
+		return $this;
+	}
     
     public function flush() {
         
