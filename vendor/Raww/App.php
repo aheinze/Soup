@@ -79,7 +79,7 @@ class App extends DI{
 		$app["assets"]   = new Assets\Manager($app);
 		$app["cache"]    = new Cache\File($app);
 		
-		$app["path"]->register("views", __DIR__.'/Raww/views');
+		$app["path"]->register("views", __DIR__.'/views');
 		
 		foreach($config['paths'] as $name => $path){
 			$app["path"]->register($name, $path);
@@ -96,6 +96,38 @@ class App extends DI{
 			}
 		});
 		
+		register_shutdown_function(function() use($app) {
+			
+			$error = error_get_last();
+			
+			if ($error && in_array($error['type'], array(E_ERROR,E_CORE_ERROR,E_COMPILE_ERROR,E_USER_ERROR))){
+				if(!headers_sent()){
+				
+					ob_end_clean();
+					
+					if($app['registry']->get("debug", false)){
+					
+						$response = new Response($app["tpl"]->render("views:error/error.php", array("error"=>$error)), array(
+							"status" => 404
+						));
+						
+					}else{
+					
+						$response = new Response($app["tpl"]->render("views:error/404.php", array("message"=>"ooooops!")), array(
+							"status" => 404
+						));
+					}
+					$response->flush();
+					$app["event"]->trigger("fatal_error", array("error"=>$error));
+				}
+				
+				return;
+			}
+
+			$app["event"]->trigger("shutdown");
+		});
+		
+		
 		require_once($app["path"]->get("config:bootstrap.php"));
 		
 		self::$_apps[$appname] = $app;
@@ -107,7 +139,7 @@ class App extends DI{
 		
 		$this["route"] = $route;
 		
-		$response = $this["router"]->dispatch($route);    
+		$response = $this["router"]->dispatch($route);
 		
 		if(is_object($response) && method_exists($response, 'flush')) {
 			
