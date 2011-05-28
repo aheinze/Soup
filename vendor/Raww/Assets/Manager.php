@@ -156,4 +156,4 @@ Manager::$filters["minify_css"] = function(&$str) {
 		);
 
 		$str = preg_replace(array_keys($replacements), array_values($replacements), $str);
-}
+};
