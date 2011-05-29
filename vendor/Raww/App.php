@@ -154,7 +154,9 @@ class App extends DI{
 				return new \Raww\Request();
 			});
 		}
-		
+
+		error_reporting($this['registry']->get("debug", false) ? 0 : E_ALL);
+
 		$response = $this["router"]->dispatch($route);
 		
 		if(is_object($response) && method_exists($response, 'flush')) {
