@@ -36,6 +36,23 @@ spl_autoload_register(function($resource){
 	}
 });
 
+
+function stripslashes_deep($value) {
+	if ( is_array($value) ) {
+		$value = array_map('\Raww\stripslashes_deep', $value);
+	} elseif ( is_object($value) ) {
+		$vars = get_object_vars( $value );
+		foreach ($vars as $key=>$data) {
+			$value->{$key} = stripslashes_deep( $data );
+		}
+	} else {
+		$value = stripslashes($value);
+	}
+
+	return $value;
+}
+
+
 class App extends DI{
 	
 	protected $name;
@@ -79,9 +96,12 @@ class App extends DI{
 		$app["i18n"]     = $app->share(function($app){ return new I18n($app); });
 		$app["assets"]   = $app->share(function($app){ return new Assets($app); });
 		$app["cache"]    = $app->share(function($app){ return new Cache\File($app); });
+		$app["request"]  = $app->share(function($app){
+			return new \Raww\Request();
+		});
+		
 		$app["response"] = function($app){ return new \Raww\Response(); };
 
-		
 		$app["path"]->register("views", __DIR__.'/views');
 		$app["path"]->register("vendor", __DIR__.'/vendor');
 		
@@ -147,13 +167,6 @@ class App extends DI{
 	public function handle($route) {
 		
 		$this["route"] = $route;
-		
-		if(!isset($this["request"])) {
-		
-			$this["request"] = $this->share(function($app){
-				return new \Raww\Request();
-			});
-		}
 
 		error_reporting($this['registry']->get("debug", false) ? 0 : E_ALL);
 

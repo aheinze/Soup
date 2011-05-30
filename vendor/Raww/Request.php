@@ -2,19 +2,39 @@
 
 namespace Raww;
 
-global $_PUT, $_DELETE;
+// init global vars
 
 if(Request::is("put")) {
-	parse_str(file_get_contents('php://input'), $_PUT);
+	parse_str(file_get_contents('php://input'), Request::$_PUT);
 }
 
 if(Request::is("delete")) {
-	parse_str(file_get_contents('php://input'), $_DELETE);
+	parse_str(file_get_contents('php://input'), Request::$_DELETE);
+}
+
+if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+
+	Request::$_POST    = array_map('\Raww\stripslashes_deep', $_POST);
+	Request::$_GET     = array_map('\Raww\stripslashes_deep', $_GET);
+	Request::$_COOKIE  = array_map('\Raww\stripslashes_deep', $_COOKIE);
+	Request::$_REQUEST = array_map('\Raww\stripslashes_deep', $_REQUEST);
+
+}else{
+	Request::$_POST    = $_POST;
+	Request::$_GET     = $_GET;
+	Request::$_COOKIE  = $_COOKIE ;
+	Request::$_REQUEST = $_REQUEST;
 }
 
 class Request {
     
-
+	public static $_POST = array();
+	public static $_GET = array();
+	public static $_COOKIE = array();
+	public static $_REQUEST = array();
+	public static $_PUT = array();
+	public static $_DELETE = array();
+	
     /* mimeTypes */
     public static $mimeTypes = array(
         'asc'   => 'text/plain',
@@ -124,7 +144,6 @@ class Request {
         return false;
     }
 
-
     public static function getClientIp(){
 
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
@@ -164,31 +183,28 @@ class Request {
 	
 	public static function get($index=null, $default = null) {
 		
-		if(!$index) return $_GET;
+		if(!$index) return self::$_GET;
 		
-		return isset($_GET[$index]) ? $_GET[$index] : $default;
+		return isset(self::$_GET[$index]) ? self::$_GET[$index] : $default;
 	}
 	public static function post($index=null, $default = null) {
 		
-		if(!$index) return $_POST;
+		if(!$index) return self::$_POST;
 		
-		return isset($_POST[$index]) ? $_POST[$index] : $default;
+		return isset(self::$_POST[$index]) ? self::$_POST[$index] : $default;
 	}
 	public static function put($index=null, $default = null) {
 		
-		global $_PUT;
+		if(!$index) return self::$_PUT;
 		
-		if(!$index) return $_PUT;
-		
-		return isset($_PUT[$index]) ? $_PUT[$index] : $default;
+		return isset(self::$_PUT[$index]) ? self::$_PUT[$index] : $default;
 	}
 	public static function delete($index=null, $default = null) {
 		
-		global $_DELETE;
+		if(!$index) return self::$_DELETE;
 		
-		if(!$index) return $_DELETE;
-		
-		return isset($_DELETE[$index]) ? $_DELETE[$index] : $default;
+		return isset(self::$_DELETE[$index]) ? self::$_DELETE[$index] : $default;
 	}
 	
 }
+
