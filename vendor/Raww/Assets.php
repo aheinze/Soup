@@ -81,7 +81,7 @@ class Assets extends \Raww\AppContainer {
 
         case 'css':
           
-          $content = self::rewriteCssUrls(file_get_contents($file), dirname($file));
+          $content = self::rewriteCssUrls(file_get_contents($file), dirname($file), $this->app['base_url']);
 
           break;
         
@@ -105,7 +105,7 @@ class Assets extends \Raww\AppContainer {
     return $response;
   }
 
-  protected static function rewriteCssUrls($content, $source_dir){
+  protected static function rewriteCssUrls($content, $source_dir, $base_path){
 
     preg_match_all('/url\((.*)\)/',$content,$matches);
 
@@ -120,7 +120,7 @@ class Assets extends \Raww\AppContainer {
 
     foreach($matches[1] as $imgpath){
       if(!preg_match("#^(http|/|data\:)#",trim($imgpath))){
-        $content = str_replace('url('.$imgpath.')','url('.$csspath.str_replace('"','',$imgpath).')',$content);
+        $content = str_replace('url('.$imgpath.')','url('.$base_path.'/'.$csspath.str_replace('"','',$imgpath).')',$content);
       }
     }
 

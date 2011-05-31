@@ -95,9 +95,16 @@ p {
 }
 
 #header {
-	background: #eee;
+	background: #eee url(images/pinstripe.png);
 	height: 260px;
 	box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+}
+
+#frame {
+	background: #fff;
+	padding-bottom: 30px;
+	min-height: 400px;
 }
 
 #content > .wrapper {
