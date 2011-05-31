@@ -5,7 +5,7 @@
 	<span class="soft">you're ready to start coding your app.</span>
 </h2>
 
-<div class="embossed2" style="padding:20px;margin-bottom:30px;">
+<div style="margin-bottom:30px;">
 	<h3>Getting started</h3>
 
 	<p>

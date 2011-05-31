@@ -52,20 +52,20 @@ p {
 
 #logo {
 	position: absolute;
-	top: 50px;
-	left: 20px;
+	top: 65px;
+	left: 0px;
 	display: inline-block;
-	font-size: 20px;
+	font-size: 26px;
 	font-weight: bold;
 	color: #000;
+	text-shadow: 1px 1px #fff;
 }
 
 #logo > span {
 	font-family: Georgia;
 	font-weight: normal;
 	font-style: italic;
-	display: block;
-	margin-top: 5px; 
+	font-size: 20px;
 }
 
 #topnav {
@@ -75,10 +75,6 @@ p {
 	list-style: none;
 	font-size: 12px;
 	font-weight: bold;
-	background: #fff;
-	padding: 10px 20px;
-	border-radius: 8px 8px 0px 0px;
-	-moz-border-radius: 8px 8px 0px 0px;
 }
 
 #topnav > li {
@@ -86,40 +82,26 @@ p {
 	padding: 4px;
 }
 #topnav > li > a {
-	color: #666;
+	color: #000;
 	display: inline-block;
 	padding: 2px 8px;
 	text-decoration: none;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 #topnav > li > a:hover {
-	color: #000;
-	background-color: #e0e5ea;
+	color: #fff;
+	background: #000;
 }
 
 #header {
 	background: #eee;
 	height: 260px;
+	box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
 }
 
 #content > .wrapper {
 	padding: 40px;
 	background: #fff;
 	margin-top: -140px;
-	border-radius: 8px 0px 0px 0px;
-	-moz-border-radius: 8px 0px 0px 0px;
-}
-
-.embossed {
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .35);  
-}
-
-.embossed2 {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;
-    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 60px rgba(0, 0, 0, 0.1) inset;
-    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;  
 }
