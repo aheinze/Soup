@@ -2,27 +2,6 @@
 
 namespace Raww;
 
-function debug() {
-	
-	$vars   = func_get_args();           
-	$_from  = debug_backtrace();
-	$output = array();
-	
-	$output[] = '<div class="raww-debug">';
-	  $output[] = '<strong title="'.$_from[0]['file'].'">' . $_from[0]['file'] . '</strong>';
-	  $output[] = ' (line: <strong>' . $_from[0]['line'] . '</strong>)';
-	  
-	  foreach ($vars as $var){
-		  $output[] = '<pre>';
-		  $output[] = print_r($var, true);
-		  $output[] = "</pre>";
-	  }
-
-	$output[] = '<div>';
-
-	echo implode("\n",$output);
-}
-
 spl_autoload_register(function($resource){
 	
 	if(strpos($resource,__NAMESPACE__.'\\')===0) {
@@ -35,22 +14,6 @@ spl_autoload_register(function($resource){
 		}            
 	}
 });
-
-
-function stripslashes_deep($value) {
-	if ( is_array($value) ) {
-		$value = array_map('\Raww\stripslashes_deep', $value);
-	} elseif ( is_object($value) ) {
-		$vars = get_object_vars( $value );
-		foreach ($vars as $key=>$data) {
-			$value->{$key} = stripslashes_deep( $data );
-		}
-	} else {
-		$value = stripslashes($value);
-	}
-
-	return $value;
-}
 
 
 class App extends DI{
@@ -156,8 +119,9 @@ class App extends DI{
 			$app["event"]->trigger("shutdown");
 		});
 		
-		
-		require_once($app["path"]->get("config:bootstrap.php"));
+		if($app_bootstrap = $app["path"]->get("config:bootstrap.php")){
+			require($app_bootstrap);
+		}
 		
 		self::$_apps[$appname] = $app;
 		
@@ -191,4 +155,42 @@ class App extends DI{
 		
 		Bench::stop("rawwbench");
 	}
+}
+
+// helper functions
+
+function stripslashes_deep($value) {
+	if ( is_array($value) ) {
+		$value = array_map('\Raww\stripslashes_deep', $value);
+	} elseif ( is_object($value) ) {
+		$vars = get_object_vars( $value );
+		foreach ($vars as $key=>$data) {
+			$value->{$key} = stripslashes_deep( $data );
+		}
+	} else {
+		$value = stripslashes($value);
+	}
+
+	return $value;
+}
+
+function debug() {
+	
+	$vars   = func_get_args();           
+	$_from  = debug_backtrace();
+	$output = array();
+	
+	$output[] = '<div class="raww-debug">';
+	  $output[] = '<strong title="'.$_from[0]['file'].'">' . $_from[0]['file'] . '</strong>';
+	  $output[] = ' (line: <strong>' . $_from[0]['line'] . '</strong>)';
+	  
+	  foreach ($vars as $var){
+		  $output[] = '<pre>';
+		  $output[] = print_r($var, true);
+		  $output[] = "</pre>";
+	  }
+
+	$output[] = '<div>';
+
+	echo implode("\n",$output);
 }

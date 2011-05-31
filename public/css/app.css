@@ -1,6 +1,5 @@
-
 body {
-	background: #eee;
+	background: #fff;
 	color: #444;
 }
 
@@ -52,24 +51,34 @@ p {
 }
 
 #logo {
+	position: absolute;
+	top: 50px;
+	left: 0px;
 	display: inline-block;
 	font-size: 20px;
 	font-weight: bold;
-	background: #222;
-	color: #fff;
-	padding: 30px 10px 10px 10px;
-	-webkit-border-radius: 0px 0px 4px 4px;
-	-moz-border-radius: 0px 0px 4px 4px;
-	border-radius: 0px 0px 4px 4px;
+	color: #000;
+}
+
+#logo > span {
+	font-family: Georgia;
+	font-weight: normal;
+	font-style: italic;
+	display: block;
+	margin-top: 5px; 
 }
 
 #topnav {
 	position: absolute;
 	right: 0px;
-	top:30px;
+	top: 70px;
 	list-style: none;
 	font-size: 12px;
 	font-weight: bold;
+	background: #fff;
+	padding: 10px 20px;
+	border-radius: 8px 8px 0px 0px;
+	-moz-border-radius: 8px 8px 0px 0px;
 }
 
 #topnav > li {
@@ -79,7 +88,7 @@ p {
 #topnav > li > a {
 	color: #666;
 	display: inline-block;
-	padding: 2px 4px;
+	padding: 2px 8px;
 	text-decoration: none;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
@@ -91,18 +100,24 @@ p {
 }
 
 #header {
-	margin: 0px 0px 40px 0px;
+	background: #eee;
+	height: 260px;
 }
 
 #content > .wrapper {
-	padding: 20px;
+	padding: 40px;
 	background: #fff;
-	border: 1px #ccc solid;
+	margin-top: -140px;
+}
+
+.embossed {
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .35); 
-	
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .35);  
+}
+
+.embossed2 {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 60px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;  
 }

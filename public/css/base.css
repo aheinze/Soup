@@ -17,6 +17,14 @@ body {
 	line-height: 1.45em;
 }
 
+.clearfix:after {  /* für Firefox, IE8, Opera, Safari, etc. */
+    content: ".";  
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
 input,
 textarea,
 select { outline: none }

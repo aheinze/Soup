@@ -205,6 +205,5 @@ class Request {
 		
 		return isset(self::$_DELETE[$index]) ? self::$_DELETE[$index] : $default;
 	}
-	
 }
 

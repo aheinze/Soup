@@ -9,7 +9,7 @@
 	<div id="header">
 		<div class="wrapper">
 			<span id="logo">
-				Raww2
+				Raww2 <span>the tiny framework</span>
 			</span>
 			<ul id="topnav">
 				<li><a href="https://github.com/aheinze/Raww2">Documentation</a></li>
