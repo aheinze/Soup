@@ -160,18 +160,18 @@ p {
 }
 .ribbon:before{
     left:0;
-    border-top-color:#666;
+    border-top-color:#000;
     border-left-width:7px;
     border-right-width:0;
     }
 .ribbon:after {
     right:0;
-    border-top-color:#666;
+    border-top-color:#000;
     border-right-width:7px;
     border-left-width:0;
 }
 .ribbon .right, .ribbon .left{
-    border:19px solid #999;
+    border:19px solid #000;
     position:absolute;
     display:block;
     width:0; height:0;
