@@ -51,6 +51,8 @@ p {
 }
 
 #logo {
+	background: url(images/logo.svg) no-repeat;
+	padding: 10px 0px 10px 40px;
 	position: absolute;
 	top: 65px;
 	left: 0px;
@@ -145,7 +147,7 @@ p {
 #ribbonbar {
     background-color:#999;
     background-image:-webkit-linear-gradient(top, #d9292b, #be2223);
-    background-image:-moz-linear-gradient(top, #444, #000);
+    background-image:-moz-linear-gradient(top, #d9292b, #be2223);
     background-image:linear-gradient(top, #d9292b, #be2223);
     color:#fff;
     text-shadow:0 1px #444;
