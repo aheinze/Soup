@@ -123,6 +123,96 @@ p {
 
 #topbar {
 	color: #fff;
-	background: #222;
 	padding: 6px;
+	width: 900px;
+	margin-left:-10px;
+}
+
+.ribbon {
+    background-color:#999;
+    background-image:-webkit-linear-gradient(top, rgba(255,255,255,0.1), rgba(0,0,0,.1));
+    background-image:-moz-linear-gradient(top, rgba(255,255,255,0.1), rgba(0,0,0,.1));
+    background-image:linear-gradient(top, rgba(255,255,255,0.1), rgba(0,0,0,.1));
+    color:#fff;
+    text-shadow:0 1px #666;
+    position:relative;
+    -webkit-box-shadow:
+        0 1px 3px rgba(0,0,0,.3),
+        0 0 0 1px #777,
+        0 1px 0 #bbb inset;
+    -moz-box-shadow:
+        0 1px 3px rgba(0,0,0,.3),
+        0 0 0 1px #777,
+        0 1px 0 #bbb inset;
+    box-shadow:
+        0 1px 3px rgba(0,0,0,.3),
+        0 0 0 1px #777,
+        0 1px 0 #bbb inset;
+}
+.ribbon:before, .ribbon:after {
+    content:'';
+    border:6px solid transparent;
+    position:absolute;
+    display:block;
+    width:0;
+    height:0;
+    top:100%;
+}
+.ribbon:before{
+    left:0;
+    border-top-color:#666;
+    border-left-width:7px;
+    border-right-width:0;
+    }
+.ribbon:after {
+    right:0;
+    border-top-color:#666;
+    border-right-width:7px;
+    border-left-width:0;
+}
+.ribbon .right, .ribbon .left{
+    border:19px solid #999;
+    position:absolute;
+    display:block;
+    width:0; height:0;
+    top:7px;
+    z-index:-1;
+}
+.ribbon .right {
+    -webkit-box-shadow:
+        0 1px 0 #777,
+        0 -1px 0 #bbb,
+        0 -2px 0 #777,
+        1px 0 0 #777;
+    -moz-box-shadow:
+        0 1px 0 #777,
+        0 -1px 0 #bbb,
+        0 -2px 0 #777,
+        1px 0 0 #777;
+    box-shadow:
+        0 1px 0 #777,
+        0 -1px 0 #bbb,
+        0 -2px 0 #777,
+        1px 0 0 #777;
+    border-left-color:transparent;
+    left:-32px;
+}
+.ribbon .left {
+-webkit-box-shadow:
+	0 1px 0 #777,
+	0 -1px 0 #bbb,
+	0 -2px 0 #777,
+	-1px 0 0 #777;
+-moz-box-shadow:
+	0 1px 0 #777,
+	0 -1px 0 #bbb,
+	0 -2px 0 #777,
+	-1px 0 0 #777;
+box-shadow:
+	0 1px 0 #777,
+	0 -1px 0 #bbb,
+	0 -2px 0 #777,
+	-1px 0 0 #777;
+	border-right-color:transparent;
+	right:-32px;
 }
