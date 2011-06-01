@@ -46,7 +46,7 @@ p {
 
 .wrapper {
 	position: relative;
-	width: 960px;
+	width: 880px;
 	margin: 0px auto;
 }
 
@@ -108,7 +108,21 @@ p {
 }
 
 #content > .wrapper {
-	padding: 40px;
 	background: #fff;
 	margin-top: -140px;
+}
+
+#output {
+	padding: 40px 20px;
+}
+
+#topbox {
+	min-height:200px;
+	box-shadow:0px 0px 10px #ccc;
+}
+
+#topbar {
+	color: #fff;
+	background: #222;
+	padding: 6px;
 }

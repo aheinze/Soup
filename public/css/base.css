@@ -25,6 +25,15 @@ body {
     visibility: hidden;
 }
 
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.p-20 {
+	padding: 20px;
+}
+
+
 input,
 textarea,
 select { outline: none }

@@ -10,7 +10,7 @@
 		<div id="header">
 			<div class="wrapper">
 				<span id="logo">
-					Raww2 <span>the tiny framework</span>
+					Raww2 <span>framework</span>
 				</span>
 				<ul id="topnav">
 					<li><a href="https://github.com/aheinze/Raww2">Documentation</a></li>
@@ -20,7 +20,16 @@
 		</div>
 		<div id="content">
 			<div class="wrapper">
-				<?php echo $content_for_layout;?>
+				<div id="topbox">
+					<div id="topbar">
+						&nbsp;
+					</div>
+					<div class="p-20">
+						<div class="p-20" style="text-align:center;font-size:40px;">Less Enterprise</div>
+						<div style="text-align:center;font-size:24px;font-family:Georgia;font-style:italic;">more fun!</div>
+					</div>
+				</div>
+				<div id="output"><?php echo $content_for_layout;?></div>
 			</div>
 		</div>
 	</div>
