@@ -121,20 +121,34 @@ p {
 	box-shadow:0px 0px 10px #ccc;
 }
 
-#topbar {
+#topbox .h1 {
+	text-align: center;
+	font-size: 40px;
+	font-weight: bold;
+	margin: 20px;
+}
+#topbox .h2 {
+	text-align:center;
+	font-size:24px;
+	font-family:Georgia;
+	font-style:italic;
+}
+
+#ribbonbar {
 	color: #fff;
 	padding: 6px;
 	width: 900px;
 	margin-left:-10px;
+	text-align: center;
 }
 
-.ribbon {
+#ribbonbar {
     background-color:#999;
-    background-image:-webkit-linear-gradient(top, rgba(255,255,255,0.1), rgba(0,0,0,.1));
-    background-image:-moz-linear-gradient(top, rgba(255,255,255,0.1), rgba(0,0,0,.1));
-    background-image:linear-gradient(top, rgba(255,255,255,0.1), rgba(0,0,0,.1));
+    background-image:-webkit-linear-gradient(top, #444, #000);
+    background-image:-moz-linear-gradient(top, #444, #000);
+    background-image:linear-gradient(top, #444, #000);
     color:#fff;
-    text-shadow:0 1px #666;
+    text-shadow:0 1px #444;
     position:relative;
     -webkit-box-shadow:
         0 1px 3px rgba(0,0,0,.3),
@@ -149,7 +163,7 @@ p {
         0 0 0 1px #777,
         0 1px 0 #bbb inset;
 }
-.ribbon:before, .ribbon:after {
+#ribbonbar:before, #ribbonbar:after {
     content:'';
     border:6px solid transparent;
     position:absolute;
@@ -158,19 +172,19 @@ p {
     height:0;
     top:100%;
 }
-.ribbon:before{
+#ribbonbar:before{
     left:0;
     border-top-color:#000;
     border-left-width:7px;
     border-right-width:0;
     }
-.ribbon:after {
+#ribbonbar:after {
     right:0;
     border-top-color:#000;
     border-right-width:7px;
     border-left-width:0;
 }
-.ribbon .right, .ribbon .left{
+#ribbonbar .right, #ribbonbar .left{
     border:19px solid #000;
     position:absolute;
     display:block;
@@ -178,7 +192,7 @@ p {
     top:7px;
     z-index:-1;
 }
-.ribbon .right {
+#ribbonbar .right {
     -webkit-box-shadow:
         0 1px 0 #777,
         0 -1px 0 #bbb,
@@ -197,7 +211,7 @@ p {
     border-left-color:transparent;
     left:-32px;
 }
-.ribbon .left {
+#ribbonbar .left {
 -webkit-box-shadow:
 	0 1px 0 #777,
 	0 -1px 0 #bbb,
