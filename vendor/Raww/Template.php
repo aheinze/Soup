@@ -15,7 +15,13 @@ class Template extends AppContainer {
 	/* slots */
 	protected $slots;
 	
-
+	/**
+	 * Render a template file
+	 *
+	 * @param	string $____template	Template path
+	 * @param	string $_____slots	passed vars
+	 * @return	string
+	 */
 	public function render($____template, $_____slots = array()) {        
         
 		$____layout  = false;
@@ -56,7 +62,14 @@ class Template extends AppContainer {
 		return $output;
 	}
 
-	function url($path, $echo=true) {
+	/**
+	 * Url helper function to build urls within a template
+	 *
+	 * @param	string $path	
+	 * @param	boolean $echo	
+	 * @return	string
+	 */
+	protected function url($path, $echo=true) {
 		$url = $this->app["router"]->url($path);
 
 		if($echo) echo $url;

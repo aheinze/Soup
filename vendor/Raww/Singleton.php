@@ -10,15 +10,15 @@ namespace Raww;
  * @license    http://rawwphp.info/license
  */
 abstract class Singleton {
-    /**
-     * @var  array  Instances of the singleton.
-     */
+
     private static $_instances = array();
 
-    /**
-     * Returns instance of the called class.
-     */
-    final public static function instance(/* ... */) {
+	/**
+	 * Returns instance of the called class.
+	 *
+	 * @return	object
+	 */
+    final public static function instance() {
         
         $class = get_called_class();
 

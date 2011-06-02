@@ -15,6 +15,12 @@ class Annotations {
     
     protected static $_cache = array();
 
+	/**
+	 * Parses a class
+	 *
+	 * @param	string $class	Name of a class
+	 * @return	array
+	 */
     public static function getClass($class) {
         
         if (isset(self::$_cache[$class])) {
@@ -46,6 +52,12 @@ class Annotations {
         return self::$_cache[$class];
     }
 
+	/**
+	 * Parses Text for annotations
+	 *
+	 * @param	string $text	Text containing annotations
+	 * @return	array
+	 */
     public static function getAnnotations($text){
 
         $ret = array();

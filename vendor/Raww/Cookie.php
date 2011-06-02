@@ -18,10 +18,27 @@ class Cookie {
 	public static $secure = false;
 	public static $httponly = false;
 
+	/**
+	 * Get value of $_COOKIE array 
+	 *
+	 * @param	string $name	Index
+	 * @param	mixed $default	default value if index not exists
+	 * @return	mixed
+	 */
 	public static function get($name, $default = null) {
 		return Request::cookie($name, $default);
 	}
 
+	/**
+	 * Set key/value of $_COOKIE array 
+	 *
+	 * @param	string $name	
+	 * @param	string $value	
+	 * @param	int $expiration	
+	 * @param	string $path	
+	 * @param	string $domain	
+	 * @return	boolean
+	 */
 	public static function set($name, $value, $expiration = null, $path = null, $domain = null) {
 		
 	    if ($expiration === null) {
@@ -36,6 +53,12 @@ class Cookie {
 		return setcookie($name, $value, $expiration, $path, $domain, static::$secure, static::$httponly);
 	}
 
+	/**
+	 * Delete $_COOKIE setting 
+	 *
+	 * @param	string $name	Index
+	 * @return	boolean
+	 */
 	public static function delete($name) {
 
 		unset($_COOKIE[$name]);

@@ -14,10 +14,12 @@ class Bench {
  
 	private static $m = array();
 
-  /**
-  * ...
-  *
-  */ 
+	/**
+	 * Starts benchmark
+	 *
+	 * @param	string $name	benchmark group name
+	 * @return	void
+	 */
 	public static function start($name){
 		self::$m[$name] = array(
 			'start'        => microtime(true),
@@ -28,10 +30,12 @@ class Bench {
 		);
 	}
 
-  /**
-  * ...
-  *
-  */ 
+	/**
+	 * Stops benchmark
+	 *
+	 * @param	string $name	benchmark group name
+	 * @return	mixed
+	 */
 	public static function stop($name){
 		if(isset(self::$m[$name]) && self::$m[$name]['stop'] === false){
 			self::$m[$name]['stop'] = microtime(true);
@@ -43,10 +47,12 @@ class Bench {
 		}
 	}
 
-  /**
-  * ...
-  *
-  */ 
+	/**
+	 * Returns benchmark information
+	 *
+	 * @param	string $name	benchmark group name
+	 * @return	mixed
+	 */ 
 	public static function get($name=false){
 		if ($name === false){
 			return self::$m;
