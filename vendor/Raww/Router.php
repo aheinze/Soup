@@ -12,19 +12,9 @@ namespace Raww;
  */
 class Router extends AppContainer {
     
-    public $base_url = "/";
-    
+
 	/* routes */
 	protected $_routes = array();
-    
-	
-	public function __construct($app){
-		
-		parent::__construct($app);
-		
-		$this->_container = array();
-		$this->base_url   = $app["base_url"];
-	}
     
 	public function bind($path, $callback, $condition = true) {
 		
@@ -143,9 +133,18 @@ class Router extends AppContainer {
     }
     
 
+    public function baseurl($path) {
+		
+		$path = '/'.ltrim($path, '/');
+		
+        return $this->app["base_url_path"].$path;
+    }
+	
     public function url($path) {
-    
-        return $this->base_url.$path;
+		
+		$path = '/'.ltrim($path, '/');
+		
+        return $this->app["base_route_path"].$path;
     }
     
 
@@ -155,7 +154,7 @@ class Router extends AppContainer {
           if(substr($path,0,1)!='/'){
             $path = '/'.$path;
           }
-          $path = $this->base_url.$path;
+          $path = $this->url($path);
         }
 
         header('Location: '.$path);

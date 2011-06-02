@@ -117,7 +117,7 @@ class Assets extends \Raww\AppContainer {
 				$content = call_user_func(self::$filters["process_css"], $content);
 			  }
 			  
-			  $content = self::rewriteCssUrls($content, dirname($file), $this->app['base_url']);
+			  $content = self::rewriteCssUrls($content, dirname($file), $this->app['base_url_path']);
 			  
 			  if($asset['minify']){
 				$content = call_user_func(self::$filters["minify_css"], $content);

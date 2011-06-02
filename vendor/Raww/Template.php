@@ -69,8 +69,23 @@ class Template extends AppContainer {
 	 * @param	boolean $echo	
 	 * @return	string
 	 */
+	protected function baseurl($path, $echo=true) {
+		$url = $this->app["router"]->baseurl($path);
+
+		if($echo) echo $url;
+		
+		return $url;
+	}
+	
+	/**
+	 * Url helper function to build route within a template
+	 *
+	 * @param	string $path	
+	 * @param	boolean $echo	
+	 * @return	string
+	 */
 	protected function url($path, $echo=true) {
-		$url = $this->app["router"]->url($path);
+		$url = $this->app["router"]->route($path);
 
 		if($echo) echo $url;
 		

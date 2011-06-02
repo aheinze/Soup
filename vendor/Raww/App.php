@@ -69,15 +69,16 @@ class App extends DI{
 	 */
 	public static function init($appname, $config) {
 		
-		if(!isset($config['base_url'])) {
-			$config['base_url'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
+		$app["base_url_path"]   = rtrim(implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1)), '/');
+		
+		if(!isset($config['base_route_path'])) {
+			$config['base_route_path'] = $app["base_url_path"];
 		}
 		
 		$app = new App($appname);
 		
-		$app["base_url"] = $config["base_url"];
+		$app["base_route_path"] = $config["base_route_path"];
 		$app["path"]     = new Path($app);
-		
 		$app["bench"]    = $app->share(function($app){ return new Bench(); });
 		$app["session"]  = $app->share(function($app){ return new Session\Php($app); });
 		$app["registry"] = $app->share(function($app){ return new Registry($app); });
