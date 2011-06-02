@@ -2,6 +2,14 @@
 
 namespace Raww;
 
+/**
+ * Socket class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Socket {
 
 	protected $transport;
@@ -9,10 +17,12 @@ class Socket {
 	/* available transport classes */
 	protected $transports = array('\Raww\Socket\HttpCurl', '\Raww\Socket\HttpStreams', '\Raww\Socket\HttpSocket');
 
-	/*
-		Function: Constructor
-			Class Constructor.
-	*/
+
+	/**
+	 * Class Constructor.
+	 *
+	 * @return	void
+	 */
 	public function __construct() {
 
 		// check available library support
@@ -25,64 +35,59 @@ class Socket {
 		}
 	}	
 
-	/*
-		Function: get
-			Execute a GET HTTP request
-
-		Parameters:
-			$url - URL
-			$options - Array of options
-
-		Returns:
-			Mixed
-	*/	
+	/**
+	 * Execute a GET HTTP request
+	 *
+	 * @param	string $url	URL
+	 * @param	array $options	Array of options
+	 * @return	mixed
+	 */
 	public function get($url, $options = array()) {
 		return $this->request($url, $options);
 	}
 
-	/*
-		Function: post
-			Execute a POST HTTP request
-
-		Parameters:
-			$url - URL
-			$data - Data to send as body
-			$options - Array of options
-
-		Returns:
-			Mixed
-	*/	
+	/**
+	 * Execute a GET POST request
+	 *
+	 * @param	string $url	URL
+	 * @param	array $data	Data to send as body
+	 * @param	array $options	Array of options
+	 * @return	mixed
+	 */
 	public function post($url, $data = null, $options = array()) {
 		return $this->request($url, array_merge(array('method' => 'POST', 'body' => $data), $options));
 	}
 
-	/*
-		Function: put
-			Execute a PUT HTTP request
-
-		Parameters:
-			$url - URL
-			$data - Data to send as body
-			$options - Array of options
-
-		Returns:
-			Mixed
-	*/	
+	/**
+	 * Execute a PUT HTTP request
+	 *
+	 * @param	string $url	URL
+	 * @param	array $data	Data to send as body
+	 * @param	array $options	Array of options
+	 * @return	mixed
+	 */	
 	public function put($url, $data = null, $options = array()) {
 		return $this->request($url, array_merge(array('method' => 'PUT', 'body' => $data), $options));
 	}
+	
+	/**
+	 * Execute a DELETE HTTP request
+	 *
+	 * @param	string $url	URL
+	 * @param	array $options	Array of options
+	 * @return	mixed
+	 */	
+	public function delete($url, $options = array()) {
+		return $this->request($url, array_merge(array('method' => 'DELETE'), $options));
+	}
 
-	/*
-		Function: request
-			Execute a HTTP request
-
-		Parameters:
-			$url - URL
-			$options - Array of options
-
-		Returns:
-			Mixed
-	*/
+	/**
+	 * Execute a HTTP request
+	 *
+	 * @param	string $url	URL
+	 * @param	array $options	Array of options
+	 * @return	mixed
+	 */
 	public function request($url, $options = array()) {
 		
 		if ($this->transport) {

@@ -2,15 +2,35 @@
 
 namespace Raww;
 
+/**
+ * Dependency Injection class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class DI implements \ArrayAccess{
     
     protected $_container = array();
     
+	/**
+	 * Class Constructor.
+	 *
+	 * @return	void
+	 */
 	public function __construct(){
 	
 		$this->_container = array();
 	}
 
+	/**
+     * Returns a closure that stores the result of the given closure for
+     * uniqueness in the scope of this instance of Pimple.
+     *
+     * @param Closure $callable A closure to wrap for uniqueness
+     * @return Closure The wrapped closure
+     */
 	public function share($callable) {
         return function ($app) use ($callable) {
             
@@ -24,6 +44,13 @@ class DI implements \ArrayAccess{
         };
     }
 	
+    /**
+     * Protects a callable from being interpreted as a service.
+     * This is useful when you want to store a callable as a parameter.
+     *
+     * @param Closure $callable A closure to protect from being evaluated
+     * @return Closure The protected closure
+     */
 	public function protect(Closure $callable) {
         return function ($c) use ($callable) {
             return $callable;

@@ -2,7 +2,14 @@
 
 namespace Raww;
 
-
+/**
+ * Spec class. Test tool.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Spec {
     
     private $description;

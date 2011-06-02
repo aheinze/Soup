@@ -2,152 +2,180 @@
 
 namespace Raww;
 
-
+/**
+ * Assets class. Combine, minify and apply filters to js and css files.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Assets extends \Raww\AppContainer {
   
-  public static $filters = array();
-  
-  protected $assets = array();
-  protected $references = array();
-  protected $dumped_references = array();
+	/**
+	 * @var filters	Collection of asset filters
+	 */
+	public static $filters = array();
 
-  /**
-  * ...
-  *
-  */ 
-  public function register($name,$options){
-    
-    $this->assets[$name] = $options;
-    
-  }
+	protected $assets = array();
+	protected $references = array();
+	protected $dumped_references = array();
 
+	/**
+	 * Register an asset group
+	 *
+	 * @param	string $name	Name of the group to register
+	 * @param	array $options	Containing files and filter options
+	 * @return	void
+	 */
+	public function register($name,$options){
 
-  /**
-  * ...
-  *
-  */ 
-  public function addReference($name,$options){
-    $this->references[$name] = $options;
-  }
+		$this->assets[$name] = $options;
+	}
 
-  /**
-  * ...
-  *
-  */ 
-  public function dump($name, $type="js", $cache_time = 600){
+	/**
+	 * Register an asset reference
+	 *
+	 * @param	string $name	Name of the reference
+	 * @param	array $options	Containing file and filter options
+	 * @return	void
+	 */
+	public function addReference($name,$options){
+		$this->references[$name] = $options;
+	}
 
-    if(!isset($this->assets[$name])) return;
+	/**
+	 * Dump an asset group (combine + apply filters)
+	 *
+	 * @param	string $name	Name of the asset group
+	 * @param	string $type	(js|css) all css or js files of an asset group
+	 * @param	int $cache_time	Cache lifetime (0 = no caching)
+	 * @return	string
+	 */
+	public function dump($name, $type="js", $cache_time = 600){
 
-    $cache_key = "asset_".$name."_".$type;
+		if(!isset($this->assets[$name])) return;
 
-    if($cache_time && $cached = $this->app['cache']->read($cache_key)) {
-      return $cached;
-    }
+		$cache_key = "asset_".$name."_".$type;
 
-    $output    = array();
+		if($cache_time && $cached = $this->app['cache']->read($cache_key)) {
+		  return $cached;
+		}
 
-    foreach ($this->assets[$name] as $asset) {
+		$output    = array();
 
-      //handle references
-      if(substr($asset['file'], 0,4)=="ref:"){
-       
-       list($prefix, $ref_name) = explode(":", $asset['file']);
-       
-       if(!isset($this->references[$ref_name]) || isset($this->dumped_references[$ref_name])) continue;
+		foreach ($this->assets[$name] as $asset) {
 
-       $this->dumped_references[$ref_name] = true;
-       
-       $asset = $this->references[$ref_name];
+		  //handle references
+		  if(substr($asset['file'], 0,4)=="ref:"){
+		   
+		   list($prefix, $ref_name) = explode(":", $asset['file']);
+		   
+		   if(!isset($this->references[$ref_name]) || isset($this->dumped_references[$ref_name])) continue;
 
-      }
-	  
-	  $asset = array_merge(array(
-		"minify" => true
-	  ), $asset);
+		   $this->dumped_references[$ref_name] = true;
+		   
+		   $asset = $this->references[$ref_name];
 
-      $file    = $asset['file'];
-      $ext     = strtolower(array_pop(explode(".", $file)));
-      $content = '';
-
-      if (strpos($file, ':') !== false && $____file = $this->app['path']->get($file)) {
-         $file = $____file;
-      }
-
-      if($ext!=$type) continue;
-
-      switch ($ext) {
-        
-        case 'js':
-          
-          $content = file_get_contents($file);
-          
-		  if($asset['minify']){
-			$content = call_user_func(self::$filters["minify_js"], $content);
 		  }
 		  
-          break;
-
-        case 'css':
-          
 		  $asset = array_merge(array(
-			"process" => false
+			"minify" => true
 		  ), $asset);
-		  
-		  $content = file_get_contents($file);
-		  
-		  if($asset['process']){
-			$content = call_user_func(self::$filters["process_css"], $content);
+
+		  $file    = $asset['file'];
+		  $ext     = strtolower(array_pop(explode(".", $file)));
+		  $content = '';
+
+		  if (strpos($file, ':') !== false && $____file = $this->app['path']->get($file)) {
+			 $file = $____file;
 		  }
-		  
-          $content = self::rewriteCssUrls($content, dirname($file), $this->app['base_url']);
-		  
-		  if($asset['minify']){
-			$content = call_user_func(self::$filters["minify_css"], $content);
+
+		  if($ext!=$type) continue;
+
+		  switch ($ext) {
+			
+			case 'js':
+			  
+			  $content = file_get_contents($file);
+			  
+			  if($asset['minify']){
+				$content = call_user_func(self::$filters["minify_js"], $content);
+			  }
+			  
+			  break;
+
+			case 'css':
+			  
+			  $asset = array_merge(array(
+				"process" => false
+			  ), $asset);
+			  
+			  $content = file_get_contents($file);
+			  
+			  if($asset['process']){
+				$content = call_user_func(self::$filters["process_css"], $content);
+			  }
+			  
+			  $content = self::rewriteCssUrls($content, dirname($file), $this->app['base_url']);
+			  
+			  if($asset['minify']){
+				$content = call_user_func(self::$filters["minify_css"], $content);
+			  }
+			  
+			  break;
+			
+			default:
+			  continue;
 		  }
-		  
-          break;
-        
-        default:
-          continue;
-      }
 
-      $output[$type][] = $content;
-    }
+		  $output[$type][] = $content;
+		}
 
-    $response = $this->app["response"]->assign(array(
-      'body' => implode("",$output[$type]),
-      'gzip' => true,
-      'mime' => $type,
-    ));
+		$response = $this->app["response"]->assign(array(
+		  'body' => implode("",$output[$type]),
+		  'gzip' => true,
+		  'mime' => $type,
+		));
 
-    if($cache_time) {
-      $this->app['cache']->write($cache_key, $response, $cache_time);
-    }
-    
-    return $response;
-  }
+		if($cache_time) {
+		  $this->app['cache']->write($cache_key, $response, $cache_time);
+		}
 
-  protected static function rewriteCssUrls($content, $source_dir, $base_path){
+		return $response;
+	}
 
-    preg_match_all('/url\((.*)\)/',$content,$matches);
+	/**
+	 * Rewrite
+	 *
+	 * @param	string $content		content of css file
+	 * @param	string $source_dir	dir of css file
+	 * @param	int $base_path		app base path
+	 * @return	string
+	 */
+	protected static function rewriteCssUrls($content, $source_dir, $base_path){
+		
+		$base_path = rtrim($base_path, '/');
+		
+		preg_match_all('/url\((.*)\)/',$content,$matches);
 
-    $root_dir = dirname($_SERVER['SCRIPT_FILENAME']);
-    $csspath  = "";
+		$root_dir = dirname($_SERVER['SCRIPT_FILENAME']);
+		$csspath  = "";
 
-    if (strlen($root_dir) < strlen($source_dir)) {
-      $csspath = trim(str_replace($root_dir, '', $source_dir), "/")."/";
-    } else {
-      # todo
-    }
+		if (strlen($root_dir) < strlen($source_dir)) {
+		  $csspath = trim(str_replace($root_dir, '', $source_dir), "/")."/";
+		} else {
+		  # todo
+		}
 
-    foreach($matches[1] as $imgpath){
-      if(!preg_match("#^(http|/|data\:)#",trim($imgpath))){
-        $content = str_replace('url('.$imgpath.')','url('.$base_path.'/'.$csspath.str_replace('"','',$imgpath).')',$content);
-      }
-    }
+		foreach($matches[1] as $imgpath){
+		  if(!preg_match("#^(http|/|data\:)#",trim($imgpath))){
+			$content = str_replace('url('.$imgpath.')','url('.$base_path.'/'.$csspath.str_replace('"','',$imgpath).')',$content);
+		  }
+		}
 
-    return $content;
-  }
+		return $content;
+	}
 
 }
 

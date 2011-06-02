@@ -24,7 +24,6 @@ $app["con:default"] = $app->share(function() {  // default
 });
 */
 
-
 /* Assets */
 
 $app["assets"]->addReference("jquery", array(

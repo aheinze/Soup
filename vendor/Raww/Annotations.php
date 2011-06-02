@@ -2,13 +2,18 @@
 
 namespace Raww;
 
-/*
-    based on https://github.com/marcelog/Ding/blob/master/src/mg/Ding/Reflection/ReflectionFactory.php
-*/
+/**
+ * Annotations class.
+ * based on https://github.com/marcelog/Ding/blob/master/src/mg/Ding/Reflection/ReflectionFactory.php
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Annotations {
     
     protected static $_cache = array();
-
 
     public static function getClass($class) {
         

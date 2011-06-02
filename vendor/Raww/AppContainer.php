@@ -2,11 +2,29 @@
 
 namespace Raww;
 
+/**
+ * AppContainer class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class AppContainer implements \ArrayAccess{
     
+	/**
+	 * @var $app	Raww App instance
+	 */
     public $app;
-    protected $_container = array();
+    
+	protected $_container = array();
 	
+	/**
+	 * Class Constructor.
+	 *
+	 * @param	object $app	Raww App instance
+	 * @return	void
+	 */
 	public function __construct($app){
 	
 		$this->_container = array();

@@ -2,7 +2,14 @@
 
 namespace Raww;
 
-
+/**
+ * Registry class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Registry extends AppContainer {
     
     protected $_storage = array();

@@ -2,6 +2,14 @@
 
 namespace Raww;
 
+/**
+ * Cookie class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Cookie {
 
 	public static $expiration = 0;
@@ -11,7 +19,7 @@ class Cookie {
 	public static $httponly = false;
 
 	public static function get($name, $default = null) {
-		return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $default;
+		return Request::cookie($name, $default);
 	}
 
 	public static function set($name, $value, $expiration = null, $path = null, $domain = null) {
@@ -31,8 +39,8 @@ class Cookie {
 	public static function delete($name) {
 
 		unset($_COOKIE[$name]);
+		unset(Request::$_COOKIE[$name]);
 
 		return static::set($name, null, -86400);
 	}
-  
 }

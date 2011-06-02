@@ -2,12 +2,20 @@
 
 namespace Raww;
 
-
+/**
+ * Controller class. Handle requests
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Controller extends AppContainer {
     
+    public $invoked_action = null;
+	
     public $name       = null;
     public $request    = null;
-    public $invoked_action = null;
     public $params     = array();
     
     /**

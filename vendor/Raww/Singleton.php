@@ -3,6 +3,11 @@ namespace Raww;
 
 /**
  * Singleton implementation.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
  */
 abstract class Singleton {
     /**
@@ -28,5 +33,4 @@ abstract class Singleton {
      * Disallow cloning of a singleton
      */
     final private function __clone() {}
-
 }

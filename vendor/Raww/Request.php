@@ -2,40 +2,49 @@
 
 namespace Raww;
 
-// init global vars
-
-if(Request::is("put")) {
-	parse_str(file_get_contents('php://input'), Request::$_PUT);
-}
-
-if(Request::is("delete")) {
-	parse_str(file_get_contents('php://input'), Request::$_DELETE);
-}
-
-if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-
-	Request::$_POST    = array_map('\Raww\stripslashes_deep', $_POST);
-	Request::$_GET     = array_map('\Raww\stripslashes_deep', $_GET);
-	Request::$_COOKIE  = array_map('\Raww\stripslashes_deep', $_COOKIE);
-	Request::$_REQUEST = array_map('\Raww\stripslashes_deep', $_REQUEST);
-
-}else{
-	Request::$_POST    = $_POST;
-	Request::$_GET     = $_GET;
-	Request::$_COOKIE  = $_COOKIE ;
-	Request::$_REQUEST = $_REQUEST;
-}
-
+/**
+ * Request class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Request {
-    
+ 
+	/**
+	 * @var $_POST	$_POST array
+	 */
 	public static $_POST = array();
+	
+	/**
+	 * @var $_GET	$_GET array
+	 */
 	public static $_GET = array();
+	
+	/**
+	 * @var $_COOKIE	$_COOKIE array
+	 */
 	public static $_COOKIE = array();
+	
+	/**
+	 * @var $_REQUEST	$_REQUEST array
+	 */
 	public static $_REQUEST = array();
+	
+	/**
+	 * @var $_PUT	$_PUT array
+	 */
 	public static $_PUT = array();
+	
+	/**
+	 * @var $_DELETE	$_DELETE array
+	 */
 	public static $_DELETE = array();
 	
-    /* mimeTypes */
+	/**
+	 * @var $mimeTypes	mimeTypes array
+	 */
     public static $mimeTypes = array(
         'asc'   => 'text/plain',
         'au'    => 'audio/basic',
@@ -101,14 +110,21 @@ class Request {
         'xml'   => 'text/xml'
     );
 
-    /* mobileDevices */
+	/**
+	 * @var $mobileDevices	mobileDevices array
+	 */
     public static $mobileDevices = array(
         "midp","240x320","blackberry","netfront","nokia","panasonic","portalmmm","sharp","sie-","sonyericsson",
         "symbian","windows ce","benq","mda","mot-","opera mini","philips","pocket pc","sagem","samsung",
         "sda","sgh-","vodafone","xda","iphone", "ipod","android"
     );
 
-
+	/**
+	 * Check request properties
+	 *
+	 * @param	string $type	Name of the property (ajax|mobile|post|get|put|delete|ssl)
+	 * @return	boolean
+	 */
     public static function is($type){
 
         switch(strtolower($type)){
@@ -144,6 +160,11 @@ class Request {
         return false;
     }
 
+	/**
+	 * Get client ip
+	 *
+	 * @return	string
+	 */
     public static function getClientIp(){
 
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
@@ -161,18 +182,39 @@ class Request {
         }
     }
 	
+	/**
+	 * Get user agent
+	 *
+	 * @return	string
+	 */
 	public static function getUserAgent() {
 		return isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 	}
 	
+	/**
+	 * Get protocol (http|https)
+	 *
+	 * @return	string
+	 */
 	public static function protocol() {
 		return self::is("ssl") ? 'https' : 'http';
 	}
 	
+	/**
+	 * Get client user language (e.g. en or de)
+	 *
+	 * @return	string
+	 */
 	public static function getClientLang() {
 		return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 	}
 
+	/**
+	 * Get mimetype by extension
+	 *
+	 * @param	string $val	Extension (e.g. js, css etc)
+	 * @return	string
+	 */
     public static function getMimeType($val) {
         
         $parts = explode('.', $val);
@@ -180,30 +222,134 @@ class Request {
 
         return (isset(self::$mimeTypes[$extension]) ? self::$mimeTypes[$extension]:'text/html');
     }
-	
+
+	/**
+	 * Get value of $_GET array 
+	 *
+	 * @param	string $index	Index
+	 * @param	mixed $default	default value if index not exists
+	 * @return	mixed
+	 */
 	public static function get($index=null, $default = null) {
 		
 		if(!$index) return self::$_GET;
 		
 		return isset(self::$_GET[$index]) ? self::$_GET[$index] : $default;
 	}
+	
+	/**
+	 * Get value of $_POST array 
+	 *
+	 * @param	string $index	Index
+	 * @param	mixed $default	default value if index not exists
+	 * @return	mixed
+	 */
 	public static function post($index=null, $default = null) {
 		
 		if(!$index) return self::$_POST;
 		
 		return isset(self::$_POST[$index]) ? self::$_POST[$index] : $default;
 	}
+	
+	/**
+	 * Get value of $_PUT array 
+	 *
+	 * @param	string $index	Index
+	 * @param	mixed $default	default value if index not exists
+	 * @return	mixed
+	 */
 	public static function put($index=null, $default = null) {
 		
 		if(!$index) return self::$_PUT;
 		
 		return isset(self::$_PUT[$index]) ? self::$_PUT[$index] : $default;
 	}
+	
+	/**
+	 * Get value of $_DELETE array 
+	 *
+	 * @param	string $index	Index
+	 * @param	mixed $default	default value if index not exists
+	 * @return	mixed
+	 */
 	public static function delete($index=null, $default = null) {
 		
 		if(!$index) return self::$_DELETE;
 		
 		return isset(self::$_DELETE[$index]) ? self::$_DELETE[$index] : $default;
 	}
+	
+	/**
+	 * Get value of $_REQUEST array 
+	 *
+	 * @param	string $index	Index
+	 * @param	mixed $default	default value if index not exists
+	 * @return	mixed
+	 */
+	public static function request($index=null, $default = null) {
+		
+		if(!$index) return self::$_REQUEST;
+		
+		return isset(self::$_REQUEST[$index]) ? self::$_REQUEST[$index] : $default;
+	}
+	
+	/**
+	 * Get value of $_COOKIE array 
+	 *
+	 * @param	string $index	Index
+	 * @param	mixed $default	default value if index not exists
+	 * @return	mixed
+	 */
+	public static function cookie($index=null, $default = null) {
+		
+		if(!$index) return self::$_COOKIE;
+		
+		return isset(self::$_COOKIE[$index]) ? self::$_COOKIE[$index] : $default;
+	}
 }
 
+// init global vars
+
+if(Request::is("put")) {
+	parse_str(file_get_contents('php://input'), Request::$_PUT);
+}
+
+if(Request::is("delete")) {
+	parse_str(file_get_contents('php://input'), Request::$_DELETE);
+}
+
+if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+
+	Request::$_POST    = array_map('\Raww\stripslashes_deep', $_POST);
+	Request::$_GET     = array_map('\Raww\stripslashes_deep', $_GET);
+	Request::$_COOKIE  = array_map('\Raww\stripslashes_deep', $_COOKIE);
+	Request::$_REQUEST = array_map('\Raww\stripslashes_deep', $_REQUEST);
+
+}else{
+	Request::$_POST    = $_POST;
+	Request::$_GET     = $_GET;
+	Request::$_COOKIE  = $_COOKIE ;
+	Request::$_REQUEST = $_REQUEST;
+}// init global vars
+
+if(Request::is("put")) {
+	parse_str(file_get_contents('php://input'), Request::$_PUT);
+}
+
+if(Request::is("delete")) {
+	parse_str(file_get_contents('php://input'), Request::$_DELETE);
+}
+
+if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+
+	Request::$_POST    = array_map('\Raww\stripslashes_deep', $_POST);
+	Request::$_GET     = array_map('\Raww\stripslashes_deep', $_GET);
+	Request::$_COOKIE  = array_map('\Raww\stripslashes_deep', $_COOKIE);
+	Request::$_REQUEST = array_map('\Raww\stripslashes_deep', $_REQUEST);
+
+}else{
+	Request::$_POST    = $_POST;
+	Request::$_GET     = $_GET;
+	Request::$_COOKIE  = $_COOKIE ;
+	Request::$_REQUEST = $_REQUEST;
+}

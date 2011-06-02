@@ -2,7 +2,14 @@
 
 namespace Raww;
 
-
+/**
+ * Router class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Router extends AppContainer {
     
     public $base_url = "/";

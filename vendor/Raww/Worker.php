@@ -2,6 +2,14 @@
 
 namespace Worker;
 
+/**
+ * Worker class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Worker {
     
     public $description;

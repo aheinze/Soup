@@ -15,13 +15,25 @@ spl_autoload_register(function($resource){
 	}
 });
 
-
+/**
+ * App class. Base class for a Raww app.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class App extends DI{
 	
 	protected $name;
-	
 	protected static $_apps = array();
 	
+	/**
+	 * Creates a new Raww app instance
+	 *
+	 * @param	string $name	Name of the app
+	 * @return	void
+	 */
 	public function __construct($name){
 		
 		parent::__construct();
@@ -29,14 +41,32 @@ class App extends DI{
 		$this->name = $name;
 	}
 
+	/**
+	 * Returns the app name
+	 *
+	 * @return	string
+	 */
 	public function name() {
 		return $this->name;
 	}
 	
+	/**
+	 * Creates a new Raww app instance
+	 *
+	 * @param	string $name	Name of an app
+	 * @return	\Raww\App instance
+	 */
 	public static function app($name) {
 		return self::$_apps[$name];
 	}
 	
+	/**
+	 * Initialize a new Raww app instance
+	 *
+	 * @param	string $appname	Name of an app
+	 * @param	string $config	App configuration
+	 * @return	\Raww\App instance
+	 */
 	public static function init($appname, $config) {
 	
 		Bench::start("rawwbench");
@@ -128,6 +158,12 @@ class App extends DI{
 		return self::$_apps[$appname];
 	}
 	
+	/**
+	 * Initialize a new Raww app instance
+	 *
+	 * @param	string $route	Route
+	 * @return	void
+	 */
 	public function handle($route) {
 		
 		$this["route"] = $route;

@@ -2,7 +2,14 @@
 
 namespace Raww;
 
-
+/**
+ * Event class.
+ *
+ * @package    Raww
+ * @author     Artur Heinze
+ * @copyright  (c) since 2011 d-xp.com
+ * @license    http://rawwphp.info/license
+ */
 class Event {
   
   protected $events = array();
