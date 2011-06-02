@@ -3,7 +3,9 @@
 	require_once(__DIR__."/vendor/Raww/App.php");
     
     Raww\App::init("rawwapp", array(       
-	
+		
+		//"base_route_path" => $_SERVER['SCRIPT_NAME'], // uncomment if mod_rewrite is disabled
+		
 		"paths"    => array(
             "root"    => __DIR__,
             "app"     => __DIR__.'/app',
@@ -17,4 +19,4 @@
             "modules" => __DIR__.'/app/modules',
         )
 		
-    ))->handle( $_SERVER['PATH_INFO'] ?: "/" );
+    ))->handle( isset($_SERVER['PATH_INFO']) ?: "/" );
