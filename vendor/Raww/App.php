@@ -76,7 +76,7 @@ class App extends DI{
 		}
 		
 		if(!isset($config['base_route_path'])) {
-			$config['base_route_path'] = $app["base_url_path"];
+			$config['base_route_path'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
 		}
 		
 		$app["base_url_path"]   = rtrim($config["base_url_path"], '/');

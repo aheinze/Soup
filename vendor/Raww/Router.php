@@ -133,7 +133,7 @@ class Router extends AppContainer {
     }
     
 
-    public function baseurl($path) {
+    public function base_url($path) {
 		
 		$path = '/'.ltrim($path, '/');
 		
