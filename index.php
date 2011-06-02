@@ -19,4 +19,4 @@
             "modules" => __DIR__.'/app/modules',
         )
 		
-    ))->handle( isset($_SERVER['PATH_INFO']) ?: "/" );
+    ))->handle( isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : "/" );

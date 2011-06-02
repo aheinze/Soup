@@ -71,13 +71,17 @@ class App extends DI{
 
 		$app = new App($appname);
 		
-		$app["base_url_path"]   = rtrim(implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1)), '/');
+		if(!isset($config['base_url_path'])) {
+			$config['base_url_path'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
+		}
 		
 		if(!isset($config['base_route_path'])) {
 			$config['base_route_path'] = $app["base_url_path"];
 		}
 		
-		$app["base_route_path"] = $config["base_route_path"];
+		$app["base_url_path"]   = rtrim($config["base_url_path"], '/');
+		$app["base_route_path"] = rtrim($config["base_route_path"], '/');
+		
 		$app["path"]     = new Path($app);
 		$app["bench"]    = $app->share(function($app){ return new Bench(); });
 		$app["session"]  = $app->share(function($app){ return new Session\Php($app); });
