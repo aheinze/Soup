@@ -68,14 +68,14 @@ class App extends DI{
 	 * @return	\Raww\App instance
 	 */
 	public static function init($appname, $config) {
+
+		$app = new App($appname);
 		
 		$app["base_url_path"]   = rtrim(implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1)), '/');
 		
 		if(!isset($config['base_route_path'])) {
 			$config['base_route_path'] = $app["base_url_path"];
 		}
-		
-		$app = new App($appname);
 		
 		$app["base_route_path"] = $config["base_route_path"];
 		$app["path"]     = new Path($app);
