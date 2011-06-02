@@ -84,15 +84,27 @@ class Assets extends \Raww\AppContainer {
 		  if($asset['minify']){
 			$content = call_user_func(self::$filters["minify_js"], $content);
 		  }
+		  
           break;
 
         case 'css':
           
-          $content = self::rewriteCssUrls(file_get_contents($file), dirname($file), $this->app['base_url']);
+		  $asset = array_merge(array(
+			"process" => false
+		  ), $asset);
+		  
+		  $content = file_get_contents($file);
+		  
+		  if($asset['process']){
+			$content = call_user_func(self::$filters["process_css"], $content);
+		  }
+		  
+          $content = self::rewriteCssUrls($content, dirname($file), $this->app['base_url']);
 		  
 		  if($asset['minify']){
 			$content = call_user_func(self::$filters["minify_css"], $content);
 		  }
+		  
           break;
         
         default:
@@ -140,6 +152,100 @@ class Assets extends \Raww\AppContainer {
 }
 
 // Filters
+
+Assets::$filters["process_css"] = function($str) {
+	
+	/*
+		@constants {
+			constantName: constantValue;
+		}
+		.selector {
+			propertyName: const(constantName);
+		}
+	*/
+	if (preg_match_all('#@constants\s*\{\s*([^\}]+)\s*\}\s*#i', $str, $matches)) {
+		
+		$constants = array();
+		
+		foreach ($matches[0] as $i => $constant) {
+			$str = str_replace($constant, '', $str);
+			preg_match_all('#([_a-z0-9]+)\s*:\s*([^;]+);#i', $matches[1][$i], $vars);
+			foreach ($vars[1] as $var => $name) {
+				$constants["const($name)"] = $vars[2][$var];
+			}
+		}
+		
+		if (count($constants)) {
+			$str = str_replace(array_keys($constants), array_values($constants), $str);
+		}
+	}
+	
+	
+	/*
+		@base(baseName) {
+			propertyName: propertyValue;
+			propertyName: propertyValue;
+			propertyName: propertyValue;
+		}
+	
+		.selector {
+			based-on: base(baseName);
+		}
+	*/
+	
+	if (preg_match_all('#@base\(([^\s\{]+)\)\s*\{(\s*[^\}]+)\s*\}\s*#i', $str, $matches)) {
+		
+		$bases = array();
+		
+		$replace_bases = function($bases, $css, $current_base_name = false){
+			// As long as there's based-on properties in the CSS string
+			// Get all instances
+			while (preg_match_all('#\s*based-on:\s*base\(([^;]+)\);#i', $css, $matches)) {
+				// Loop through based-on instances
+				foreach ($matches[0] as $key => $based_on) {
+					$styles = '';
+					$base_names = array();
+					// Determine bases
+					$base_names = preg_split('/[\s,]+/', $matches[1][$key]);
+					// Loop through bases
+					foreach ($base_names as $base_name) {
+						// Looks like a circular reference, skip to next base
+						if ($current_base_name && $base_name == $current_base_name) {
+							$styles .= '/* RECURSION */';
+							continue;
+						}
+						$styles .= $bases[$base_name];
+					}
+
+					// Insert styles this is based on
+					$css = str_replace($based_on, $styles, $css);
+				}
+			}
+			return $css;
+		};
+		
+		// For each declaration
+		foreach ($matches[0] as $key => $base) {
+			// Remove the @base declaration
+			$str = str_replace($base, '', $str);
+
+			// Add declaration to our array indexed by base name
+			$bases[$matches[1][$key]] = $matches[2][$key];
+		}
+
+		// Parse nested based-on properties, stopping at circular references
+		foreach ($bases as $base_name => $properties) {
+			$bases[$base_name] = $replace_bases($bases, $properties, $base_name);
+		}
+		
+		if(count($bases)) {
+			// Now apply replaced based-on properties in our CSS
+			$str = $replace_bases($bases, $str);
+		}
+	}
+	
+	return $str;
+};
 
 Assets::$filters["minify_css"] = function($str) {
 		
