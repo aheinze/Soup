@@ -12,7 +12,7 @@ namespace Raww;
  */
 class Bench {
  
-	private static $m = array();
+	protected $m = array();
 
 	/**
 	 * Starts benchmark
@@ -20,8 +20,8 @@ class Bench {
 	 * @param	string $name	benchmark group name
 	 * @return	void
 	 */
-	public static function start($name){
-		self::$m[$name] = array(
+	public function start($name){
+		$this->m[$name] = array(
 			'start'        => microtime(true),
 			'stop'         => false,
             'duration'     => null,
@@ -36,14 +36,14 @@ class Bench {
 	 * @param	string $name	benchmark group name
 	 * @return	mixed
 	 */
-	public static function stop($name){
-		if(isset(self::$m[$name]) && self::$m[$name]['stop'] === false){
-			self::$m[$name]['stop'] = microtime(true);
-			self::$m[$name]['memory_stop'] = memory_get_usage();
-			self::$m[$name]['memory_usage'] = self::formatSize(self::$m[$name]['memory_stop'] - self::$m[$name]['memory_start']);
-            self::$m[$name]['duration'] = self::formatTime(self::$m[$name]['stop'] - self::$m[$name]['start']);
+	public function stop($name){
+		if(isset($this->m[$name]) && $this->m[$name]['stop'] === false){
+			$this->m[$name]['stop'] = microtime(true);
+			$this->m[$name]['memory_stop'] = memory_get_usage();
+			$this->m[$name]['memory_usage'] = $this->formatSize($this->m[$name]['memory_stop'] - $this->m[$name]['memory_start']);
+            $this->m[$name]['duration'] = $this->formatTime($this->m[$name]['stop'] - $this->m[$name]['start']);
       
-            return self::$m[$name];
+            return $this->m[$name];
 		}
 	}
 
@@ -53,28 +53,28 @@ class Bench {
 	 * @param	string $name	benchmark group name
 	 * @return	mixed
 	 */ 
-	public static function get($name=false){
+	public function get($name=false){
 		if ($name === false){
-			return self::$m;
+			return $this->m;
 		}
 
-		if(!isset(self::$m[$name])){
+		if(!isset($this->m[$name])){
 			return false;
     }
 
-		if(self::$m[$name]['stop'] === false){
-			self::stop($name);
+		if($this->m[$name]['stop'] === false){
+			$this->stop($name);
 		}
 
-		return self::$m[$name];
+		return $this->m[$name];
 	}
     
-    protected static function formatSize($size) {
+    protected function formatSize($size) {
       $sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
       return ($size == 0) ? "n/a" : (round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . $sizes[$i]); 
     }
 	
-	protected static function formatTime($time) {
+	protected function formatTime($time) {
 		$ret = $time;
 		$formatter = 0;
 		$formats = array('ms', 's', 'm');

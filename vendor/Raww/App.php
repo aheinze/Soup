@@ -68,8 +68,6 @@ class App extends DI{
 	 * @return	\Raww\App instance
 	 */
 	public static function init($appname, $config) {
-	
-		Bench::start("rawwbench");
 		
 		if(!isset($config['base_url'])) {
 			$config['base_url'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
@@ -80,7 +78,7 @@ class App extends DI{
 		$app["base_url"] = $config["base_url"];
 		$app["path"]     = new Path($app);
 		
-		
+		$app["bench"]    = $app->share(function($app){ return new Bench(); });
 		$app["session"]  = $app->share(function($app){ return new Session\Php($app); });
 		$app["registry"] = $app->share(function($app){ return new Registry($app); });
 		$app["router"]   = $app->share(function($app){ return new Router($app); });
@@ -188,8 +186,6 @@ class App extends DI{
 			
 			$response->flush();
 		}
-		
-		Bench::stop("rawwbench");
 	}
 }
 

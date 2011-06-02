@@ -18,5 +18,3 @@
         )
 		
     ))->handle( $_SERVER['PATH_INFO'] ?: "/" );
-    
-    // var_dump(\Raww\Bench::get("rawwbench"));
