@@ -4,7 +4,7 @@
     
     Raww\App::init("rawwapp", array(       
 		
-		//"base_route_path" => $_SERVER['SCRIPT_NAME'], // uncomment if mod_rewrite is disabled
+		// "base_route_path" => $_SERVER['SCRIPT_NAME'], // enable if mod_rewrite is disabled
 		
 		"paths"    => array(
             "root"    => __DIR__,
