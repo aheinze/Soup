@@ -12,9 +12,15 @@ namespace Raww;
  */
 class Path extends AppContainer {
 
-    public $base_url  = '/';
     protected $_paths = array();
 
+	/**
+	 * Register a path for a context
+	 *
+	 * @param	string $context	Alias for the folder
+	 * @param	string $folder	Path to folder
+	 * @return	void
+	 */
     public function register($context, $folder){
         if(!isset($this->_paths[$context])) {
             $this->_paths[$context] = array();
@@ -22,6 +28,12 @@ class Path extends AppContainer {
         array_unshift($this->_paths[$context], rtrim(str_replace(DIRECTORY_SEPARATOR,'/',$folder), '/').'/');
     }
 
+	/**
+	 * Returns resolved path
+	 *
+	 * @param	string $file	
+	 * @return	void
+	 */
     public function get($file){
         $parts = explode(':', $file, 2);
 

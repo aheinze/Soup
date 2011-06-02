@@ -69,6 +69,13 @@ class Response {
     
     protected $_headers = array();
     
+	/**
+	 * Class constructor
+	 *
+	 * @param	string $body	
+	 * @param	string $options	
+	 * @return	void
+	 */
     public function __construct($body=null, $options = array()){
         
         $options = array_merge(array("body" => $body), $options);
@@ -76,6 +83,12 @@ class Response {
 		$this->assign($options);
     }
 	
+	/**
+	 * Assign response options
+	 *	
+	 * @param	string $options	
+	 * @return	object
+	 */
 	public function assign($options = array()){
         if(count($options)){
             foreach($options as $name => $value) {
@@ -86,6 +99,11 @@ class Response {
 		return $this;
 	}
     
+	/**
+	 * Prints response body
+	 *
+	 * @return	void
+	 */
     public function flush() {
         
         if($this->gzip && !ob_start("ob_gzhandler")) ob_start();
