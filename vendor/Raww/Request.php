@@ -286,7 +286,7 @@ class Request {
 	 * @param	mixed $default	default value if index not exists
 	 * @return	mixed
 	 */
-	public static function request($index=null, $default = null) {
+	public static function requestvar($index=null, $default = null) {
 		
 		if(!$index) return self::$_REQUEST;
 		
