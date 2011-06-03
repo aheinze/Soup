@@ -91,4 +91,28 @@ class Template extends AppContainer {
 		
 		return $url;
 	}
+	
+	/**
+	 * Url helper function to build links within a template
+	 *
+	 * @param	string $name	
+	 * @param	string $path	
+	 * @param	array $options	
+	 * @param	boolean $echo	
+	 * @return	string
+	 */
+	protected function link($name, $path, $options=array(), $echo=true) {
+		
+		$attributes = array();
+		
+		foreach($options as $key=>$value) {
+			$attributes = "{$key}=\"{$value}\"";
+		}
+		
+		$link = '<a href="'.$this->url($path, false).'" '.implode(' ', $attributes).'>'.$name.'</a>';
+		
+		if($echo) echo $link;
+		
+		return $link;
+	}
 }
