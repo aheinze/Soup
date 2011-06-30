@@ -211,6 +211,51 @@ function stripslashes_deep($value) {
 	return $value;
 }
 
+function fetch_from_array(&$array, $index=null, $default = null) {
+	
+	if (is_null($index)) {
+		
+		return $array;
+		
+	} elseif(isset($array[$index])) {
+		
+		return $array[$index];
+		
+	} elseif(strpos($index, '/')){
+			
+		$keys = explode('/', $index);
+		
+		switch(count($keys)){
+		  
+		  case 1:
+			if(isset($array[$keys[0]])){
+			  return $array[$keys[0]];
+			}
+			break;
+		  
+		  case 2:
+			if(isset($array[$keys[0]][$keys[1]])){  
+			  return $array[$keys[0]][$keys[1]];
+			}
+			break;
+		  
+		  case 3:
+			if(isset($array[$keys[0]][$keys[1]][$keys[2]])){
+			  return $array[$keys[0]][$keys[1]][$keys[2]];
+			}
+			break;
+			
+		  case 4:
+			if(isset($array[$keys[0]][$keys[1]][$keys[2]][$keys[3]])){
+			  return $array[$keys[0]][$keys[1]][$keys[2]][$keys[3]];
+			}
+			break;
+		}
+	}
+
+	return $default;
+}
+
 function debug() {
 	
 	$vars   = func_get_args();           

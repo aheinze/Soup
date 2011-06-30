@@ -232,9 +232,7 @@ class Request {
 	 */
 	public static function get($index=null, $default = null) {
 		
-		if(!$index) return self::$_GET;
-		
-		return isset(self::$_GET[$index]) ? self::$_GET[$index] : $default;
+		return fetch_from_array(self::$_GET, $index, $default);
 	}
 	
 	/**
@@ -246,9 +244,7 @@ class Request {
 	 */
 	public static function post($index=null, $default = null) {
 		
-		if(!$index) return self::$_POST;
-		
-		return isset(self::$_POST[$index]) ? self::$_POST[$index] : $default;
+		return fetch_from_array(self::$_POST, $index, $default);
 	}
 	
 	/**
@@ -260,9 +256,7 @@ class Request {
 	 */
 	public static function put($index=null, $default = null) {
 		
-		if(!$index) return self::$_PUT;
-		
-		return isset(self::$_PUT[$index]) ? self::$_PUT[$index] : $default;
+		return fetch_from_array(self::$_PUT, $index, $default);
 	}
 	
 	/**
@@ -274,9 +268,7 @@ class Request {
 	 */
 	public static function delete($index=null, $default = null) {
 		
-		if(!$index) return self::$_DELETE;
-		
-		return isset(self::$_DELETE[$index]) ? self::$_DELETE[$index] : $default;
+		return fetch_from_array(self::$_DELETE, $index, $default);
 	}
 	
 	/**
@@ -288,9 +280,7 @@ class Request {
 	 */
 	public static function requestvar($index=null, $default = null) {
 		
-		if(!$index) return self::$_REQUEST;
-		
-		return isset(self::$_REQUEST[$index]) ? self::$_REQUEST[$index] : $default;
+		return fetch_from_array(self::$_REQUEST, $index, $default);
 	}
 	
 	/**
@@ -302,9 +292,7 @@ class Request {
 	 */
 	public static function cookie($index=null, $default = null) {
 		
-		if(!$index) return self::$_COOKIE;
-		
-		return isset(self::$_COOKIE[$index]) ? self::$_COOKIE[$index] : $default;
+		return fetch_from_array(self::$_COOKIE, $index, $default);
 	}
 }
 

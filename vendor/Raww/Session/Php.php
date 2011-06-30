@@ -33,7 +33,7 @@ class Php extends \Raww\AppContainer {
   */ 
 	public function read($key, $default=null){
 
-		return isset($_SESSION[$key]) ? $_SESSION[$key]:$default;
+		return \Raww\fetch_from_array($_SESSION, $key, $default);
 	}
   /**
   * ...
@@ -71,10 +71,12 @@ class Php extends \Raww\AppContainer {
     }
     public function offsetGet($offset) {
         
-		if (!isset($_SESSION[$offset])) {
+		$value = \Raww\fetch_from_array($_SESSION, $offset, '_offset_not_set_');
+		
+		if ($value == '_offset_not_set_') {
 			throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
         }
 		
-		return $_SESSION[$offset];
+		return $value;
     }
 }
