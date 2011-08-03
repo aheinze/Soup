@@ -106,7 +106,7 @@ class Template extends AppContainer {
 		$attributes = array();
 		
 		foreach($options as $key=>$value) {
-			$attributes = "{$key}=\"{$value}\"";
+			$attributes[] = "{$key}=\"{$value}\"";
 		}
 		
 		$link = '<a href="'.$this->url($path, false).'" '.implode(' ', $attributes).'>'.$name.'</a>';

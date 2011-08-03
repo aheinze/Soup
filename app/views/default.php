@@ -26,7 +26,7 @@
 						<div class="h2">more fun!</div>
 					</div>
 					<div id="ribbonbar">
-						&mdash; because we &hearts; it simple. &mdash;
+						&mdash; because we &hearts; it simple &mdash;
 						<span class="left"></span>
 						<span class="right"></span>
 					</div>
