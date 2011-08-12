@@ -94,7 +94,7 @@ class Pdo {
                 'conditions' => $conditions
         ));
      
-     return isset($count[0]['C']) ? $count[0]['C']:0;
+        return isset($count[0]['C']) ? $count[0]['C']:0;
     }
     
     public function sum($table, $field, $conditions = array()) {
@@ -105,7 +105,7 @@ class Pdo {
                 'conditions' => $conditions
         ));
      
-		return isset($sum[0]['S']) ? $sum[0]['S']:0;
+        return isset($sum[0]['S']) ? $sum[0]['S']:0;
     }
     
     public function max($table, $field, $conditions = array()) {
@@ -116,15 +116,26 @@ class Pdo {
                 'conditions' => $conditions
         ));
      
-		return isset($sum[0]['m']) ? $sum[0]['m']:0;
+		    return isset($sum[0]['m']) ? $sum[0]['m']:0;
+    }
+
+    public function field($table, $field, $conditions = array()) {
+        
+        $r = $this->read(array(
+                'fields' => $field,
+                'table'  => $table,
+                'conditions' => $conditions
+        ));
+     
+        return isset($r[$table][$field]) ? $r[$table][$field]:null;
     }
     
     public function read($options = array()) {
         
-     $options['limit'] = 1;
-     $result =  $this->find($options);
-     
-     return count($result) ? $result[0]:false;
+        $options['limit'] = 1;
+        $result =  $this->find($options);
+
+        return count($result) ? $result[0]:false;
     }
     
     public function find($options){  
