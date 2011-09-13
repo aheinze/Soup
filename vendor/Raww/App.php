@@ -59,6 +59,16 @@ class App extends DI{
 	public static function app($name) {
 		return self::$_apps[$name];
 	}
+
+	/**
+	 * Get object from classes extending the AppContainer
+	 *
+	 * @param	string $class	Classname
+	 * @return	Object
+	 */
+	public function pickashost($class) {
+		return new $class($this);
+	}
 	
 	/**
 	 * Initialize a new Raww app instance
