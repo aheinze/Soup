@@ -127,7 +127,7 @@ class App extends DI{
 		});
 		
 		register_shutdown_function(function() use($app) {
-			
+
 			$error = error_get_last();
 			
 			if ($error && in_array($error['type'], array(E_ERROR,E_CORE_ERROR,E_COMPILE_ERROR,E_USER_ERROR))){
@@ -165,6 +165,8 @@ class App extends DI{
 		if($app_bootstrap = $app["path"]->get("config:bootstrap.php")){
 			require($app_bootstrap);
 		}
+
+		error_reporting($app['registry']->get("debug", false) ? E_ALL : 0);
 		
 		self::$_apps[$appname] = $app;
 		
@@ -180,8 +182,6 @@ class App extends DI{
 	public function handle($route) {
 		
 		$this["route"] = $route;
-
-		error_reporting($this['registry']->get("debug", false) ? 0 : E_ALL);
 
 		$response = $this["router"]->dispatch($route);
 		
