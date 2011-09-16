@@ -51,16 +51,16 @@ class Path extends AppContainer {
     }
 
 
-    public function require($file){
+    public function req($file){
         require($this->get($file));
     }
-    public function require_once($file){
+    public function req_once($file){
         require_once($this->get($file));
     }
-    public function include($file){
+    public function inc($file){
         include($this->get($file));
     }
-    public function include_once($file){
+    public function inc_once($file){
         include_once($this->get($file));
     }
 }
