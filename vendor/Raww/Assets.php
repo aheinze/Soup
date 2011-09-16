@@ -17,6 +17,11 @@ class Assets extends \Raww\AppContainer {
 	 */
 	public static $filters = array();
 
+	/**
+	 * @var autominify	Boolean auto minify scripts
+	 */
+	public $autominify = true;
+
 	protected $assets = array();
 	protected $references = array();
 	protected $dumped_references = array();
@@ -80,7 +85,7 @@ class Assets extends \Raww\AppContainer {
 		  }
 		  
 		  $asset = array_merge(array(
-			"minify" => true
+			"minify" => $this->autominify
 		  ), $asset);
 
 		  $file    = $asset['file'];
