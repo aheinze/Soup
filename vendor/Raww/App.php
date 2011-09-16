@@ -125,7 +125,7 @@ class App extends DI{
 				}
 			}
 		});
-		
+
 		register_shutdown_function(function() use($app) {
 
 			$error = error_get_last();
@@ -155,7 +155,7 @@ class App extends DI{
 					
 					$response->flush();
 				}
-				
+
 				return;
 			}
 
@@ -166,7 +166,7 @@ class App extends DI{
 			require($app_bootstrap);
 		}
 
-		error_reporting($app['registry']->get("debug", false) ? E_ALL : 0);
+		//error_reporting($app['registry']->get("debug", false) ? E_ALL : 0);
 		
 		self::$_apps[$appname] = $app;
 		

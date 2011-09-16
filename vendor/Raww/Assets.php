@@ -17,11 +17,6 @@ class Assets extends \Raww\AppContainer {
 	 */
 	public static $filters = array();
 
-	/**
-	 * @var autominify	Boolean auto minify scripts
-	 */
-	public $autominify = true;
-
 	protected $assets = array();
 	protected $references = array();
 	protected $dumped_references = array();
@@ -83,17 +78,20 @@ class Assets extends \Raww\AppContainer {
 		   $asset = $this->references[$ref_name];
 
 		  }
-		  
+
 		  $asset = array_merge(array(
-			"minify" => $this->autominify
+			"filters"   => array('base64encode'),
+			"ext"		=> strtolower(array_pop(explode(".", $asset['file']))),
+			"base_path" => $_SERVER['SCRIPT_FILENAME'], 
+			"base_url"	=> $this->app["base_url_path"]
 		  ), $asset);
 
 		  $file    = $asset['file'];
-		  $ext     = strtolower(array_pop(explode(".", $file)));
+		  $ext     = $asset['ext'];
 		  $content = '';
 
 		  if (strpos($file, ':') !== false && $____file = $this->app['path']->get($file)) {
-			 $file = $____file;
+			 $asset['file'] = $file = $____file;
 		  }
 
 		  if($ext!=$type) continue;
@@ -104,29 +102,25 @@ class Assets extends \Raww\AppContainer {
 			  
 			  $content = file_get_contents($file);
 			  
-			  if($asset['minify']){
-				$content = call_user_func(self::$filters["minify_js"], $content);
+			  foreach($asset['filters'] as $filter){
+				if(isset(self::$filters[$filter])){
+					$content = call_user_func(self::$filters[$filter], $content, $asset);
+				}
 			  }
 			  
 			  break;
 
 			case 'css':
 			  
-			  $asset = array_merge(array(
-				"process" => false
-			  ), $asset);
-			  
 			  $content = file_get_contents($file);
 			  
-			  if($asset['process']){
-				$content = call_user_func(self::$filters["process_css"], $content);
+			  foreach($asset['filters'] as $filter){
+				if(isset(self::$filters[$filter])){
+					$content = call_user_func(self::$filters[$filter], $content, $asset);
+				}
 			  }
 			  
-			  $content = self::rewriteCssUrls($content, dirname($file), $this->app['base_url_path']);
-			  
-			  if($asset['minify']){
-				$content = call_user_func(self::$filters["minify_css"], $content);
-			  }
+			  $content = self::rewriteCssUrls($content, $asset);
 			  
 			  break;
 			
@@ -158,13 +152,14 @@ class Assets extends \Raww\AppContainer {
 	 * @param	int $base_path		app base path
 	 * @return	string
 	 */
-	protected static function rewriteCssUrls($content, $source_dir, $base_path){
+	protected static function rewriteCssUrls($content, $asset){
 		
-		$base_path = rtrim($base_path, '/');
+		$base_path  = rtrim($asset['base_url'], '/');
+		$source_dir = dirname($asset["file"]);
+		$root_dir   = dirname($asset['base_path']);
 		
 		preg_match_all('/url\((.*)\)/',$content,$matches);
 
-		$root_dir = dirname($_SERVER['SCRIPT_FILENAME']);
 		$csspath  = "";
 
 		if (strlen($root_dir) < strlen($source_dir)) {
@@ -186,8 +181,10 @@ class Assets extends \Raww\AppContainer {
 
 // Filters
 
-Assets::$filters["process_css"] = function($str) {
+Assets::$filters["process_css"] = function($str, $asset) {
 	
+	if($asset["ext"]!="css") return $str;
+
 	/*
 		@constants {
 			constantName: constantValue;
@@ -280,8 +277,10 @@ Assets::$filters["process_css"] = function($str) {
 	return $str;
 };
 
-Assets::$filters["minify_css"] = function($str) {
+Assets::$filters["minify_css"] = function($str, $asset) {
 		
+		if($asset["ext"]!="css") return $str;
+
 		// Colons cannot be globally matched safely because of pseudo-selectors etc.
 		$innerbrace = function($match) {
 			return preg_replace('#\s*:\s*#', ':', $match[0]);
@@ -300,15 +299,17 @@ Assets::$filters["minify_css"] = function($str) {
 			'#([^\d])0(\.\d+)#'                 => '$1$2',   // Strip leading zeros on floats
 			'#(\[)\s*|\s*(\])|(\()\s*|\s*(\))#' => '${1}${2}${3}${4}',  // Clean-up bracket internal space
 			'#\s*([>~+=])\s*#'                  => '$1',     // Clean-up around combinators
-			'#\#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3#i'
-			                                    => '#$1$2$3', // Reduce Hex codes
+			'#\#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3#i' => '#$1$2$3', // Reduce Hex codes
 		);
 
 		return preg_replace(array_keys($replacements), array_values($replacements), $str);
 };
 
-Assets::$filters["minify_js"] = function($str) {
+
+Assets::$filters["minify_js"] = function($str, $asset) {
 	
+	if($asset["ext"]!="js") return $str;
+
 	try {
 		$minified = JSMin::minify($str);
 	} catch(Exception $e) {
