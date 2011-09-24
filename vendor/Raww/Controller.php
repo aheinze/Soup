@@ -63,7 +63,7 @@ class Controller extends AppContainer {
 		}
         
         if($path = $this->app["path"]->get($view)){
-            $response->body = $this->app["tpl"]->render($view, $slots);
+            $response->body = $this->app["view"]->render($view, $slots);
         } else {
             $response->body = "$view not found!";
         }
