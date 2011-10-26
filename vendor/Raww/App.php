@@ -141,14 +141,14 @@ class App extends DI{
 					if($app['registry']->get("debug", false)){						
 						
 						$response = $app['response']->assign(array(
-							"body" => $app["tpl"]->render("views:error/error.php", array("error"=>$error)),
+							"body" => $app["view"]->render("views:error/error.php", array("error"=>$error)),
 							"status" => "500"
 						));
 						
 					}else{
 					
 						$response = $app['response']->assign(array(
-							"body" => $app["tpl"]->render("views:error/404.php", array("message"=>"ooooops!")),
+							"body" => $app["view"]->render("views:error/404.php", array("message"=>"ooooops!")),
 							"status" => "500"
 						));
 					}
