@@ -27,8 +27,7 @@ $app["con:default"] = $app->share(function() {  // default
 /* Assets */
 
 $app["assets"]->addReference("jquery", array(
-	"file"   => "root:public/js/jquery.js",
-	"minify" => false
+	"file" => "root:public/js/jquery.js"
 ));
 
 $app["router"]->bind("#/assets/main\.(css|js)#", function($params) use($app) {

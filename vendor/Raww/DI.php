@@ -56,6 +56,14 @@ class DI implements \ArrayAccess{
             return $callable;
         };
 	}
+
+    public function self_share($name, $callable) {
+        $this[$name] = $this->share($callable);
+    }
+
+    public function self_protect($name, $callable) {
+        $this[$name] = $this->protect($callable);
+    }
 	
 	// ArrayAccess implementation
 	

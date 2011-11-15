@@ -93,20 +93,18 @@ class App extends DI{
 		$app["base_route_path"] = rtrim($config["base_route_path"], '/');
 		
 		$app["path"]     = new Path($app);
-		$app["bench"]    = $app->share(function($app){ return new Bench(); });
-		$app["session"]  = $app->share(function($app){ return new Session\Php($app); });
-		$app["registry"] = $app->share(function($app){ return new Registry($app); });
-		$app["router"]   = $app->share(function($app){ return new Router($app); });
-		$app["event"]    = $app->share(function($app){ return new Event($app); });
-		$app["view"]      = $app->share(function($app){ return new Template($app); });
-		$app["i18n"]     = $app->share(function($app){ return new I18n($app); });
-		$app["assets"]   = $app->share(function($app){ return new Assets($app); });
-		$app["cache"]    = $app->share(function($app){ return new Cache\File($app); });
-		$app["request"]  = $app->share(function($app){
-			return new \Raww\Request();
-		});
+		$app->self_share("bench", function($app){ return new Bench(); });
+		$app->self_share("session", function($app){ return new Session\Php($app); });
+		$app->self_share("registry", function($app){ return new Registry($app); });
+		$app->self_share("router", function($app){ return new Router($app); });
+		$app->self_share("event", function($app){ return new Event($app); });
+		$app->self_share("view", function($app){ return new Template($app); });
+		$app->self_share("i18n", function($app){ return new I18n($app); });
+		$app->self_share("assets", function($app){ return new Assets($app); });
+		$app->self_share("cache", function($app){ return new Cache\File($app); });
+		$app->self_share("request", function($app){ return new \Raww\Request();});
 		
-		$app["response"] = function($app){ return new \Raww\Response(); };
+		$app["response"] = function() use($app) { return new \Raww\Response(); };
 
 		$app["path"]->register("views", __DIR__.'/views');
 		$app["path"]->register("vendor", __DIR__.'/vendor');
@@ -193,7 +191,7 @@ class App extends DI{
 		} else {
 
 			$response = $this['response']->assign(array(
-				"body" => $this["tpl"]->render("views:error/404.php", array("message"=>$route)),
+				"body" => $this["view"]->render("views:error/404.php", array("message"=>$route)),
 				"status" => "404"
 			));
 			
