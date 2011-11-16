@@ -6,7 +6,7 @@ body {
 #logo {
 	padding: 10px 0px 10px 0px;
 	display: inline-block;
-	font-size: 36px;
+	font-size: 18px;
 	font-weight: bold;
 	color: #000;
 	text-shadow: 1px 1px #fff;
@@ -16,7 +16,6 @@ body {
 #logo > span {
 	display: block;
 	font-weight: normal;
-	font-size: 30px;
 }
 
 #topnav {
@@ -24,7 +23,7 @@ body {
 	font-size: 12px;
 	font-weight: bold;
 	float: right;
-	margin: 40px 0px 0px 0px;
+	margin: 20px 0px 0px 0px;
 }
 
 #topnav > li {

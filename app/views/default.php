@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Raww2</title>
+	<title>Raww - framework</title>
 	<link rel="stylesheet" type="text/css" href="<?php $this->url("/assets/main.css");?>" />
 	<script type="text/javascript" src="<?php $this->url("/assets/main.js");?>"></script>
 </head>
@@ -12,6 +12,7 @@
 				<h1 id="logo">
 					Raww2 <span class="soft">Less enterprise more fun</span>
 				</h1>
+				
 			</div>
 			<div class="seven columns">
 				<ul id="topnav">
