@@ -3,66 +3,28 @@ body {
 	color: #444;
 }
 
-h1, h2 { margin-bottom: 20px; }
-
-h2 {
-	font-size: 30px;
-	line-height: 40px;
-}
-
-h3 { margin-bottom: 15px; }
-
-p { margin-bottom: 20px; }
-
-.list { list-style: none; }
-.list > li { margin-bottom: 5px; }
-
-.strong {
-	color: #000;
-}
-
-.soft { color: #ccc; }
-
-.marked {
-	background-color: #eee;
-	display: inline-block;
-	padding: 0px 4px;
-	font-style: italic;
-	font-family: Georfia;
-}
-
-.wrapper {
-	position: relative;
-	width: 880px;
-	margin: 0px auto;
-}
-
 #logo {
 	padding: 10px 0px 10px 0px;
-	position: absolute;
-	top: 65px;
-	left: 0px;
 	display: inline-block;
-	font-size: 26px;
+	font-size: 36px;
 	font-weight: bold;
 	color: #000;
 	text-shadow: 1px 1px #fff;
+	margin-top: 10px;
 }
 
 #logo > span {
-	font-family: Georgia;
+	display: block;
 	font-weight: normal;
-	font-style: italic;
-	font-size: 20px;
+	font-size: 30px;
 }
 
 #topnav {
-	position: absolute;
-	right: 0px;
-	top: 70px;
 	list-style: none;
 	font-size: 12px;
 	font-weight: bold;
+	float: right;
+	margin: 40px 0px 0px 0px;
 }
 
 #topnav > li {
@@ -83,135 +45,14 @@ p { margin-bottom: 20px; }
 }
 
 #header {
-	background: #eee url(images/pinstripe.png);
-	height: 260px;
-	box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
-	-moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+	border-bottom: 1px #ccc dotted;
 }
 
-#frame {
-	background: #fff;
-	padding-bottom: 30px;
-	min-height: 400px;
-}
-
-#content > .wrapper {
-	background: #fff;
-	margin-top: -140px;
-}
 
 #output {
 	padding: 40px 20px;
 }
 
-#topbox {
-	min-height:200px;
-	box-shadow:0px 0px 10px #ccc;
-}
-
-#topbox .h1 {
-	text-align: center;
-	font-size: 40px;
-	font-weight: bold;
-	margin: 20px;
-}
-#topbox .h2 {
-	text-align:center;
-	font-size:24px;
-	font-family:Georgia;
-	font-style:italic;
-}
-
-#ribbonbar {
-	color: #fff;
-	padding: 10px;
-	width: 900px;
-	margin-left:-10px;
-	text-align: center;
-}
-
-#ribbonbar {
-    background-color:#666;
-    color:#fff;
-    text-shadow:0 1px #444;
-    position:relative;
-    -webkit-box-shadow:
-        0 1px 3px rgba(0,0,0,.3),
-        0 0 0 1px #777,
-        0 1px 0 #bbb inset;
-    -moz-box-shadow:
-        0 1px 3px rgba(0,0,0,.3),
-        0 0 0 1px #777,
-        0 1px 0 #bbb inset;
-    box-shadow:
-        0 1px 3px rgba(0,0,0,.3),
-        0 0 0 1px #777,
-        0 1px 0 #bbb inset;
-}
-#ribbonbar:before, #ribbonbar:after {
-    content:'';
-    border:6px solid transparent;
-    position:absolute;
-    display:block;
-    width:0;
-    height:0;
-    top:100%;
-}
-#ribbonbar:before{
-    left:0;
-    border-top-color:#000;
-    border-left-width:7px;
-    border-right-width:0;
-    }
-#ribbonbar:after {
-    right:0;
-    border-top-color:#000;
-    border-right-width:7px;
-    border-left-width:0;
-}
-#ribbonbar .right, #ribbonbar .left{
-    border:19px solid #000;
-    position:absolute;
-    display:block;
-    width:0; height:0;
-    top:7px;
-    z-index:-1;
-}
-#ribbonbar .right {
-    -webkit-box-shadow:
-        0 1px 0 #777,
-        0 -1px 0 #bbb,
-        0 -2px 0 #777,
-        1px 0 0 #777;
-    -moz-box-shadow:
-        0 1px 0 #777,
-        0 -1px 0 #bbb,
-        0 -2px 0 #777,
-        1px 0 0 #777;
-    box-shadow:
-        0 1px 0 #777,
-        0 -1px 0 #bbb,
-        0 -2px 0 #777,
-        1px 0 0 #777;
-    border-left-color:transparent;
-    left:-32px;
-}
-#ribbonbar .left {
--webkit-box-shadow:
-	0 1px 0 #777,
-	0 -1px 0 #bbb,
-	0 -2px 0 #777,
-	-1px 0 0 #777;
--moz-box-shadow:
-	0 1px 0 #777,
-	0 -1px 0 #bbb,
-	0 -2px 0 #777,
-	-1px 0 0 #777;
-box-shadow:
-	0 1px 0 #777,
-	0 -1px 0 #bbb,
-	0 -2px 0 #777,
-	-1px 0 0 #777;
-	border-right-color:transparent;
-	right:-32px;
+.soft {
+	color: #ccc;
 }
