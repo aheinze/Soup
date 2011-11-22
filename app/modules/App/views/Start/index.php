@@ -7,7 +7,7 @@
 		<h2> Congratulations</h2>
 
 		<h3 class="soft">
-			You installed a powerful, and flexible framework for building prototypes and production code.
+			You installed a flexible framework for building prototypes and production code.
 			And yes, you're ready to start coding your app.
 		</h3>
 
