@@ -12,12 +12,18 @@ $app["assets"]->addReference("backbone", array(
 	"file" => "root:public/js/vendor/backbone.js"
 ));
 
+// Handlebars reference
+$app["assets"]->addReference("handlebars", array(
+	"file" => "root:public/js/vendor/handlebars.js"
+));
+
 $app["router"]->bind("#/assets/main\.(css|js)#", function($params) use($app) {
 
 	$app["assets"]->register("main", array(
 		//use the jquery reference
 		array("file" => "ref:jquery"),
 		array("file" => "ref:backbone"),
+		array("file" => "ref:handlebars"),
 		array("file" => "root:public/css/base.css"),
 		array("file" => "root:public/css/app.css"),
 	));

@@ -24,6 +24,17 @@
 				</ul>
 			</p>
 		</div>
+
+		<h4>Batteries included</h4>
+
+		<p>
+			<ul class="square">
+				<li>jQuery</li>
+				<li>Backbone.js</li>
+				<li>Handlebarsjs</li>
+			</ul>
+		</p>
+
 	</div>
 	<div class="four columns">
 		
