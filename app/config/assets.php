@@ -25,6 +25,7 @@ $app["router"]->bind("#/assets/main\.(css|js)#", function($params) use($app) {
 		// array("file" => "ref:handlebars"),
 		array("file" => "ref:foundation"),
 
+		array("file" => "root:public/js/app.js"),
 		array("file" => "root:public/css/base.css"),
 		array("file" => "root:public/css/app.css"),
 	));
