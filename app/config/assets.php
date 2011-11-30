@@ -14,16 +14,17 @@ $app["assets"]->addReference("handlebars", array(
 
 // jQuery reference
 $app["assets"]->addReference("foundation", array(
-	"file" => "root:public/css/foundation.pack.css"
+	"file" => "root:public/css/foundation.css"
 ));
 
 $app["router"]->bind("#/assets/main\.(css|js)#", function($params) use($app) {
 
 	$app["assets"]->register("main", array(
-		//use the jquery reference
+		//add references
 		array("file" => "ref:jquery"),
 		// array("file" => "ref:handlebars"),
 		array("file" => "ref:foundation"),
+
 		array("file" => "root:public/css/base.css"),
 		array("file" => "root:public/css/app.css"),
 	));
