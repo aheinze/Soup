@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="<?php $this->url("/assets/main.js");?>"></script>
 </head>
 <body>
-	<div id="header">
+	<header id="header">
 		<div class="row">
 			<div class="six columns">
 				<h1 id="logo">Raww</h1>
@@ -21,9 +21,9 @@
 				</ul>
 			</div>
 		</div>
-	</div>
-	<div id="content">
+	</header>
+	<section id="content">
 		<div id="output"><?php echo $content_for_layout;?></div>
-	</div>
+	</section>
 </body>
 </html>

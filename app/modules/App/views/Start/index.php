@@ -38,7 +38,7 @@
 	</div>
 	<div class="four columns">
 		
-		<div class="bordered-panel">
+		<div>
 			<p>
 				<strong>Raww</strong> is sponsered by <a href="http://d-xp.com">d-xp.com</a>
 			</p>
