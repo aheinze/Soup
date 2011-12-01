@@ -14,7 +14,7 @@ $app["assets"]->addReference("handlebars", array(
 
 // jQuery reference
 $app["assets"]->addReference("foundation", array(
-	"file" => "root:public/css/foundation.css"
+	"file" => "root:public/css/foundation.pack.css"
 ));
 
 $app["router"]->bind("#/assets/main\.(css|js)#", function($params) use($app) {

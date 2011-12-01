@@ -300,7 +300,7 @@ Assets::$filters["minify_css"] = function($str, $asset) {
 			'#([^\d])0(\.\d+)#'                 => '$1$2',   // Strip leading zeros on floats
 			'#(\[)\s*|\s*(\])|(\()\s*|\s*(\))#' => '${1}${2}${3}${4}',  // Clean-up bracket internal space
 			'#\s*([>~+=])\s*#'                  => '$1',     // Clean-up around combinators
-			'#\#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3#i' => '#$1$2$3', // Reduce Hex codes
+			//'#\#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3#i' => '#$1$2$3', // Reduce Hex codes
 		);
 
 		return preg_replace(array_keys($replacements), array_values($replacements), $str);
