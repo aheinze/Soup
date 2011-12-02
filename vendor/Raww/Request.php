@@ -318,26 +318,4 @@ if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 	Request::$_GET     = $_GET;
 	Request::$_COOKIE  = $_COOKIE ;
 	Request::$_REQUEST = $_REQUEST;
-}// init global vars
-
-if(Request::is("put")) {
-	parse_str(file_get_contents('php://input'), Request::$_PUT);
-}
-
-if(Request::is("delete")) {
-	parse_str(file_get_contents('php://input'), Request::$_DELETE);
-}
-
-if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-
-	Request::$_POST    = array_map('\Raww\stripslashes_deep', $_POST);
-	Request::$_GET     = array_map('\Raww\stripslashes_deep', $_GET);
-	Request::$_COOKIE  = array_map('\Raww\stripslashes_deep', $_COOKIE);
-	Request::$_REQUEST = array_map('\Raww\stripslashes_deep', $_REQUEST);
-
-}else{
-	Request::$_POST    = $_POST;
-	Request::$_GET     = $_GET;
-	Request::$_COOKIE  = $_COOKIE ;
-	Request::$_REQUEST = $_REQUEST;
 }

@@ -132,7 +132,7 @@ class Assets extends \Raww\AppContainer {
 		  $output[$type][] = $content;
 		}
 
-		$response = $this->app["response"]->assign(array(
+		$response = new Response(null, array(
 		  'body' => implode("",$output[$type]),
 		  'gzip' => true,
 		  'mime' => $type,

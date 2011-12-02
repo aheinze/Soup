@@ -103,8 +103,6 @@ class App extends DI{
 		$app->self_share("assets", function($app){ return new Assets($app); });
 		$app->self_share("cache", function($app){ return new Cache\File($app); });
 		$app->self_share("request", function($app){ return new \Raww\Request();});
-		
-		$app["response"] = function() use($app) { return new \Raww\Response(); };
 
 		$app["path"]->register("views", __DIR__.'/views');
 		$app["path"]->register("vendor", __DIR__.'/vendor');
@@ -138,20 +136,20 @@ class App extends DI{
 					
 					if($app['registry']->get("debug", false)){						
 						
-						$response = $app['response']->assign(array(
+						$response = new Response(null, array(
 							"body" => $app["view"]->render("views:error/error.php", array("error"=>$error)),
 							"status" => "500"
 						));
 						
 					}else{
 					
-						$response = $app['response']->assign(array(
+						$response = new Response(null, array(
 							"body" => $app["view"]->render("views:error/404.php", array("message"=>"ooooops!")),
 							"status" => "500"
 						));
 					}
 					
-					$response->flush();
+					$response->send();
 				}
 
 				return;
@@ -183,21 +181,21 @@ class App extends DI{
 
 		$response = $this["router"]->dispatch($route);
 		
-		if(is_object($response) && method_exists($response, 'flush')) {
+		if(is_object($response) && method_exists($response, 'send')) {
 			
-			$this["event"]->trigger("before_flush", array($response));
-			$response->flush();
+			$this["event"]->trigger("before_send", array($response));
+			$response->send();
 
 		} else {
 
-			$response = $this['response']->assign(array(
+			$response = new Response(null, array(
 				"body" => $this["view"]->render("views:error/404.php", array("message"=>$route)),
 				"status" => "404"
 			));
 			
 			$this["event"]->trigger("error_404", array("path"=>$route, "response" => $response));
 			
-			$response->flush();
+			$response->send();
 		}
 	}
 }

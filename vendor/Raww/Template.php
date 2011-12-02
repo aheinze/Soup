@@ -115,4 +115,17 @@ class Template extends AppContainer {
 		
 		return $link;
 	}
+
+	protected function get($index=null, $default = null) {
+		return $this->app['request']->get($index, $default);
+	}
+	protected function post($index=null, $default = null) {
+		return $this->app['request']->post($index, $default);
+	}
+	protected function put($index=null, $default = null) {
+		return $this->app['request']->put($index, $default);
+	}
+	protected function delete($index=null, $default = null) {
+		return $this->app['request']->delete($index, $default);
+	}
 }

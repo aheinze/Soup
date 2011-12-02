@@ -104,7 +104,7 @@ class Response {
 	 *
 	 * @return	void
 	 */
-    public function flush() {
+    public function send() {
         
         if($this->gzip && !ob_start("ob_gzhandler")) ob_start();
 

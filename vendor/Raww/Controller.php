@@ -56,7 +56,7 @@ class Controller extends AppContainer {
     
     protected function render($view=null, $slots=array(), $options=array()){
         
-        $response = $this->app["response"]->assign($options);
+        $response = new Response(null, $options);
 		        
         if (strpos($view, ':') === false ) {
 			$view = "modules:$view";
