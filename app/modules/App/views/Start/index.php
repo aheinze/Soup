@@ -1,5 +1,3 @@
-<?php $extend("views:default.php");?>
-
 
 <div class="row">
 	

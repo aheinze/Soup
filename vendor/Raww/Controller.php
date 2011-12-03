@@ -15,7 +15,7 @@ class Controller extends AppContainer {
     public $invoked_action = null;
 	
     public $name       = null;
-    public $params     = array();
+    public $layout     = null;
     
     /**
     * Callback functions
@@ -55,14 +55,19 @@ class Controller extends AppContainer {
     
     protected function render($view=null, $slots=array(), $options=array()){
         
+        $render   = $view;
         $response = new Response(null, $options);
 		        
-        if (strpos($view, ':') === false ) {
-			$view = "modules:$view";
+        if (strpos($view, ' with ')===false && $this->layout) {
+			$render = "$view with ".$this->layout;
 		}
+
+        if (strpos($render, ' with ')!==false) {
+            list($view, $layout) = explode(' with ', $render);
+        }
         
         if($path = $this->app["path"]->get($view)){
-            $response->body = $this->app["view"]->render($view, $slots);
+            $response->body = $this->app["view"]->render($render, $slots);
         } else {
             $response->body = "$view not found!";
         }
