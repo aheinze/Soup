@@ -15,7 +15,6 @@ class Controller extends AppContainer {
     public $invoked_action = null;
 	
     public $name       = null;
-    public $request    = null;
     public $params     = array();
     
     /**
