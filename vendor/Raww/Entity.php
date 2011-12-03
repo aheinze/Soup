@@ -38,6 +38,10 @@ class Entity {
       
       if(substr($property, 0, 1)==="_") continue;
 
+      if(isset($annotations['properties'][$property]['allowEmpty']) && empty($value)){
+        continue;
+      }
+
       if(isset($annotations['properties'][$property]['check'])){
         foreach($annotations['properties'][$property]['check'] as $check){
           if(!Validate::$check['validate']($value)) {
@@ -68,7 +72,7 @@ class Entity {
     $array = array();
 
     foreach (get_object_vars($this) as $property => $value) {
-      if(substr($property, 0, 1)!=="_") $array[$property] = $value;
+      if(substr($property, 0, 1)!=="_" && !is_null($value)) $array[$property] = $value;
     }
 
     return $array;
