@@ -98,7 +98,7 @@ class App extends DI{
 		$app->self_share("registry", function($app){ return new Registry($app); });
 		$app->self_share("router", function($app){ return new Router($app); });
 		$app->self_share("event", function($app){ return new Event($app); });
-		$app->self_share("view", function($app){ return new Template($app); });
+		$app->self_share("view", function($app){ return new View($app); });
 		$app->self_share("i18n", function($app){ return new I18n($app); });
 		$app->self_share("assets", function($app){ return new Assets($app); });
 		$app->self_share("cache", function($app){ return new Cache\File($app); });
