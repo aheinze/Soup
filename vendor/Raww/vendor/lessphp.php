@@ -1,12 +1,12 @@
 <?php
 
 /**
- * lessphp v0.2.1
+ * lessphp v0.3.0
  * http://leafo.net/lessphp
  *
- * LESS css compiler, adapted from http://lesscss.org/docs.html
+ * LESS css compiler, adapted from http://lesscss.org
  *
- * Copyright 2010, Leaf Corcoran <leafot@gmail.com>
+ * Copyright 2011, Leaf Corcoran <leafot@gmail.com>
  * Licensed under MIT or GPLv3, see LICENSE
  */
 
@@ -47,7 +47,7 @@ class lessc {
 	public $vPrefix = '@'; // prefix of abstract properties
 	public $mPrefix = '$'; // prefix of abstract blocks
 	public $imPrefix = '!'; // special character to add !important
-	public $selfSelector = '&';
+	public $parentSelector = '&';
 
 	static protected $precedence = array(
 		'+' => 0,
@@ -168,11 +168,11 @@ class lessc {
 
 
 			// media
-			if ($this->literal('@media') && $this->mediaTypes($types, $rest) &&
+			if ($this->literal('@media') && $this->mediaTypes($types) &&
 				$this->literal('{'))
 			{
 				$b = $this->pushSpecialBlock('@media');
-				$b->media = array($types, $rest);
+				$b->media = $types;
 				return true;
 			} else {
 				$this->seek($s);
@@ -275,7 +275,7 @@ class lessc {
 
 
 		// mixin 
-		if ($this->tags($tags, true, '>') &&
+		if ($this->mixinTags($tags) &&
 			($this->argumentValues($argv) || true) && $this->end())
 		{
 			$tags = $this->fixTags($tags);
@@ -472,6 +472,22 @@ class lessc {
 			return true;
 		}
 
+		// unquote string
+		if ($this->literal("~") && $this->string($value, $d)) {
+			$value = array("keyword", $value);
+			return true;
+		} else {
+			$this->seek($s);
+		}
+
+		// css hack: \0
+		if ($this->literal('\\') && $this->match('([0-9]+)', $m)) {
+			$value = array('keyword', '\\'.$m[1]);
+			return true;
+		} else {
+			$this->seek($s);
+		}
+
 		return false;
 	}
 
@@ -505,20 +521,13 @@ class lessc {
 	}
 
 	// a list of media types, very lenient
-	function mediaTypes(&$types, &$rest) {
-		$s = $this->seek();
-		$types = array();
-		while ($this->match('([^,{\s]+)', $m)) {
-			$types[] = $m[1];
-			if (!$this->literal(',')) break;
-		}
-
-		// get everything else
+	function mediaTypes(&$types) {
 		if ($this->to('{', $rest, true, true)) {
-			$rest = trim($rest);
+			$types = trim($rest);
+			return true;
 		}
 
-		return count($types) > 0;
+		return false;
 	}
 
 	// a scoped value accessor
@@ -631,13 +640,13 @@ class lessc {
 	}
 
 	// consume a list of property values delimited by ; and wrapped in ()
-	function argumentValues(&$args, $delim = ';') {
+	function argumentValues(&$args, $delim = ',') {
 		$s = $this->seek();
 		if (!$this->literal('(')) return false;
 
 		$values = array();
 		while (true) {
-			if ($this->propertyValue($value)) $values[] = $value;
+			if ($this->expressionList($value)) $values[] = $value;
 			if (!$this->literal($delim)) break;
 			else {
 				if ($value == null) $values[] = null;
@@ -656,14 +665,14 @@ class lessc {
 
 	// consume an argument definition list surrounded by ()
 	// each argument is a variable name with optional value
-	function argumentDef(&$args, $delim = ';') {
+	function argumentDef(&$args, $delim = ',') {
 		$s = $this->seek();
 		if (!$this->literal('(')) return false;
 
 		$values = array();
 		while ($this->variable($vname)) {
 			$arg = array($vname);
-			if ($this->assign() && $this->propertyValue($value)) {
+			if ($this->assign() && $this->expressionList($value)) {
 				$arg[] = $value;
 				// let the : slide if there is no value
 			}
@@ -694,6 +703,21 @@ class lessc {
 		return true;
 	}
 
+	// list of tags of specifying mixin path
+	// optionally separated by > (lazy, accepts extra >)
+	function mixinTags(&$tags) {
+		$s = $this->seek();
+		$tags = array();
+		while ($this->tag($tt, true)) {
+			$tags[] = $tt;
+			$this->literal(">");
+		}
+
+		if (count($tags) == 0) return false;
+
+		return true;
+	}
+
 	// a bracketed value (contained within in a tag definition)
 	function tagBracket(&$value) {
 		$s = $this->seek();
@@ -701,6 +725,9 @@ class lessc {
 			$value = '['.$c.']';
 			// whitespace?
 			if ($this->match('', $_)) $value .= $_[0];
+
+			// escape parent selector
+			$value = str_replace($this->parentSelector, "&&", $value);
 			return true;
 		}
 
@@ -733,7 +760,7 @@ class lessc {
 	function func(&$func) {
 		$s = $this->seek();
 
-		if ($this->match('([\w\-_][\w\-_:\.]*)', $m) && $this->literal('(')) {
+		if ($this->match('(%|[\w\-_][\w\-_:\.]*)', $m) && $this->literal('(')) {
 			$fname = $m[1];
 			if ($fname == 'url') {
 				$this->to(')', $content, true);
@@ -863,9 +890,7 @@ class lessc {
 		if ($special_block) {
 			$this->indentLevel--;
 			if (isset($block->media)) {
-				list($media_types, $media_rest) = $block->media;
-				echo "@media ".join(', ', $media_types).
-					(!empty($media_rest) ? " $media_rest" : '' );
+				echo "@media ".$block->media;
 			} elseif (isset($block->keyframes)) {
 				echo $block->tags[0]." ".
 					$this->compileValue($this->reduce($block->keyframes));
@@ -910,9 +935,22 @@ class lessc {
 		$tags = array();
 		foreach ($parents as $ptag) {
 			foreach ($current as $tag) {
-				$tags[] = trim($ptag.
-					($tag{0} == $this->selfSelector || $tag{0} == ':'
-						? ltrim($tag, $this->selfSelector) : ' '.$tag));
+				// inject parent in place of parent selector, ignoring escaped valuews
+				$count = 0;
+				$parts = explode("&&", $tag);
+
+				foreach ($parts as $i => $chunk) {
+					$parts[$i] = str_replace($this->parentSelector, $ptag, $chunk, $c);
+					$count += $c;
+				}
+				
+				$tag = implode("&", $parts);
+
+				if ($count > 0) {
+					$tags[] = trim($tag);
+				} else {
+					$tags[] = trim($ptag . ' ' . $tag);
+				}
 			}
 		}
 
@@ -984,11 +1022,6 @@ class lessc {
 				$this->zipSetArgs($mixin->args, $args);
 			}
 
-			list($name) = $mixin->tags;
-			if ($name == "div") {
-				print_r($mixin->props);
-			}
-
 			$old_parent = $mixin->parent;
 			$mixin->parent = $block;
 
@@ -1054,18 +1087,18 @@ class lessc {
 			
 			// search for inline variables to replace
 			$replace = array();
-			if (preg_match_all('/{('.$this->preg_quote($this->vPrefix).'[\w-_][0-9\w-_]*?)}/', $value[1], $m)) {
+			if (preg_match_all('/'.$this->preg_quote($this->vPrefix).'\{([\w-_][0-9\w-_]*)\}/', $value[1], $m)) {
 				foreach ($m[1] as $name) {
 					if (!isset($replace[$name]))
-						$replace[$name] = $this->compileValue($this->reduce(array('variable', $name)));
+						$replace[$name] = $this->compileValue($this->reduce(array('variable', $this->vPrefix . $name)));
 				}
 			}
+
 			foreach ($replace as $var=>$val) {
-				// strip quotes
-				if (preg_match('/^(["\']).*?(\1)$/', $val)) {
+				if ($this->quoted($val)) {
 					$val = substr($val, 1, -1);
 				}
-				$value[1] = str_replace('{'.$var.'}', $val, $value[1]);
+				$value[1] = str_replace($this->vPrefix. '{'.$var.'}', $val, $value[1]);
 			}
 
 			return $value[1];
@@ -1102,19 +1135,51 @@ class lessc {
 			$color[1],$color[2], $color[3]);
 	}
 
-	function lib_quote($arg) {
-		return '"'.$this->compileValue($arg).'"';
-	}
-
-	function lib_unquote($arg) {
-		$out = $this->compileValue($arg);
-		if ($this->quoted($out)) $out = substr($out, 1, -1);
-		return $out;
-	}
-
-	// alias for unquote
+	// utility func to unquote a string
 	function lib_e($arg) {
-		return $this->lib_unquote($arg);
+		switch ($arg[0]) {
+			case "list":
+				$items = $arg[2];
+				if (isset($items[0])) {
+					return $this->lib_e($items[0]);
+				}
+				return "";
+			case "string":
+				$str = $this->compileValue($arg);
+				return substr($str, 1, -1);
+			default:
+				return $this->compileValue($arg);
+		}
+	}
+
+	function lib__sprintf($args) {
+		if ($args[0] != "list") return $args;
+		$values = $args[2];
+		$source = $this->reduce(array_shift($values));
+		if ($source[0] != "string") {
+			return $source;
+		}
+
+		$str = $source[1];
+		$i = 0;
+		if (preg_match_all('/%[dsa]/', $str, $m)) {
+			foreach ($m[0] as $match) {
+				$val = isset($values[$i]) ? $this->reduce($values[$i]) : array('keyword', '');
+				$i++;
+				switch ($match[1]) {
+				case "s":
+					if ($val[0] == "string") {
+						$rep = substr($val[1], 1, -1);
+						break;
+					}
+				default:
+					$rep = $this->compileValue($val);
+				}
+				$str = preg_replace('/'.$this->preg_quote($match).'/', $rep, $str, 1);
+			}
+		}
+
+		return array('string', $str);
 	}
 
 	function lib_floor($arg) {
@@ -1368,6 +1433,7 @@ class lessc {
 				if ($color) $var = $color;
 				else {
 					list($_, $name, $args) = $var;
+					if ($name == "%") $name = "_sprintf";
 					$f = array($this, 'lib_'.$name);
 					if (is_callable($f)) {
 						if ($args[0] == 'list')
@@ -1614,7 +1680,7 @@ class lessc {
 	// advance counter to next occurrence of $what
 	// $until - don't include $what in advance
 	function to($what, &$out, $until = false, $allowNewline = false) {
-		$validChars = $allowNewline ? "[^\n]" : '.';
+		$validChars = $allowNewline ? "." : "[^\n]";
 		if (!$this->match('('.$validChars.'*?)'.$this->preg_quote($what), $m, !$until)) return false;
 		if ($until) $this->count -= strlen($what); // give back $what
 		$out = $m[1];
