@@ -12,7 +12,7 @@ $app["assets"]->addReference("handlebars", array(
 	"file" => "root:public/js/vendor/handlebars.js"
 ));
 
-// jQuery reference
+// Foundation reference
 $app["assets"]->addReference("foundation", array(
 	"file" => "root:public/css/foundation.pack.css"
 ));

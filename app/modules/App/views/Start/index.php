@@ -23,13 +23,13 @@
 			</p>
 		</div>
 
-		<h4>Batteries included:</h4>
+		<h4>Some batteries included:</h4>
 
 		<p>
 			<ul class="square">
 				<li>jQuery</li>
 				<li>Handlebars.js</li>
-				<li>Zurb foundation framework</li>
+				<li>Zurb foundation CSS framework</li>
 			</ul>
 		</p>
 
