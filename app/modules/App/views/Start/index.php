@@ -28,7 +28,6 @@
 		<p>
 			<ul class="square">
 				<li>jQuery</li>
-				<li>Handlebars.js</li>
 				<li>Zurb foundation CSS framework</li>
 			</ul>
 		</p>
