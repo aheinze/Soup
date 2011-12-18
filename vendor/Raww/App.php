@@ -104,6 +104,7 @@ class App extends DI{
 		$app->self_share("cache", function($app){ return new Cache\File($app); });
 		$app->self_share("request", function($app){ return new \Raww\Request();});
 
+		$app["path"]->register("raww", __DIR__);
 		$app["path"]->register("views", __DIR__.'/views');
 		$app["path"]->register("vendor", __DIR__.'/vendor');
 		

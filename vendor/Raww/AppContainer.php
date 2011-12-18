@@ -10,7 +10,7 @@ namespace Raww;
  * @copyright  (c) since 2011 d-xp.com
  * @license    http://rawwphp.info/license
  */
-class AppContainer implements \ArrayAccess{
+class AppContainer implements \ArrayAccess {
     
 	/**
 	 * @var $app	Raww App instance
