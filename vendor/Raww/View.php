@@ -116,6 +116,10 @@ class View extends AppContainer {
 		return $link;
 	}
 
+	protected function _($key, $alternative=null) {
+		echo $this->app['i18n']->get($key, $alternative);
+	}
+
 	protected function get($index=null, $default = null) {
 		return $this->app['request']->get($index, $default);
 	}

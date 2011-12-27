@@ -71,11 +71,7 @@ class Php extends \Raww\AppContainer {
     }
     public function offsetGet($offset) {
         
-		$value = \Raww\fetch_from_array($_SESSION, $offset, '_offset_not_set_');
-		
-		if ($value == '_offset_not_set_') {
-			throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $offset));
-        }
+		$value = \Raww\fetch_from_array($_SESSION, $offset, null);
 		
 		return $value;
     }
