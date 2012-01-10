@@ -80,6 +80,8 @@ class App extends DI{
 	public static function init($appname, $config) {
 
 		$app = new App($appname);
+
+		$app['debug'] = true;
 		
 		if(!isset($config['base_url_path'])) {
 			$config['base_url_path'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
@@ -104,6 +106,7 @@ class App extends DI{
 		$app->self_share("cache", function($app){ return new Cache\File($app); });
 		$app->self_share("request", function($app){ return new \Raww\Request();});
 
+		$app["path"]->register("raww", __DIR__);
 		$app["path"]->register("views", __DIR__.'/views');
 		$app["path"]->register("vendor", __DIR__.'/vendor');
 		
@@ -134,7 +137,7 @@ class App extends DI{
 				
 					ob_end_clean();
 					
-					if($app['registry']->get("debug", false)){						
+					if($app['debug']){						
 						
 						$response = new Response(null, array(
 							"body" => $app["view"]->render("views:error/error.php", array("error"=>$error)),
@@ -162,7 +165,7 @@ class App extends DI{
 			require($app_bootstrap);
 		}
 
-		//error_reporting($app['registry']->get("debug", false) ? E_ALL : 0);
+		//error_reporting($app['debug'] ? E_ALL : 0);
 		
 		self::$_apps[$appname] = $app;
 		

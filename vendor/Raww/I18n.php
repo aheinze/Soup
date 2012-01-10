@@ -40,15 +40,14 @@ class I18n extends AppContainer {
 	public function get($key, $alternative=null){
     
 		if(is_null($alternative)){
-		  $alternative = '{'.$key.'}';
+		  $alternative = $key;
 		}
 		
 		if(!isset($this->_languages[$this->locale])){
 
 		  if($path = $this->app["path"]->get("locale:".$this->locale.'/table.php')){
-			  include($path);
-			  
-			  if(isset($t)) $this->_languages[$this->locale] = $t;
+			
+			$this->_languages[$this->locale] = include($path);
 		  }
 		}
 		

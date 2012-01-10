@@ -181,6 +181,25 @@ class Request {
             return $_SERVER['REMOTE_ADDR'];
         }
     }
+
+	/**
+	 * Get site url
+	 *
+	 * @return	string
+	 */
+    public static function getSiteUrl() {
+        $url = (self::is("ssl") ? 'https':'http')."://";
+         
+        if ($_SERVER["SERVER_PORT"] != "80") {
+          $url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
+        } else {
+          $url .= $_SERVER["SERVER_NAME"];
+        }
+        
+        $url .= implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
+        
+        return rtrim($url,'/');
+    }
 	
 	/**
 	 * Get user agent

@@ -9,7 +9,7 @@ class Auth extends \Raww\Controller {
 	
 	public function before_filter(){
 
-        if(!isset($this->["session"]['Auth']) && !in_array($this->invoked_action, $this->auth_public_actions)) {
+        if(!$this->app["session"]->read('Auth', null) && !in_array($this->invoked_action, $this->auth_public_actions)) {
         	$this->redirect($this->auth_login_url);
         	return false;
     	}

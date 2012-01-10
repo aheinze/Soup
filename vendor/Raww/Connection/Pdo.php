@@ -21,11 +21,7 @@ class Pdo {
         
       extract($config);
       
-      try {
-        $this->pdo = new \PDO($dns,$user,$password,$options);
-      }catch( \PDOException $Exception ) {
-         trigger_error('PDO Connect failed: '.$Exception->getMessage(),E_USER_ERROR);
-      }
+      $this->pdo = new \PDO($dns,$user,$password,$options);
       
     }
     
@@ -35,6 +31,11 @@ class Pdo {
         $values = array();
 
         foreach($data as $col=>$value){
+            
+            if(!is_null($value) && (is_array($value) || is_object($value))){
+              $value = json_encode($value);
+            }
+
             $fields[] = $col;
             $values[] = $this->pdo->quote($value);
         }
@@ -65,6 +66,11 @@ class Pdo {
       $fields = array();
       
       foreach($data as $col=>$value){
+        
+        if(!is_null($value) && (is_array($value) || is_object($value))){
+          $value = json_encode($value);
+        }
+
         $fields[] = $col.'='.$this->pdo->quote($value);
       }
       
@@ -275,6 +281,15 @@ class Pdo {
           $rec = array();
           for($i=0,$max=count($r);$i<$max;$i++){            
             
+            //check if is json
+            if(substr($r[$i], 0,1)=="{" && substr($r[$i], -1,1)=="}"){
+              if($dec = json_decode($r[$i], true)){
+                $r[$i] = $dec;
+              }
+            }
+
+
+
             $tabeleName = (strlen($meta[$i]['table'])!=0) ? $meta[$i]['table']:0;
             
             $rec[$tabeleName][$meta[$i]['name']] = $r[$i]; 

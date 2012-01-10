@@ -10,7 +10,15 @@ namespace Raww;
  * @copyright  (c) since 2011 d-xp.com
  * @license    http://rawwphp.info/license
  */
-class Set {
+class Set implements \Iterator {
+	
+	protected $data = array();
+	private $_position = 0;
+
+	public function __construct($data = array()) {
+		$this->data = $data;
+	}
+
 	/**
 	* ...
 	*
@@ -101,4 +109,111 @@ class Set {
 	public static function get($array, $key, $default=false){
 		return isset($array[$key]) ? $array[$key] : $default;
 	}
+
+	/**
+	 * Flattens an array for sorting
+	 *
+	 * @param array $results
+	 * @param string $key
+	 * @return array
+	 */
+	protected static function _flatten($results, $key = null) {
+		$stack = array();
+		foreach ($results as $k => $r) {
+			$id = $k;
+			if (!is_null($key)) {
+				$id = $key;
+			}
+			if (is_array($r) && !empty($r)) {
+				$stack = array_merge($stack, self::_flatten($r, $id));
+			} else {
+				$stack[] = array('id' => $id, 'value' => $r);
+			}
+		}
+		return $stack;
+	}
+
+	/**
+	 * Sorts an array by any value, determined by a Set-compatible path
+	 *
+	 * @param array $data An array of data to sort
+	 * @param string $path A Set-compatible path to the array value
+	 * @param string $dir Direction of sorting - either ascending (ASC), or descending (DESC)
+	 * @return array Sorted array of data
+	 * @link http://book.cakephp.org/2.0/en/core-utility-libraries/set.html#Set::sort
+	 */
+	public static function sort($data, $path, $dir="asc") {
+		$originalKeys = array_keys($data);
+		if (is_numeric(implode('', $originalKeys))) {
+			$data = array_values($data);
+		}
+		$result = self::_flatten(self::extract($path, $data));
+		list($keys, $values) = array(self::extract('id', $result), self::extract('value', $result));
+
+		$dir = strtolower($dir);
+		if ($dir === 'asc') {
+			$dir = SORT_ASC;
+		} elseif ($dir === 'desc') {
+			$dir = SORT_DESC;
+		}
+		array_multisort($values, $dir, $keys, $dir);
+		$sorted = array();
+		$keys = array_unique($keys);
+
+		foreach ($keys as $k) {
+			$sorted[] = $data[$k];
+		}
+		return $sorted;
+	}
+
+	public function data() {
+		return $this->data;
+	}
+
+	public function field($path) {
+		
+		return new self(Set::extract($path, $this->data));
+	}
+
+	public function where($callback) {
+		
+		$data = array();
+
+		if(is_callable($callback)) {
+			foreach ($this->data as $index => $item) {
+				if($callback($item, $index)){
+					$data[] = $item;
+				}
+			}
+		}
+
+		return new self($data);
+	}
+
+	public function order($path, $dir="asc") {
+		
+		return new self(Set::sort($this->data, $path, $dir));
+	}
+
+	// Iterator implementation
+	function rewind() {
+        $this->_position = 0;
+    }
+
+    function current() {
+        return $this->data[$this->_position];
+    }
+
+    function key() {
+        return $this->_position;
+    }
+
+    function next() {
+        ++$this->_position;
+    }
+
+    function valid() {
+        return isset($this->data[$this->_position]);
+    }
+
 }
