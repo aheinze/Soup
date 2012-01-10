@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 class Start extends \Raww\Controller {
 
 	public $layout = "views:default.php";
