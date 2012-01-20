@@ -139,15 +139,26 @@ class App extends DI{
 					
 					if($app['debug']){						
 						
-						$response = new Response(null, array(
-							"body" => $app["view"]->render("views:error/error.php", array("error"=>$error)),
-							"status" => "500"
-						));
+						//is ajax
+						if((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'))){
+							
+							$response = new Response(null, array(
+								"body" => json_encode(array("error"=>$error)),
+								"status" => "500"
+							));	
+
+						}else{
+
+							$response = new Response(null, array(
+								"body" => $app["view"]->render("views:error/error.php", array("error"=>$error)),
+								"status" => "500"
+							));	
+						}
 						
 					}else{
 					
 						$response = new Response(null, array(
-							"body" => $app["view"]->render("views:error/404.php", array("message"=>"ooooops!")),
+							"body" => $app["view"]->render("views:error/404.php", array("message"=>"Ooooops!")),
 							"status" => "500"
 						));
 					}

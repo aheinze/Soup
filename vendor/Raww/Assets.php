@@ -323,14 +323,3 @@ Assets::$filters["minify_js"] = function($str, $asset) {
 	
 	return $minified;
 };
-
-Assets::$filters["lessify"] = function($str, $asset) {
-
-	if (!class_exists("lessc")) {
-		$asset["app"]["path"]->req_once("vendor:lessphp.php");
-	}
-
-	$less = new \lessc($asset["file"]);
-
-	return $less->parse(); 
-};

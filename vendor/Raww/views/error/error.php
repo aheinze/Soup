@@ -10,7 +10,7 @@
 	box-sizing: border-box;
 }
 body {
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-size: 18px;
     font-style: normal;
     font-weight: normal;
@@ -21,7 +21,7 @@ body {
     background-color:#eee;
 }
 h1 { font-size:44px;letter-spacing: -2px;line-height: 1em;margin:0; }
-h2 { font-weight:normal;color:#999; }
+h2 { font-size:16px;font-weight:normal;color:#999; }
 h3 { font-weight:bold;font-size:11pt}
 p  { margin-top: 5px 0px;}
 .wrapper{
@@ -33,8 +33,6 @@ p  { margin-top: 5px 0px;}
     background-color:white;
     border: 1px #ccc solid;
     padding:20px;
-    -moz-box-shadow:0px 0px 5px #ccc;
-    -webkit-box-shadow:0px 0px 10px #ccc;
     box-shadow:0px 0px 5px #ccc;
 }
 
@@ -47,8 +45,7 @@ p  { margin-top: 5px 0px;}
 	background-color: #000;
 	padding: 10px;
 	font-size: 14px;
-	border-radius: 5px;
-	-moz-border-radius:10px;
+	border-radius: 4px;
 }
 
 .code ul {
@@ -72,7 +69,7 @@ p  { margin-top: 5px 0px;}
 
     <div class="wrapper">
 		<h1>Error</h1>
-		<h2><?php echo $error['message']; ?></h2>
+		<h2><?php echo nl2br($error['message']); ?></h2>
     </div>
 	<div class="wrapper content">
         <p>
