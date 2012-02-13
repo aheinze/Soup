@@ -28,4 +28,16 @@
 	}
 
 	$spec->is_true($mod_rewrite, "mod_rewrite is not enabled!");
+
+})->add("DbConnectionEstablished", function($spec){
+
+	$connection = true;
+
+	try{
+		$con = $spec->app["con:default"];
+	}catch(\Exception $e){
+		$connection = false;
+	}
+
+	$spec->is_true($connection, "Could not establish DB connection!");
 });
