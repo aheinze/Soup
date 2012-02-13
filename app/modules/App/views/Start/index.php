@@ -29,7 +29,7 @@
 			<ul class="square">
 				<li>jQuery</li>
 				<li>Solid css framework (based on Zurb foundation CSS framework)</li>
-				<li>Support for TDD out of the box</li>
+				<li>Support for TDD out of the box. <a href="<?php $this->url("/tests.php");?>">Run some tests</a></li>
 			</ul>
 		</p>
 
