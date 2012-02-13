@@ -8,21 +8,18 @@ $app["assets"]->addReference("jquery", array(
 ));
 
 // Foundation reference
-$app["assets"]->addReference("foundation", array(
-	"file" => "root:public/css/foundation.pack.css"
+$app["assets"]->addReference("base.css", array(
+	"file" => "root:public/css/base.css"
 ));
 
-$app["router"]->bind("#/assets/main\.(css|js)#", function($params) use($app) {
+//bind route to /assets/main.(js|css)
 
-	$app["assets"]->register("main", array(
-		//add references
-		array("file" => "ref:jquery"),
-		array("file" => "ref:foundation"),
+$app["assets"]->auto_route("main", array(
+	//add references
+	array("file" => "ref:jquery"),
+	array("file" => "ref:base.css"),
 
-		array("file" => "root:public/js/app.js"),
-		array("file" => "root:public/css/base.css"),
-		array("file" => "root:public/css/app.css"),
-	));
+	array("file" => "root:public/js/app.js"),
+	array("file" => "root:public/css/app.css"),
 
-	return $app["assets"]->dump("main", $params[":captures"][0], 0);
-});
+), $app["debug"] ? 0:600);

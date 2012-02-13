@@ -34,6 +34,26 @@ class Assets extends \Raww\AppContainer {
 	}
 
 	/**
+	 * Register asset group to route
+	 *
+	 * @param	string $name	Name of the group to register
+	 * @param	array $options	Containing files and filter options
+	 * @param	int $cache		Cache lifetime (0 = no caching)
+	 * @return	void
+	 */
+	public function auto_route($name,$options, $cache=600){
+
+		$this->register($name,$options);
+
+		$assets = $this;
+
+		$this->app["router"]->bind("#/assets/$name\.(css|js)#", function($params) use($assets, $name, $cache) {
+
+			return $assets->dump($name, $params[":captures"][0], $cache);
+		});
+	}
+
+	/**
 	 * Register an asset reference
 	 *
 	 * @param	string $name	Name of the reference
