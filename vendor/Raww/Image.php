@@ -32,6 +32,13 @@ Class Image {
 	## --------------------------------------------------------
 
 	private function openImage($file) {
+		
+		// is base64 encoded string?
+		if (preg_match('`^[a-zA-Z0-9+/]+={0,2}$`', $file)) {
+		    // @todo
+		}
+
+
 		// *** Get extension
 		$extension = strtolower(strrchr($file, '.'));
 

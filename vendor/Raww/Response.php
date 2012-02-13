@@ -108,14 +108,18 @@ class Response {
         
         if($this->gzip && !ob_start("ob_gzhandler")) ob_start();
 
-        if($this->nocache){
-        	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-			header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-  			header('Pragma: no-cache');
+        if(!headers_sent($filename, $linenum)){
+	        if($this->nocache){
+	        	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+				header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+	  			header('Pragma: no-cache');
+	        }
+	        
+			header('HTTP/1.0 '.$this->status.' '.self::$statusCodes[$this->status]);
+	        header('Content-type: '.Request::getMimeType($this->mime));
+        
         }
         
-		header('HTTP/1.0 '.$this->status.' '.self::$statusCodes[$this->status]);
-        header('Content-type: '.Request::getMimeType($this->mime));
         echo $this->body;  
     }    
 }

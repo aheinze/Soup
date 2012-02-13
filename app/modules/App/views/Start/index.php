@@ -28,7 +28,8 @@
 		<p>
 			<ul class="square">
 				<li>jQuery</li>
-				<li>Zurb foundation CSS framework</li>
+				<li>Solid css framework (based on Zurb foundation CSS framework)</li>
+				<li>Support for TDD out of the box</li>
 			</ul>
 		</p>
 

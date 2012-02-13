@@ -14,6 +14,7 @@ class View extends AppContainer {
     
 	/* slots */
 	protected $slots;
+	protected $blocks = array();
 	
 	/**
 	 * Render a template file
@@ -60,6 +61,42 @@ class View extends AppContainer {
 		
 		
 		return $output;
+	}
+
+	public function start($name) {
+		
+		if(!isset($this->blocks[$name])){
+			$this->blocks[$name] = array();
+		}
+
+		ob_start();
+	}
+
+	public function end($name) {
+		
+		$out = ob_get_clean();
+
+		if(isset($this->blocks[$name])){
+			$this->blocks[$name][] = $out;
+		}
+
+	}
+
+	public function block($name, $options=array()) {
+		
+		if(!isset($this->blocks[$name])) return null;
+
+		$options = array_merge(array(
+			"print" => true
+		), $options);
+
+		$block = implode("\n", $this->blocks[$name]);
+
+		if($options["print"]){
+			echo $block;
+		}
+
+		return $block;
 	}
 
 	/**
@@ -131,5 +168,10 @@ class View extends AppContainer {
 	}
 	protected function delete($index=null, $default = null) {
 		return $this->app['request']->delete($index, $default);
+	}
+
+	// output escaped
+	protected function e($string, $charset="UTF-8") {
+		echo htmlspecialchars($string, ENT_QUOTES, $charset);
 	}
 }

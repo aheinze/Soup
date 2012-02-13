@@ -207,7 +207,7 @@ class Router extends AppContainer {
                     break;
                 case 2:
                     $parsedUri['controller'] = ucfirst($parts[0]);
-                    $parsedUri['action']     = ucfirst($parts[1]);
+                    $parsedUri['action']     = $parts[1];
                 break;
                 default:
                     $parsedUri['controller'] = ucfirst($parts[0]);
@@ -218,20 +218,13 @@ class Router extends AppContainer {
         }
 
         $controllerName = $parsedUri['module'].'\\Controller\\'.$parsedUri['controller']; 
-     
-        if(!class_exists($controllerName)){
-            
-            if($controllerFile = $this->app["path"]->get("modules:".$parsedUri['module'].'/Controller/'.$parsedUri['controller'].'.php')){
-                require_once($controllerFile);   
-            }
-        }
        
-        if(!class_exists($controllerName)){
+        if(!class_exists($controllerName) && !$this->app["path"]->get("modules:".$parsedUri['module'].'/Controller/'.$parsedUri['controller'].'.php')){
             return false;
         }
         
         $controller = new $controllerName($this->app);
-        
+
         if(!method_exists($controller, $parsedUri['action'])){
           if(method_exists($controller, 'index')) {
 			$parsedUri['params'] = array_merge(array($parsedUri['action']), $parsedUri['params']);

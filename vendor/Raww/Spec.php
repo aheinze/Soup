@@ -12,18 +12,85 @@ namespace Raww;
  */
 class Spec {
     
-    private $description;
-    private $tests;
-    private $total;
-    private $passed;
-    private $failed;
+    public static $specs   = array();
+    public static $globals = array();
+
+    public $name;
+    public $description;
     
-    public static function describe($description) {
-        return new Spec($description);
+    protected $tests;
+    protected $total;
+    protected $passed;
+    protected $failed;
+    
+
+    // Static
+
+    public static function describe($name, $description = "") {
+        
+        static::$specs[$name] = new static($name, $description);
+
+        return static::$specs[$name];
     }
+
+    public static function exists($name) {
+        
+        return isset(static::$specs[$name]);
+    }
+
+    public static function run($name, $renderer=null) {
+        
+        if(isset(static::$specs[$name])){
+            return static::$specs[$name]->execute($renderer);
+        }
+    }
+
+    public static function persistent($name, $value=null) {
+        
+        if(is_null($value) && isset(self::$globals[$name])){
+            return self::$globals[$name];
+        }else{
+            self::$globals[$name] = $value;
+        }
+    }
+
+    public static function run_all($renderer=null) {
+        
+        $results = array();
+        foreach(static::$specs as $name=>$spec){
+            $results[$name] = $spec->run($name, $renderer);
+        }
+        return $results;
+    }
+
+    public static function load_from_folder($folder, $renderer=null) {
+        
+        $folder   = rtrim($folder, "\\/");
+
+        if(!file_exists($folder)){
+            return;
+        }
+
+        $iterator = new \RecursiveDirectoryIterator($folder);
+
+        foreach($iterator as $file) {
+           
+           if($file->isFile() && substr($file->getFilename(), -9)==".spec.php") {
+              include($folder.'/'.$file->getFilename());
+           }
+        }
+
+        if($renderer){
+            static::run_all($renderer);
+        }
+    }
+
+
+    // Object
     
-    public function __construct($description) {
+    public function __construct($name, $description) {
         $this->tests       = array();
+        $this->name        = $name;
         $this->description = $description;
 
         //events
@@ -33,10 +100,14 @@ class Spec {
 
     public function before($closure) {
        $this->before = $closure; 
+
+       return $this;
     }
 
     public function after($closure) {
-       $this->after = $closure; 
+       $this->after = $closure;
+
+       return $this;
     }
 
     public function add($name, $check) {
@@ -49,11 +120,12 @@ class Spec {
         return new Assert();
     }
 
-    public function run($renderer=null) {
+    public function execute($renderer=null) {
 
         $output = array(
+            'name' => $this->name,
             'description' => $this->description,
-            'duration'    => $this->description,
+            'duration'    => 0,
             'passed' => 0,
             'failed' => 0,
             'total'  => 0,
@@ -70,22 +142,36 @@ class Spec {
 
         foreach ($this->tests as $name => $check) {
             
-            $test = array($name => array(
+            $test = array(
                 'passed' => 1,
                 'message'=> ''
-            ));
+            );
 
             try {
                 $result = $check($this);
                 $this->passed++;
             } catch (\Exception $exception) {
-                $test[$name]['passed']  = 0;
-                $test[$name]['message'] = (string) $exception;
+                
+                $test['file']  = "n/a";
+                $test['line']  = "n/a";
+
+                $trace = $exception->getTrace();
+
+                for($i=0;$i<count($trace);$i++){
+                    if(strpos($trace[$i]["file"], DIRECTORY_SEPARATOR.'Spec.php')===false){
+                        $test['file']  = $trace[$i]["file"];
+                        $test['line']  = $trace[$i]["line"];
+                        break; 
+                    }
+                }
+
+                $test['passed']  = 0;
+                $test['message'] = (string) $exception;
                 $this->failed++;
             }
 
             $this->total++;
-            $output['tests'][] = $test;
+            $output['tests'][$name] = $test;
         }
 
         call_user_func($this->after, $this);
@@ -96,14 +182,17 @@ class Spec {
         $output["failed"] = $this->failed;
         $output["total"]  = $this->total;
 
-        return $renderer ? call_user_func($renderer, $output) : $output;
+        if(is_callable($renderer)){
+            call_user_func($renderer, $output);
+        }
+
+
+        return $output;
     }
-}
 
-
-class Assert {
+    // Asserts 
     
-    public function equals($value, $subject, $message){
+    public static function equals($value, $subject, $message){
         self::must($subject == $value, $message);
     }
 

@@ -28,6 +28,8 @@ class App extends DI{
 	protected $name;
 	protected static $_apps = array();
 	
+	public $autoSearchPaths = array();
+	
 	/**
 	 * Creates a new Raww app instance
 	 *
@@ -69,6 +71,24 @@ class App extends DI{
 	public function pickashost($class) {
 		return new $class($this);
 	}
+
+	/**
+	 * Load file
+	 *
+	 * @param	string $path	Path
+	 * @param	bool $once	Include once
+	 * @return	Mixed
+	 */
+	public function load($path, $once=true) {
+		if($file = $this["path"]->get($path)){
+			
+			$app = $this;
+			
+			return $once ? include_once($file):include($file);
+		}
+
+		return false;
+	}
 	
 	/**
 	 * Initialize a new Raww app instance
@@ -95,16 +115,16 @@ class App extends DI{
 		$app["base_route_path"] = rtrim($config["base_route_path"], '/');
 		
 		$app["path"]     = new Path($app);
-		$app->self_share("bench", function($app){ return new Bench(); });
-		$app->self_share("session", function($app){ return new Session\Php($app); });
-		$app->self_share("registry", function($app){ return new Registry($app); });
-		$app->self_share("router", function($app){ return new Router($app); });
-		$app->self_share("event", function($app){ return new Event($app); });
-		$app->self_share("view", function($app){ return new View($app); });
-		$app->self_share("i18n", function($app){ return new I18n($app); });
-		$app->self_share("assets", function($app){ return new Assets($app); });
-		$app->self_share("cache", function($app){ return new Cache\File($app); });
-		$app->self_share("request", function($app){ return new \Raww\Request();});
+		$app->self_share("bench", 		function($app){ return new Bench(); });
+		$app->self_share("session", 	function($app){ return new Session\Php($app); });
+		$app->self_share("registry", 	function($app){ return new Registry($app); });
+		$app->self_share("router", 		function($app){ return new Router($app); });
+		$app->self_share("event", 		function($app){ return new Event($app); });
+		$app->self_share("view", 		function($app){ return new View($app); });
+		$app->self_share("i18n", 		function($app){ return new I18n($app); });
+		$app->self_share("assets", 		function($app){ return new Assets($app); });
+		$app->self_share("cache", 		function($app){ return extension_loaded('apc') ? new Cache\Apc($app):new Cache\File($app); });
+		$app->self_share("request", 	function($app){ return new \Raww\Request();});
 
 		$app["path"]->register("raww", __DIR__);
 		$app["path"]->register("views", __DIR__.'/views');
@@ -113,11 +133,13 @@ class App extends DI{
 		foreach($config['paths'] as $name => $path){
 			$app["path"]->register($name, $path);
 		}
+
+		$app->autoSearchPaths = array('modules', 'lib');
 		
 		spl_autoload_register(function($resource) use($app){
 			
 			// Autoload module and lib classes
-			foreach(array('modules', 'lib', 'vendor') as $loc){
+			foreach($app->autoSearchPaths as $loc){
 				if($path = $app['path']->get("$loc:".str_replace('\\', '/', $resource).'.php')){
 					require($path);
 					return;
@@ -171,10 +193,6 @@ class App extends DI{
 
 			$app["event"]->trigger("shutdown");
 		});
-		
-		if($app_bootstrap = $app["path"]->get("config:bootstrap.php")){
-			require($app_bootstrap);
-		}
 
 		//error_reporting($app['debug'] ? E_ALL : 0);
 		
@@ -192,6 +210,8 @@ class App extends DI{
 	public function handle($route) {
 		
 		$this["route"] = $route;
+
+		$this["event"]->trigger("before", array($this));
 
 		$response = $this["router"]->dispatch($route);
 		
@@ -211,10 +231,77 @@ class App extends DI{
 			
 			$response->send();
 		}
+
+		$this["event"]->trigger("after", array($this));
 	}
 }
 
 // helper functions
+
+function sluggify($string, $replacement = '-') {
+		$quotedReplacement = preg_quote($replacement, '/');
+
+		$merge = array(
+			'/[^\s\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{Nd}]/mu' => ' ',
+			'/\\s+/' => $replacement,
+			sprintf('/^[%s]+|[%s]+$/', $quotedReplacement, $quotedReplacement) => '',
+		);
+
+		$map = array(
+				'/ä|æ|ǽ/' => 'ae',
+				'/ö|œ/' => 'oe',
+				'/ü/' => 'ue',
+				'/Ä/' => 'Ae',
+				'/Ü/' => 'Ue',
+				'/Ö/' => 'Oe',
+				'/À|Á|Â|Ã|Ä|Å|Ǻ|Ā|Ă|Ą|Ǎ/' => 'A',
+				'/à|á|â|ã|å|ǻ|ā|ă|ą|ǎ|ª/' => 'a',
+				'/Ç|Ć|Ĉ|Ċ|Č/' => 'C',
+				'/ç|ć|ĉ|ċ|č/' => 'c',
+				'/Ð|Ď|Đ/' => 'D',
+				'/ð|ď|đ/' => 'd',
+				'/È|É|Ê|Ë|Ē|Ĕ|Ė|Ę|Ě/' => 'E',
+				'/è|é|ê|ë|ē|ĕ|ė|ę|ě/' => 'e',
+				'/Ĝ|Ğ|Ġ|Ģ/' => 'G',
+				'/ĝ|ğ|ġ|ģ/' => 'g',
+				'/Ĥ|Ħ/' => 'H',
+				'/ĥ|ħ/' => 'h',
+				'/Ì|Í|Î|Ï|Ĩ|Ī|Ĭ|Ǐ|Į|İ/' => 'I',
+				'/ì|í|î|ï|ĩ|ī|ĭ|ǐ|į|ı/' => 'i',
+				'/Ĵ/' => 'J',
+				'/ĵ/' => 'j',
+				'/Ķ/' => 'K',
+				'/ķ/' => 'k',
+				'/Ĺ|Ļ|Ľ|Ŀ|Ł/' => 'L',
+				'/ĺ|ļ|ľ|ŀ|ł/' => 'l',
+				'/Ñ|Ń|Ņ|Ň/' => 'N',
+				'/ñ|ń|ņ|ň|ŉ/' => 'n',
+				'/Ò|Ó|Ô|Õ|Ō|Ŏ|Ǒ|Ő|Ơ|Ø|Ǿ/' => 'O',
+				'/ò|ó|ô|õ|ō|ŏ|ǒ|ő|ơ|ø|ǿ|º/' => 'o',
+				'/Ŕ|Ŗ|Ř/' => 'R',
+				'/ŕ|ŗ|ř/' => 'r',
+				'/Ś|Ŝ|Ş|Š/' => 'S',
+				'/ś|ŝ|ş|š|ſ/' => 's',
+				'/Ţ|Ť|Ŧ/' => 'T',
+				'/ţ|ť|ŧ/' => 't',
+				'/Ù|Ú|Û|Ũ|Ū|Ŭ|Ů|Ű|Ų|Ư|Ǔ|Ǖ|Ǘ|Ǚ|Ǜ/' => 'U',
+				'/ù|ú|û|ũ|ū|ŭ|ů|ű|ų|ư|ǔ|ǖ|ǘ|ǚ|ǜ/' => 'u',
+				'/Ý|Ÿ|Ŷ/' => 'Y',
+				'/ý|ÿ|ŷ/' => 'y',
+				'/Ŵ/' => 'W',
+				'/ŵ/' => 'w',
+				'/Ź|Ż|Ž/' => 'Z',
+				'/ź|ż|ž/' => 'z',
+				'/Æ|Ǽ/' => 'AE',
+				'/ß/' => 'ss',
+				'/Ĳ/' => 'IJ',
+				'/ĳ/' => 'ij',
+				'/Œ/' => 'OE',
+				'/ƒ/' => 'f'
+		) + $merge;
+
+		return preg_replace(array_keys($map), array_values($map), $string);
+}
 
 function stripslashes_deep($value) {
 	if ( is_array($value) ) {

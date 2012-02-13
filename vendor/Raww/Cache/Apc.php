@@ -3,29 +3,18 @@
 namespace Raww\Cache;
 
 
-class File extends \Raww\AppContainer {
+class Apc extends \Raww\AppContainer {
   
-  protected $cachePath = null;
-
   /**
   * ...
   *
   */ 
   public function __construct($app){
     parent::__construct($app);
-    $this->cachePath = rtrim($app['path']->get("cache:"),"/\\")."/";
-  }
-
-  /**
-  * ...
-  *
-  */ 
-  public function cachePath($path=false){
-    if($path){
-      $this->cachePath = rtrim($path),"/\\")."/";
+    
+    if (!extension_loaded('apc')){
+      throw new \Exception('PHP APC extension is not available.');
     }
-
-    return $this->cachePath;
   }
 
   /**
@@ -41,7 +30,8 @@ class File extends \Raww\AppContainer {
       'value' => serialize($value)
     );
     
-    file_put_contents($this->cachePath.md5($key).".cache" , serialize($safe_var));
+
+    return apc_store($key, serialize($safe_var), $expire);
   }
   
   /**
@@ -49,9 +39,9 @@ class File extends \Raww\AppContainer {
   *
   */ 
 	public function read($key, $default=null){
-    $var = @file_get_contents($this->cachePath.md5($key).".cache");
+    $var = apc_fetch($key, $success);
 
-    if($var===''){
+    if(!$success){
       return $default;
     }else{
       
@@ -71,21 +61,10 @@ class File extends \Raww\AppContainer {
   *
   */ 
 	public function delete($key){
-    @unlink($this->cachePath.md5($key));
+    return apc_delete($key);
   }
   
-  /**
-  * ...
-  *
-  */
   public function clear(){
-    
-    $iterator =  new \RecursiveDirectoryIterator($this->cachePath);
-
-    foreach($iterator as $file) {      
-       if($file->isFile()) {
-          @unlink($this->cachePath.$file->getFilename());
-       }
-    }
+    return apc_clear_cache('user');
   }
 }

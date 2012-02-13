@@ -59,7 +59,11 @@ class Assets extends \Raww\AppContainer {
 		$cache_key = "asset_".$name."_".$type;
 
 		if($cache_time && $cached = $this->app['cache']->read($cache_key)) {
-		  return $cached;
+		  return new Response(null, array(
+				  'body' => $cached,
+				  'gzip' => true,
+				  'mime' => $type,
+				 ));
 		}
 
 		$output    = array();
@@ -133,13 +137,14 @@ class Assets extends \Raww\AppContainer {
 		}
 
 		$response = new Response(null, array(
-		  'body' => implode("",$output[$type]),
+		  'body' => implode("", $output[$type]),
 		  'gzip' => true,
 		  'mime' => $type,
 		));
 
 		if($cache_time) {
-		  $this->app['cache']->write($cache_key, $response, $cache_time);
+		  $response->body = "/* -CACHED- */\n".$response->body;
+		  $this->app['cache']->write($cache_key, $response->body, $cache_time);
 		}
 
 		return $response;

@@ -33,11 +33,11 @@ class Pdo {
         foreach($data as $col=>$value){
             
             if(!is_null($value) && (is_array($value) || is_object($value))){
-              $value = json_encode($value);
+              $value = json_encode($value, JSON_NUMERIC_CHECK);
             }
 
             $fields[] = $col;
-            $values[] = $this->pdo->quote($value);
+            $values[] = (is_null($value) ? 'NULL':$this->pdo->quote($value));
         }
         
         $fields = implode(',', $fields);
@@ -68,10 +68,10 @@ class Pdo {
       foreach($data as $col=>$value){
         
         if(!is_null($value) && (is_array($value) || is_object($value))){
-          $value = json_encode($value);
+          $value = json_encode($value, JSON_NUMERIC_CHECK);
         }
 
-        $fields[] = $col.'='.$this->pdo->quote($value);
+        $fields[] = $col.'='.(is_null($value) ? 'NULL':$this->pdo->quote($value));
       }
       
       $fields = implode(',', $fields);
