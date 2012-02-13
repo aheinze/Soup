@@ -149,7 +149,7 @@ function formatTime($time) {
 			<?php foreach ($result["specs"] as $spec => $info): ?>
 				<div class="spec">
 					<div class="title  <?php echo $info["failed"] ? "failed":"passed";?>">
-						<?php echo $spec;?>: 
+						<h2><?php echo $spec;?></h2> 
 						Of <span class="label"><?php echo $info["total"];?> tests</span> 
 						have <span class="label"><?php echo $info["passed"];?> passed</span> and <span class="label"><?php echo $info["failed"];?> failed</span>. 
 						<span class="label">Duration: <?php echo formatTime($info["duration"]);?></span>
