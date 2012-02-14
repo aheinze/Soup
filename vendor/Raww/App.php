@@ -211,6 +211,16 @@ class App extends DI{
 		
 		$this["route"] = $route;
 
+		// register /tests route in debug mode
+		if($this["debug"]){
+			
+			$app = $this;
+
+			$this["router"]->bind("/tests", function() use($app){
+				return $app["view"]->render("views:tests.php");
+			});
+		}
+
 		$this["event"]->trigger("before", array($this));
 
 		$response = $this["router"]->dispatch($this["route"]);

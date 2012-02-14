@@ -1,8 +1,8 @@
 <?php
 
-require_once(__DIR__."/app/app.php");
-
 use \Raww\Spec;
+
+$app = $this->app;
 
 Spec::persistent("app", $app);
 Spec::load_from_folder($app["path"]->get("tests:"));
@@ -121,7 +121,7 @@ function formatTime($time) {
 	<div id="header">
 		<div class="wrapper">
 			<strong class="left">Test suite</strong>
-			<form class="right" action="tests.php" method="get">
+			<form class="right" action="<?php $this->url("/tests");?>" method="get">
 				<select name="spec" id="">
 					<option value="">Please select a Spec...</option>
 					<option value="">-----------------------</option>
