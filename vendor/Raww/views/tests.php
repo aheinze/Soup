@@ -71,7 +71,9 @@ function formatTime($time) {
 			font-size: 14px;
 		}
 		#header{
+			border-bottom: 1px #ccc solid;
 			background: #fff;
+			box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
 			padding: 20px 0px;
 			margin-bottom: 20px;
 		}
@@ -99,10 +101,9 @@ function formatTime($time) {
 			margin: 20px 0px;
 			box-shadow: 0px 0px 10px #ccc;
 			background: #fff;
-			opacity: 0.6;
 		}
 		.testitems { display: none; }
-		.spec:hover { opacity: 1; }
+		.spec:hover { box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
 		.spec:hover .testitems { display: block; }
 		.title {padding: 8px 10px; border-radius: 4px;}
 		.description { padding: 8px; }

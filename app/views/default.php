@@ -12,8 +12,9 @@
 	<div id="header">
 		<div class="row">
 			<div class="six columns">
-				<h1 id="logo">Raww</h1>
-				
+				<h1 id="logo">
+					&#9832; Raww <span>framework</span>
+				</h1>
 			</div>
 			<div class="six columns">
 				<ul id="topnav">

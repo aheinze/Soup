@@ -1,22 +1,22 @@
 body {
-	background: #fff;
+	background: #eee;
 	color: #444;
 }
 
 #logo {
 	font-size: 18px;
 	font-weight: bold;
-	margin-top: 10px;
 	display:inline-block;
-	background:#f51a15;
-	color:#fff;
-	padding:20px 10px 10px 10px;
-	margin-top: -5px;
+	color:#000;
+	padding:25px 15px 25px 10px;
+	margin:0;
+	line-height: 1;
 }
 
 #logo > span {
-	display: block;
 	font-weight: normal;
+	font-family: Georgia;
+	font-style: italic;
 }
 
 #topnav {
@@ -30,6 +30,7 @@ body {
 #topnav > li {
 	float: left;
 	padding: 4px;
+	margin: 0;
 }
 #topnav > li > a {
 	color: #000;
@@ -45,14 +46,15 @@ body {
 }
 
 #header {
-	border-bottom: 1px #ccc dotted;
+	border-bottom: 1px #ccc solid;
+	background: #fff;
+	box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
 }
-
 
 #output {
 	padding: 40px 20px;
 }
 
 .soft {
-	color: #ccc;
+	color: #999;
 }
