@@ -22,12 +22,7 @@
             "tmp"     => __DIR__.'/tmp',
             "cache"   => __DIR__.'/tmp/cache',
             "log"     => __DIR__.'/tmp/log',
-            
-            // app specific
-            // e.g
-            // "plugins" => __DIR__.'/plugins',
         )
-		
     ));
 
     $app->load("config:bootstrap.php");

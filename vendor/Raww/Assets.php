@@ -53,6 +53,27 @@ class Assets extends \Raww\AppContainer {
 		});
 	}
 
+	public function script($name, $echo=true) {
+		
+		$script = '<script type="text/javascript" src="'.$this->app["router"]->url("/assets/$name.js").'"></script>';
+
+		if($echo){
+			echo $script;
+		}
+
+		return $script;
+	}
+
+	public function style($name, $echo=true) {
+		$style = '<link rel="stylesheet" type="text/css" href="'.$this->app["router"]->url("/assets/$name.css").'" />';
+
+		if($echo){
+			echo $style;
+		}
+
+		return $style;
+	}
+
 	/**
 	 * Register an asset reference
 	 *

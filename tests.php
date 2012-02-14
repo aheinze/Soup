@@ -99,7 +99,11 @@ function formatTime($time) {
 			margin: 20px 0px;
 			box-shadow: 0px 0px 10px #ccc;
 			background: #fff;
+			opacity: 0.6;
 		}
+		.testitems { display: none; }
+		.spec:hover { opacity: 1; }
+		.spec:hover .testitems { display: block; }
 		.title {padding: 8px 10px; border-radius: 4px;}
 		.description { padding: 8px; }
 		.test{
@@ -158,6 +162,7 @@ function formatTime($time) {
 						<div class="mb"><strong>Description:</strong></div>
 						<?php echo $info["description"];?>
 					</div>
+					<div class="testitems">
 					<?php foreach ($info["tests"] as $test => $data): ?>
 						<div class="test <?php echo $data["passed"] ? "passed":"failed";?> ">
 							<?php echo $test;?>
@@ -178,8 +183,8 @@ function formatTime($time) {
 							</div>
 						</div>
 						<?php endif; ?>
-					
 					<?php endforeach;?>
+					</div>
 				</div>
 			<?php endforeach;?>
 
