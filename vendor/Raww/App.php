@@ -207,32 +207,38 @@ class App extends DI{
 	 * @param	string $route	Route
 	 * @return	void
 	 */
-	public function handle($route) {
+	public function handle($route, $raw=false) {
 		
 		$this["route"] = $route;
 
 		$this["event"]->trigger("before", array($this));
 
-		$response = $this["router"]->dispatch($route);
+		$response = $this["router"]->dispatch($this["route"]);
 		
 		if(is_object($response) && method_exists($response, 'send')) {
 			
 			$this["event"]->trigger("before_send", array($response));
-			$response->send();
 
 		} else {
 
 			$response = new Response(null, array(
-				"body" => $this["view"]->render("views:error/404.php", array("message"=>$route)),
+				"body" => $this["view"]->render("views:error/404.php", array("message"=>$this["route"])),
 				"status" => "404"
 			));
 			
-			$this["event"]->trigger("error_404", array("path"=>$route, "response" => $response));
+			$this["event"]->trigger("error_404", array("path"=>$this["route"], "response" => $response));
 			
+		}
+
+		if(!$raw){
 			$response->send();
 		}
 
 		$this["event"]->trigger("after", array($this));
+
+		if($raw){
+			return $response->body;
+		}
 	}
 }
 
