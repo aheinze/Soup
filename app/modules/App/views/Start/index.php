@@ -38,7 +38,7 @@
 		
 		<div>
 			<p>
-				<strong>Raww</strong> is sponsered by <a href="http://d-xp.com">d-xp.com</a>
+				<strong>Soup</strong> is sponsered by <a href="http://d-xp.com">d-xp.com</a>
 			</p>
 
 			<p class="soft">

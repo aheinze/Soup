@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Raww - framework</title>
+	<title>Soup - framework</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<?php $this->app["assets"]->style("main");?>
@@ -13,13 +13,13 @@
 		<div class="row">
 			<div class="six columns">
 				<h1 id="logo">
-					&#9832; Raww <span>framework</span>
+					&#9832; Soup <span>framework</span>
 				</h1>
 			</div>
 			<div class="six columns">
 				<ul id="topnav">
-					<li><a href="https://github.com/aheinze/Raww2">Documentation</a></li>
-					<li><a href="https://github.com/aheinze/Raww2">Github</a></li>
+					<li><a href="https://github.com/aheinze/Soup">Documentation</a></li>
+					<li><a href="https://github.com/aheinze/Soup">Github</a></li>
 				</ul>
 			</div>
 		</div>

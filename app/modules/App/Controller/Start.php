@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 
-class Start extends \Raww\Controller {
+class Start extends \Soup\Controller {
 
 	public $layout = "views:default.php";
 

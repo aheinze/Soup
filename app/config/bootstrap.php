@@ -13,7 +13,7 @@ $app['session']->init();
 /*
 $app["con:default"] = $app->share(function() {  // default
 	
-	return new Raww\Connection\Pdo(array(
+	return new Soup\Connection\Pdo(array(
       'dns'       => 'mysql:host=127.0.0.1;dbname=DBNAME;port=3306',
       'user'      => 'USER',
       'password'  => 'xxx',

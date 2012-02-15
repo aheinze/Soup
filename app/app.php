@@ -1,10 +1,10 @@
 <?php
     
-    if(!class_exists("\\Raww\\App")){
-        require_once(__DIR__."/../vendor/Raww/App.php");
+    if(!class_exists("\\Soup\\App")){
+        require_once(__DIR__."/../vendor/Soup/App.php");
     }
     
-    $app = Raww\App::init("rawwapp", array(         
+    $app = Soup\App::init("Soupapp", array(         
 		
 		// "base_route_path" => $_SERVER['SCRIPT_NAME'], // enable if mod_rewrite is disabled
 		
