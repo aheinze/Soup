@@ -18,7 +18,7 @@
 			</div>
 			<div class="six columns">
 				<ul id="topnav">
-					<li><a href="https://github.com/aheinze/Soup">Documentation</a></li>
+					<li><a href="https://github.com/aheinze/Soup/wiki">Documentation</a></li>
 					<li><a href="https://github.com/aheinze/Soup">Github</a></li>
 				</ul>
 			</div>
