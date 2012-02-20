@@ -216,8 +216,14 @@ class App extends DI{
 			
 			$app = $this;
 
-			$this["router"]->bind("/tests", function() use($app){
-				return $app["view"]->render("views:tests.php");
+			if((isset($this["profiler"]) && $this["profiler"]) || isset($_GET["soup-profile"])) {
+				$profiler = new \Soup\Bench();
+				$profiler->start("soup.profiler");
+			}
+
+			$this["router"]->bind("#^/--soup#", function() use($app){
+				$controller = new \Soup\Controller\Soup($app);
+				return $controller->route();
 			});
 		}
 
@@ -248,6 +254,22 @@ class App extends DI{
 
 		if($raw){
 			return $response->body;
+		}
+
+		if(isset($profiler)){
+			$profiler->stop("soup.profiler");
+
+			$data = $this["cache"]->read("soup.profiler", array());
+
+			if(!isset($data[$this["route"]])){
+				$data[$this["route"]] = array();
+			}
+
+			$info                   = $profiler->get("soup.profiler");
+			$data[$this["route"]][] = $info;
+
+			$this["cache"]->write("soup.profiler", $data);
+
 		}
 	}
 }

@@ -22,7 +22,7 @@ class File extends \Soup\AppContainer {
   */ 
   public function cachePath($path=false){
     if($path){
-      $this->cachePath = rtrim($path),"/\\")."/";
+      $this->cachePath = rtrim($path, "/\\")."/";
     }
 
     return $this->cachePath;
