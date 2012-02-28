@@ -1,11 +1,12 @@
 <?php
 
-// init session
-$app['session']->init();
+// uncomment to auto init session
 
-// db connection
+//$app['session']->init();
 
-$app["con:default"] = $app->share(function() {  // default
+// db storage
+
+$app->self_share("storage:default", function($app) {  // default
 	
 	return new \Soup\Connection\Pdo(array(
       'dns'       => 'mysql:host=127.0.0.1;dbname=DBNAME;port=3306',
@@ -13,7 +14,6 @@ $app["con:default"] = $app->share(function() {  // default
       'password'  => 'xxx',
       'options'   => array()
 	));
-	
 });
 
 // include routes and assets definition

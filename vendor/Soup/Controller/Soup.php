@@ -4,18 +4,18 @@ namespace Soup\Controller;
 
 class Soup extends \Soup\Controller {
 	
-	public $layout = "views:soup.layout.php";
+	public $layout = "views:soup/soup.layout.php";
 
 	public function index(){
-		return "index";
+		return $this->render("views:soup/index.php");
 	}
 
 	public function tests(){
-		return $this->render("views:tests.php");
+		return $this->render("views:soup/tests.php");
 	}
 
 	public function profiler(){
-		return $this->render("views:profiler.php");
+		return $this->render("views:soup/profiler.php");
 	}
 	
     public function route(){

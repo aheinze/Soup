@@ -49,8 +49,8 @@ class Controller extends AppContainer {
 
     }
 
-    protected function db($connection = "default") {
-		return isset($this->app["con:$connection"]) ? $this->app["con:$connection"] : null;
+    protected function db($name = "default") {
+		return $this->app["storage:$name"];
     }
     
     protected function render($view=null, $slots=array(), $options=array()){

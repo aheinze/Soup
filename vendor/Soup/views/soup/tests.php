@@ -62,6 +62,7 @@ function formatTime($time) {
 .failed { background: red; color: #fff;}
 .passed { background: green; color: #fff;}
 .testitems { display: none; }
+.spec {background: #fff;}
 .spec:hover { box-shadow: 0px 0px 20px rgba(0,0,0,0.5); }
 .spec:hover .testitems { display: block; }
 .title {padding: 8px 10px; border-radius: 4px;}

@@ -50,6 +50,10 @@
 	<div id="header">
 		<div class="wrapper">
 			<strong class="left">&#9832; Soup</strong>
+			<div class="right">
+				<?php $this->link("Tests", "/--soup/tests"); ?> 
+				<?php $this->link("Profiler", "/--soup/profiler"); ?> 
+			</div>
 			<div style="clear:both;"></div>
 		</div>
 	</div>

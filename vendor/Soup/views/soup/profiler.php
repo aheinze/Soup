@@ -24,6 +24,12 @@ function formatTime($time) {
 
 ?>
 
+<style type="text/css">
+	.box{
+		padding: 20px;
+	}
+</style>
+
 <div class="mb">
 	<strong class="left">Profiler</strong>
 	<form class="right" action="<?php $this->url("/--soup/profiler");?>" method="get">
@@ -43,7 +49,15 @@ function formatTime($time) {
 
 	<?php foreach($data[$selected_route] as $info): ?>
 	<div class="box">
-		<?php print_r($info);?>
+		<h4><?php echo date("d.m.Y H:m:s", $info["start"]);?></h4>
+		<table>
+			<?php foreach($info as $key=>$value):?>
+			<tr>
+				<td><?php echo $key;?></td>
+				<td><?php echo $value;?></td>
+			</tr>
+			<?php endforeach; ?>
+		</table>
 	</div>
 	<?php endforeach; ?>
 <?php else: ?>

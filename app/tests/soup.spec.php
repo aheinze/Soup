@@ -34,7 +34,7 @@
 	$connection = true;
 
 	try{
-		$con = $spec->app["con:default"];
+		$con = $spec->app["storage:default"];
 	}catch(\Exception $e){
 		$connection = false;
 	}
