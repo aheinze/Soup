@@ -171,7 +171,12 @@ class View extends AppContainer {
 	}
 
 	// output escaped
-	protected function e($string, $charset="UTF-8") {
+	protected function e($string, $charset=null) {
+		
+		if(is_null($charset)){
+			$charset = $this->app["charset"];
+		}
+
 		echo htmlspecialchars($string, ENT_QUOTES, $charset);
 	}
 }
