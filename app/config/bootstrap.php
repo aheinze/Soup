@@ -1,15 +1,6 @@
 <?php
 
-// base config
-
-//set default timezone
-//date_default_timezone_set('UTC');
-
-$app['debug'] 	= in_array($_SERVER["SERVER_NAME"], array('localhost','::1','127.0.0.1')); //enable debug mode on localhost
-
-$app['charset'] = 'UTF-8';
-$app['key'] 	= 'xxxxxxxxxxChangeMexxxxxx';
-
+// init session
 $app['session']->init();
 
 // db connection

@@ -101,14 +101,26 @@ class App extends DI{
 
 		$app = new App($appname);
 
-		$app['debug'] = true;
-		
+		$config = array_merge(array(
+			'debug' 	=> true,
+			'charset'  	=> 'UTF-8',
+			'key'       => 'xxxxxAppKeyxxxxx',
+			'language' 	=> 'en',
+			'autoSearchPaths' => array('modules', 'lib'),
+			'paths' 	=> array()
+		), $config);
+
+
 		if(!isset($config['base_url_path'])) {
 			$config['base_url_path'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
 		}
 		
 		if(!isset($config['base_route_path'])) {
 			$config['base_route_path'] = implode("/", array_slice(explode("/", $_SERVER['SCRIPT_NAME']), 0, -1));
+		}
+
+		foreach ($config as $key => $value) {
+			$app[$key] = $value;
 		}
 		
 		$app["base_url_path"]   = rtrim($config["base_url_path"], '/');
@@ -130,16 +142,14 @@ class App extends DI{
 		$app["path"]->register("views", __DIR__.'/views');
 		$app["path"]->register("vendor", __DIR__.'/vendor');
 		
-		foreach($config['paths'] as $name => $path){
+		foreach($app['paths'] as $name => $path){
 			$app["path"]->register($name, $path);
 		}
 
-		$app->autoSearchPaths = array('modules', 'lib');
-		
 		spl_autoload_register(function($resource) use($app){
 			
 			// Autoload module and lib classes
-			foreach($app->autoSearchPaths as $loc){
+			foreach($app["autoSearchPaths"] as $loc){
 				if($path = $app['path']->get("$loc:".str_replace('\\', '/', $resource).'.php')){
 					require($path);
 					return;
@@ -194,7 +204,11 @@ class App extends DI{
 			$app["event"]->trigger("shutdown");
 		});
 
-		//error_reporting($app['debug'] ? E_ALL : 0);
+		error_reporting($app['debug'] ? E_ALL : 0);
+
+		if(isset($app["timezone"])) {
+			date_default_timezone_set($app["timezone"]);
+		}
 		
 		self::$_apps[$appname] = $app;
 		

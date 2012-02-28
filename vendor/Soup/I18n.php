@@ -271,7 +271,7 @@ class I18n extends AppContainer {
 	public function __construct($app){
 		parent::__construct($app);
 		
-		$this->locale = $app['request']->getClientLang();
+		$this->locale = $app['language'];
 	}
 	
 	/**

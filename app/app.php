@@ -4,10 +4,24 @@
         require_once(__DIR__."/../vendor/Soup/App.php");
     }
     
+$app['debug']    = in_array($_SERVER["SERVER_NAME"], array('localhost','::1','127.0.0.1')); //enable debug mode on localhost
+
+$app['charset']  = 'UTF-8';
+$app['key']      = 'xxxxxxxxxxChangeMexxxxxx';
+$app['language'] = 'en';
+
+$app['timezone'] = 'UTC';
+
+
     $app = Soup\App::init("Soupapp", array(         
 		
-		// "base_route_path" => $_SERVER['SCRIPT_NAME'], // enable if mod_rewrite is disabled
-		
+        'debug'    => in_array($_SERVER["SERVER_NAME"], array('localhost','::1','127.0.0.1')), //enable debug mode on localhost
+        'charset'  => 'UTF-8',
+        'key'      => 'xxxxxxxxxxChangeMexxxxxx',
+        'language' => 'en',
+        
+        //'timezone' => 'UTC',  //enable to auto set timezone
+
 		"paths"    => array(
 
             // required path definitions
