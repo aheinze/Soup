@@ -15,7 +15,3 @@ $app->self_share("storage:default", function($app) {  // default
       'options'   => array()
 	));
 });
-
-// include routes and assets definition
-include_once(__DIR__.'/routes.php');
-include_once(__DIR__.'/assets.php');

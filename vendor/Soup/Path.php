@@ -45,6 +45,10 @@ class Path extends AppContainer {
                   return $path.$parts[1];
                }
            }
+        }else{
+           if(file_exists($file)){
+              return $file;
+           }
         }
         
         return false;

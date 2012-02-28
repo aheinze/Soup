@@ -18,16 +18,16 @@
             // required path definitions
             
             "root"    => dirname(__DIR__),
-            "config"  => __DIR__.'/config',
             "lib"     => __DIR__.'/libraries',
             "modules" => __DIR__.'/modules',
             "locale"  => __DIR__.'/locale',
             "views"   => __DIR__.'/views',
             "tests"   => __DIR__.'/tests',
-            "tmp"     => __DIR__.'/tmp',
             "cache"   => __DIR__.'/tmp/cache',
             "log"     => __DIR__.'/tmp/log',
         )
     ));
 
-    $app->load("config:bootstrap.php");
+    $app->load(__DIR__."/config/bootstrap.php");
+    $app->load(__DIR__."/config/routes.php");
+    $app->load(__DIR__."/config/assets.php");
