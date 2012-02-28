@@ -29,5 +29,6 @@
     ));
 
     $app->load(__DIR__."/config/bootstrap.php");
+    $app->load(__DIR__."/config/storage.php");
     $app->load(__DIR__."/config/routes.php");
     $app->load(__DIR__."/config/assets.php");
