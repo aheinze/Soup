@@ -2,18 +2,10 @@
 
 namespace Soup;
 
-spl_autoload_register(function($resource){
-	
-	if(strpos($resource,__NAMESPACE__.'\\')===0) {
-		
-		$path = dirname(__DIR__).'/'.str_replace('\\', '/', $resource).'.php';
-
-		if(file_exists($path)){
-			require($path);
-			return;
-		}            
-	}
-});
+require_once(__DIR__.'/DI.php');
+require_once(__DIR__.'/AppContainer.php');
+require_once(__DIR__.'/Path.php');
+require_once(__DIR__.'/Autoloader.php');
 
 /**
  * App class. Base class for a Soup app.
@@ -106,7 +98,7 @@ class App extends DI{
 			'charset'  	=> 'UTF-8',
 			'key'       => 'xxxxxAppKeyxxxxx',
 			'language' 	=> 'en',
-			'autoSearchPaths' => array('modules', 'lib'),
+			'autoload' 	=> array('modules:', 'lib:'),
 			'paths' 	=> array()
 		), $config);
 
@@ -127,6 +119,7 @@ class App extends DI{
 		$app["base_route_path"] = rtrim($config["base_route_path"], '/');
 		
 		$app["path"]     = new Path($app);
+		$app->self_share("autoloader", 	function($app){ return new Autoloader($app); });
 		$app->self_share("bench", 		function($app){ return new Bench(); });
 		$app->self_share("session", 	function($app){ return new Session\Php($app); });
 		$app->self_share("registry", 	function($app){ return new Registry($app); });
@@ -146,15 +139,31 @@ class App extends DI{
 			$app["path"]->register($name, $path);
 		}
 
-		spl_autoload_register(function($resource) use($app){
-			
-			// Autoload module and lib classes
-			foreach($app["autoSearchPaths"] as $loc){
-				if($path = $app['path']->get("$loc:".str_replace('\\', '/', $resource).'.php')){
-					require($path);
-					return;
-				}
+		// config autoload
+		foreach($app['autoload'] as $path){
+			if($auto_dir = $app["path"]->get($path)){
+				$app['autoloader']->directories($auto_dir);
 			}
+		}
+
+		$app['autoloader']->map(array(
+			"Soup\Assets" 	=> __DIR__.'/Assets.php',
+			"Soup\Bench" 	=> __DIR__.'/Bench.php',
+			"Soup\I18n" 	=> __DIR__.'/I18n.php',
+			"Soup\Router" 	=> __DIR__.'/Router.php',
+			"Soup\Event" 	=> __DIR__.'/Event.php',
+			"Soup\Controller" => __DIR__.'/Controller.php',
+			"Soup\Response" => __DIR__.'/Response.php',
+			"Soup\View" 	=> __DIR__.'/View.php',
+			"Soup\Request" 	=> __DIR__.'/Request.php',
+		));
+
+		$app['autoloader']->namespaces(array("Soup"=>__DIR__));
+
+		//register app autoloader
+		spl_autoload_register(function($resource) use($app){
+
+			$app["autoloader"]->load($resource);
 		});
 
 		register_shutdown_function(function() use($app) {
