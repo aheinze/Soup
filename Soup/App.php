@@ -119,17 +119,17 @@ class App extends DI{
 		$app["base_route_path"] = rtrim($config["base_route_path"], '/');
 		
 		$app["path"]     = new Path($app);
-		$app->self_share("autoloader", 	function($app){ return new Autoloader($app); });
-		$app->self_share("bench", 		function($app){ return new Bench(); });
-		$app->self_share("session", 	function($app){ return new Session\Php($app); });
-		$app->self_share("registry", 	function($app){ return new Registry($app); });
-		$app->self_share("router", 		function($app){ return new Router($app); });
-		$app->self_share("event", 		function($app){ return new Event($app); });
-		$app->self_share("view", 		function($app){ return new View($app); });
-		$app->self_share("i18n", 		function($app){ return new I18n($app); });
-		$app->self_share("assets", 		function($app){ return new Assets($app); });
-		$app->self_share("cache", 		function($app){ return extension_loaded('apc') ? new Cache\Apc($app):new Cache\File($app); });
-		$app->self_share("request", 	function($app){ return new Request();});
+		$app->share("autoloader", 	function($app){ return new Autoloader($app); });
+		$app->share("bench", 		function($app){ return new Bench(); });
+		$app->share("session", 		function($app){ return new Session\Php($app); });
+		$app->share("registry", 	function($app){ return new Registry($app); });
+		$app->share("router", 		function($app){ return new Router($app); });
+		$app->share("event", 		function($app){ return new Event($app); });
+		$app->share("view", 		function($app){ return new View($app); });
+		$app->share("i18n", 		function($app){ return new I18n($app); });
+		$app->share("assets", 		function($app){ return new Assets($app); });
+		$app->share("cache", 		function($app){ return extension_loaded('apc') ? new Cache\Apc($app):new Cache\File($app); });
+		$app->share("request", 		function($app){ return new Request();});
 
 		$app["path"]->register("Soup", __DIR__);
 		$app["path"]->register("views", __DIR__.'/views');
@@ -222,7 +222,7 @@ class App extends DI{
 			$app["event"]->trigger("shutdown");
 		});
 
-		error_reporting($app['debug'] ? E_ALL : 0);
+		//error_reporting($app['debug'] ? E_ALL : 0);
 		
 		self::$_apps[$appname] = $app;
 		
@@ -304,6 +304,27 @@ class App extends DI{
 			$this["cache"]->write("soup.profiler", $data);
 
 		}
+	}
+
+	public function debug() {
+	
+		$vars   = func_get_args();           
+		$_from  = debug_backtrace();
+		$output = array();
+		
+		$output[] = '<div class="soup-debug">';
+		  $output[] = '<strong title="'.$_from[0]['file'].'">' . $_from[0]['file'] . '</strong>';
+		  $output[] = ' (line: <strong>' . $_from[0]['line'] . '</strong>)';
+		  
+		  foreach ($vars as $var){
+			  $output[] = '<pre>';
+			  $output[] = print_r($var, true);
+			  $output[] = "</pre>";
+		  }
+
+		$output[] = '<div>';
+
+		echo implode("\n",$output);
 	}
 }
 
@@ -432,25 +453,4 @@ function fetch_from_array(&$array, $index=null, $default = null) {
 	}
 
 	return $default;
-}
-
-function debug() {
-	
-	$vars   = func_get_args();           
-	$_from  = debug_backtrace();
-	$output = array();
-	
-	$output[] = '<div class="Soup-debug">';
-	  $output[] = '<strong title="'.$_from[0]['file'].'">' . $_from[0]['file'] . '</strong>';
-	  $output[] = ' (line: <strong>' . $_from[0]['line'] . '</strong>)';
-	  
-	  foreach ($vars as $var){
-		  $output[] = '<pre>';
-		  $output[] = print_r($var, true);
-		  $output[] = "</pre>";
-	  }
-
-	$output[] = '<div>';
-
-	echo implode("\n",$output);
 }

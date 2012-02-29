@@ -31,7 +31,7 @@ class DI implements \ArrayAccess{
      * @param Closure $callable A closure to wrap for uniqueness
      * @return Closure The wrapped closure
      */
-	public function share($callable) {
+	protected function _share($callable) {
         return function ($app) use ($callable) {
             
 			static $object;
@@ -51,18 +51,18 @@ class DI implements \ArrayAccess{
      * @param Closure $callable A closure to protect from being evaluated
      * @return Closure The protected closure
      */
-	public function protect(Closure $callable) {
+	protected function _protect(Closure $callable) {
         return function ($c) use ($callable) {
             return $callable;
         };
 	}
 
-    public function self_share($name, $callable) {
-        $this[$name] = $this->share($callable);
+    public function share($name, $callable) {
+        $this[$name] = $this->_share($callable);
     }
 
-    public function self_protect($name, $callable) {
-        $this[$name] = $this->protect($callable);
+    public function protect($name, $callable) {
+        $this[$name] = $this->_protect($callable);
     }
 	
 	// ArrayAccess implementation

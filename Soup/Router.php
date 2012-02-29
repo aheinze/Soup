@@ -35,7 +35,7 @@ class Router extends AppContainer {
         
         if (isset($this->_routes[$path])) {
             
-            $found = self::render($path, $params);
+            $found = $this->render($path, $params);
 
         } else {
                 
@@ -48,7 +48,7 @@ class Router extends AppContainer {
                     
                     if(preg_match($route,$path, $matches)){
                         $params[':captures'] = array_slice($matches, 1);
-                        $found = self::render($route, $params);
+                        $found = $this->render($route, $params);
                         break;
                     }
                 }
@@ -61,7 +61,7 @@ class Router extends AppContainer {
                     if(preg_match($pattern, $path, $matches)){
                     
                         $params[':splat'] = array_slice($matches, 1);
-                        $found = self::render($route, $params);
+                        $found = $this->render($route, $params);
                         break;
                     }
                 }
@@ -89,16 +89,12 @@ class Router extends AppContainer {
                         }
                         
                         if($matched){
-                            $found = self::render($route, $params);;
+                            $found = $this->render($route, $params);;
                             break;
                         }
                     }
                 }
             }         
-        }
-		
-        if(!$found){
-            $found = self::invokeController($path);
         }
         
         if($found && !is_object($found)) {
@@ -120,7 +116,7 @@ class Router extends AppContainer {
             }
             
             if(is_array($this->_routes[$route]) && isset($this->_routes[$route]['controller'])){
-                $ret = $this->invokeController($this->_routes[$route]);
+                $ret = $this->invoke($this->_routes[$route]);
             }
             
 			if( !is_null($ret) ){
@@ -162,81 +158,35 @@ class Router extends AppContainer {
     }
     
     
-	public function invokeController($path, $params=array()) {
+	public function invoke($controller, $action="index", $params=array()) {
 		
-        $parsedUri = array(
-            'bundle'     => 'App',
-            'controller' => 'App',
-            'action'     => 'index',
-            'params'     => $params
-        );
+        if(is_array($controller)){
+            
+            extract(array_merge(array(
+                "controller" => "",
+                "action" => $action,
+                "params" => $params
+            ), $controller));
         
-        if(is_array($path)){
-            
-            $parsedUri = array_merge($parsedUri, $path);
-        
-        } else {
-            $parts = explode('/', trim(trim($path), '/'));
-            
-            //check for bundle
-            //-----------------------------------------------------
-            if($this->app["path"]->get("bundles:".ucfirst($parts[0]))){
-
-              $parsedUri['bundle'] = ucfirst($parts[0]);
-              $parts               = array_slice($parts,1);
-
-              switch(count($parts)){
-                case 0:
-                  $parts[0] = $parsedUri['bundle'];
-                  break;
-                case 1:
-                case 2:
-
-                  if(!$this->app["path"]->get("bundles:".$parsedUri['bundle'].'/Controller/'.ucfirst($parts[0]).'.php')){
-                    array_unshift($parts, $parsedUri['bundle']);
-                  }
-                  
-                  break;
-              }
-            }
-            //-----------------------------------------------------
-
-            switch(count($parts)) {
-                case 1:
-                    if($parts[0]!=='') $parsedUri['controller'] = ucfirst($parts[0]);
-                    break;
-                case 2:
-                    $parsedUri['controller'] = ucfirst($parts[0]);
-                    $parsedUri['action']     = $parts[1];
-                break;
-                default:
-                    $parsedUri['controller'] = ucfirst($parts[0]);
-                    $parsedUri['action']     = $parts[1];
-                    $parsedUri['params']     = array_slice($parts,2);
-            }
-            
         }
 
-        $controllerName = 'Bundle\\'.$parsedUri['bundle'].'\\Controller\\'.$parsedUri['controller'];
-        
-        $controller = new $controllerName($this->app);
+        $Controller = new $controller($this->app);
 
-        if(!method_exists($controller, $parsedUri['action'])){
-          if(method_exists($controller, 'index')) {
-			$parsedUri['params'] = array_merge(array($parsedUri['action']), $parsedUri['params']);
-			$parsedUri['action'] = 'index';
+        if(!method_exists($Controller, $action)){
+          if(method_exists($Controller, 'index')) {
+			$action = 'index';
 		  }else{
 			return false;
 		  }
         }
         
-        $controller->invoked_action = $parsedUri['action'];
+        $Controller->invoked_action = $action;
         
-        if(!$controller->before_filter()) return false;
+        if(!$Controller->before_filter()) return false;
         
-        $return = call_user_func_array(array(&$controller, $parsedUri['action']), $parsedUri['params']);
+        $return = call_user_func_array(array(&$Controller, $action), $params);
         
-        if(!$controller->after_filter()) return false;
+        if(!$Controller->after_filter()) return false;
         
         return $return;
 	}
