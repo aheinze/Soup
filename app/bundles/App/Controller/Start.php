@@ -9,7 +9,7 @@ class Start extends \Soup\Controller {
 
     public function index(){
 		
-        return $this->render("bundles:App/views/Start/index.php");
+        return $this->render(__DIR__."/../views/Start/index.php");
     }
 
 }

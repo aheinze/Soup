@@ -7,9 +7,7 @@
     $app = Soup\App::init("Soupapp", array(         
 		
 		"paths"    => array(
-
             // required path definitions
-            "bundles" => __DIR__.'/bundles',
             "locale"  => __DIR__.'/locale',
             "views"   => __DIR__.'/views',
             "tests"   => __DIR__.'/tests',
