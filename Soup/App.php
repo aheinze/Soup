@@ -98,7 +98,7 @@ class App extends DI{
 			'charset'  	=> 'UTF-8',
 			'key'       => 'xxxxxAppKeyxxxxx',
 			'language' 	=> 'en',
-			'autoload' 	=> array('modules:', 'lib:'),
+			'autoload' 	=> array(),
 			'paths' 	=> array()
 		), $config);
 
@@ -140,9 +140,18 @@ class App extends DI{
 		}
 
 		// config autoload
-		foreach($app['autoload'] as $path){
-			if($auto_dir = $app["path"]->get($path)){
-				$app['autoloader']->directories($auto_dir);
+		if(count($app["autoload"])){
+
+			if(isset($app["autoload"]["directories"])){
+				foreach($app['autoload']["directories"] as $path){
+					if($auto_dir = $app["path"]->get($path)){
+						$app['autoloader']->directories($auto_dir);
+					}
+				}
+			}
+
+			if(isset($app["autoload"]["namespaces"])){
+				$app['autoloader']->namespaces($app["autoload"]["namespaces"]);
 			}
 		}
 
@@ -214,10 +223,6 @@ class App extends DI{
 		});
 
 		error_reporting($app['debug'] ? E_ALL : 0);
-
-		if(isset($app["timezone"])) {
-			date_default_timezone_set($app["timezone"]);
-		}
 		
 		self::$_apps[$appname] = $app;
 		
@@ -233,6 +238,11 @@ class App extends DI{
 	public function handle($route, $raw=false) {
 		
 		$this["route"] = $route;
+		
+		if(isset($app["timezone"])) {
+			date_default_timezone_set($app["timezone"]);
+		}
+
 
 		// register /tests route in debug mode
 		if($this["debug"]){

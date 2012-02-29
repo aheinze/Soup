@@ -165,7 +165,7 @@ class Router extends AppContainer {
 	public function invokeController($path, $params=array()) {
 		
         $parsedUri = array(
-            'module'     => 'App',
+            'bundle'     => 'App',
             'controller' => 'App',
             'action'     => 'index',
             'params'     => $params
@@ -178,22 +178,22 @@ class Router extends AppContainer {
         } else {
             $parts = explode('/', trim(trim($path), '/'));
             
-            //check for module
+            //check for bundle
             //-----------------------------------------------------
-            if($this->app["path"]->get("modules:".ucfirst($parts[0]))){
+            if($this->app["path"]->get("bundles:".ucfirst($parts[0]))){
 
-              $parsedUri['module'] = ucfirst($parts[0]);
+              $parsedUri['bundle'] = ucfirst($parts[0]);
               $parts               = array_slice($parts,1);
 
               switch(count($parts)){
                 case 0:
-                  $parts[0] = $parsedUri['module'];
+                  $parts[0] = $parsedUri['bundle'];
                   break;
                 case 1:
                 case 2:
 
-                  if(!$this->app["path"]->get("modules:".$parsedUri['module'].'/Controller/'.ucfirst($parts[0]).'.php')){
-                    array_unshift($parts, $parsedUri['module']);
+                  if(!$this->app["path"]->get("bundles:".$parsedUri['bundle'].'/Controller/'.ucfirst($parts[0]).'.php')){
+                    array_unshift($parts, $parsedUri['bundle']);
                   }
                   
                   break;
@@ -217,11 +217,7 @@ class Router extends AppContainer {
             
         }
 
-        $controllerName = $parsedUri['module'].'\\Controller\\'.$parsedUri['controller']; 
-       
-        if(!class_exists($controllerName) && !$this->app["path"]->get("modules:".$parsedUri['module'].'/Controller/'.$parsedUri['controller'].'.php')){
-            return false;
-        }
+        $controllerName = 'Bundle\\'.$parsedUri['bundle'].'\\Controller\\'.$parsedUri['controller'];
         
         $controller = new $controllerName($this->app);
 

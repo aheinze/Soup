@@ -4,12 +4,12 @@
 
 // jQuery reference
 $app["assets"]->addReference("jquery", array(
-	"file" => "root:public/assets/jquery.js"
+	"file" => "root:assets/jquery.js"
 ));
 
 // Foundation reference
 $app["assets"]->addReference("base.css", array(
-	"file" => "root:public/assets/base.css"
+	"file" => "root:assets/base.css"
 ));
 
 //bind route to /assets/main.(js|css)
@@ -19,7 +19,7 @@ $app["assets"]->auto_route("main", array(
 	array("file" => "ref:jquery"),
 	array("file" => "ref:base.css"),
 
-	array("file" => "root:public/js/app.js"),
-	array("file" => "root:public/css/app.css"),
+	array("file" => "root:js/app.js"),
+	array("file" => "root:css/app.css"),
 
 ), $app["debug"] ? 0:600);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace Bundle\App\Controller;
 
 
 class Start extends \Soup\Controller {
@@ -9,7 +9,7 @@ class Start extends \Soup\Controller {
 
     public function index(){
 		
-        return $this->render("modules:App/views/Start/index.php");
+        return $this->render("bundles:App/views/Start/index.php");
     }
 
 }
