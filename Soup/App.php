@@ -141,17 +141,8 @@ class App extends DI{
 
 		// config autoload
 		if(count($app["autoload"])){
-
-			if(isset($app["autoload"]["directories"])){
-				foreach($app['autoload']["directories"] as $path){
-					if($auto_dir = $app["path"]->get($path)){
-						$app['autoloader']->directories($auto_dir);
-					}
-				}
-			}
-
-			if(isset($app["autoload"]["namespaces"])){
-				$app['autoloader']->namespaces($app["autoload"]["namespaces"]);
+			foreach($app['autoload'] as $key=>$value){
+				$app['autoloader']->{$key}($value);
 			}
 		}
 

@@ -14,18 +14,45 @@ class Router extends AppContainer {
     
 
 	/* routes */
-	protected $_routes = array();
+    protected $_routes     = array();
+    protected $_nameindex  = array();
+	protected $_autoroutes = array();
     
-	public function bind($path, $callback, $condition = true) {
+	public function bind($path, $callback, $condition = true, $name=null) {
 		
         if (!$condition) return;
-        
+
 		if (!isset($this->_routes[$path])) {
 			$this->_routes[$path] = array();
 		}
 		
 		$this->_routes[$path] = $callback;
+
+        if(!is_null($name)){
+            $this->_nameindex[$name] = $path;
+        }
 	}
+
+    public function auto_route($path_start, $dir=null) {
+
+        $namespaces = array();
+
+        if(is_array($path_start)){
+            foreach($path_start as $p=>$d){
+                $this->_autoroutes[$p] = $d;
+
+                $namespace = ucfirst(trim($p, '/'));
+                $namespaces[$namespace.'\\Controller'] = $d."/{$namespace}/Controller";
+            }
+        }else{
+            $this->_autoroutes[$path_start] = $dir;
+                
+            $namespace = ucfirst(trim($path_start, '/'));
+            $namespaces[$namespace.'\\Controller'] = $dir."/{$namespace}/Controller";
+        }
+
+        $this->app["autoloader"]->namespaces($namespaces);
+    }
 
 
 	public function dispatch($path) {
@@ -98,7 +125,42 @@ class Router extends AppContainer {
         }
         
         if($found && !is_object($found)) {
+
             $found = new Response($found);
+
+        }elseif(count($this->_autoroutes)){
+
+            foreach ($this->_autoroutes as $path_start => $dir) {
+                if(strpos($path, $path_start)===0){
+                    
+                    $parts = explode('/', trim($path, '/'));
+                    $controller = '';
+                    $action     = 'index';
+                    $params     = array();
+
+                    switch(count($parts)){
+
+                        case 1:
+
+                            $controller = ucfirst($parts[0]).'\\Controller\\'.ucfirst($parts[0]);
+                            break;
+
+                        case 2:
+                            $controller = ucfirst($parts[0]).'\\Controller\\'.ucfirst($parts[1]);
+                            break;
+
+                        default:
+                            $controller = ucfirst($parts[0]).'\\Controller\\'.ucfirst($parts[1]);
+                            $action     = $parts[2];
+
+                            if(count($parts)>3){
+                                $params = array_slice($parts, 3);
+                            }
+                    }
+
+                    return $this->invoke($controller, $action, $params);
+                }
+            }
         }
         
         return $found;
@@ -141,6 +203,27 @@ class Router extends AppContainer {
 		$path = '/'.ltrim($path, '/');
 		
         return $this->app["base_route_path"].$path;
+    }
+
+    public function named_url($name, $params) {
+        
+        $route = "";
+
+        if(isset($this->_nameindex[$name])){
+            $route = $this->_nameindex[$name];
+        }
+
+        $route = '/'.trim($route, '/');
+
+        if(count($params)){
+            if(isset($params[0])){
+                $route .= '/'.implode('/', $params);
+            }else{
+                $route = str_replace(array_keys($params), array_values($params), $route);
+            }
+        }
+        
+        return $this->app["base_route_path"].$route;
     }
     
 

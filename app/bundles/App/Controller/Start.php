@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\App\Controller;
+namespace App\Controller;
 
 
 class Start extends \Soup\Controller {

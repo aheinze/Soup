@@ -5,20 +5,28 @@
     }
     
     $app = Soup\App::init("Soupapp", array(         
-		
-		"paths"    => array(
+        
+        'debug'     => in_array($_SERVER["SERVER_NAME"], array('localhost','::1','127.0.0.1')),   //enable debug mode on localhost
+        'timezone'  => 'UTC',
+        'charset'   => 'UTF-8',
+        'key'       => 'xxxxxChangeMePleasexxxxx',
+        'language'  => 'en',
+
+		"paths" => array(
             // required path definitions
             "locale"  => __DIR__.'/locale',
             "views"   => __DIR__.'/views',
             "tests"   => __DIR__.'/tests',
-            "cache"   => __DIR__.'/tmp/cache',
-            "log"     => __DIR__.'/tmp/log',
+            "cache"   => __DIR__.'/tmp/cache'
         ),
-
         'autoload' => array(
-            'directories' => array(__DIR__.'/libraries'),
-            'namespaces'  => array('Bundle' => __DIR__.'/bundles')
+            'directories' => array(__DIR__.'/libraries')
         ),
     ));
 
-    $app->load(__DIR__."/config/bootstrap.php");
+    //$app['session']->init();  // uncomment to auto init session
+
+    //include further configuration
+    include_once(__DIR__."/config/storage.php");
+    include_once(__DIR__."/config/routes.php");
+    include_once(__DIR__."/config/assets.php");
