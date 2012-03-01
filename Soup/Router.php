@@ -37,18 +37,11 @@ class Router extends AppContainer {
 
         $namespaces = array();
 
-        if(is_array($path_start)){
-            foreach($path_start as $p=>$d){
-                $this->_autoroutes[$p] = $d;
+        foreach((array)$path_start as $path){
+                $this->_autoroutes[$path] = $dir;
 
-                $namespace = ucfirst(trim($p, '/'));
-                $namespaces[$namespace.'\\Controller'] = $d."/{$namespace}/Controller";
-            }
-        }else{
-            $this->_autoroutes[$path_start] = $dir;
-                
-            $namespace = ucfirst(trim($path_start, '/'));
-            $namespaces[$namespace.'\\Controller'] = $dir."/{$namespace}/Controller";
+                $namespace = ucfirst(trim($path, '/'));
+                $namespaces[$namespace.'\\Controller'] = $dir."/{$namespace}/Controller";
         }
 
         $this->app["autoloader"]->namespaces($namespaces);
