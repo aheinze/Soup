@@ -41,7 +41,7 @@ class Event {
     }
     
     foreach($this->events[$event] as $id => $action){
-      if(Utils::is_callback($action)){
+      if(is_callable($action)){
           call_user_func_array($action, $params);
       }
     }
