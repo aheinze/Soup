@@ -33,18 +33,10 @@ class Router extends AppContainer {
         }
 	}
 
-    public function auto_route($path_start, $dir=null) {
+    public function auto_route($path_start, $namespace) {
 
-        $namespaces = array();
-
-        foreach((array)$path_start as $path){
-                $this->_autoroutes[$path] = $dir;
-
-                $namespace = ucfirst(trim($path, '/'));
-                $namespaces[$namespace.'\\Controller'] = $dir."/{$namespace}/Controller";
-        }
-
-        $this->app["autoloader"]->namespaces($namespaces);
+  
+        $this->_autoroutes[$path_start] = $namespace;
     }
 
 
@@ -123,7 +115,7 @@ class Router extends AppContainer {
 
         }elseif(count($this->_autoroutes)){
 
-            foreach ($this->_autoroutes as $path_start => $dir) {
+            foreach ($this->_autoroutes as $path_start => $namespace) {
                 if(strpos($path, $path_start)===0){
                     
                     $parts = explode('/', trim($path, '/'));
@@ -135,15 +127,15 @@ class Router extends AppContainer {
 
                         case 1:
 
-                            $controller = ucfirst($parts[0]).'\\Controller\\'.ucfirst($parts[0]);
+                            $controller = $namespace.'\\Controller\\';
                             break;
 
                         case 2:
-                            $controller = ucfirst($parts[0]).'\\Controller\\'.ucfirst($parts[1]);
+                            $controller = $namespace.'\\Controller\\'.ucfirst($parts[1]);
                             break;
 
                         default:
-                            $controller = ucfirst($parts[0]).'\\Controller\\'.ucfirst($parts[1]);
+                            $controller = $namespace.'\\Controller\\'.ucfirst($parts[1]);
                             $action     = $parts[2];
 
                             if(count($parts)>3){

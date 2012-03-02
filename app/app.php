@@ -12,15 +12,17 @@
         'key'       => 'xxxxxChangeMePleasexxxxx',
         'language'  => 'en',
 
-		"paths" => array(
+        "paths" => array(
             // required path definitions
             "locale"  => __DIR__.'/locale',
             "views"   => __DIR__.'/views',
             "tests"   => __DIR__.'/tests',
             "cache"   => __DIR__.'/tmp/cache'
         ),
+
         'autoload' => array(
-            'directories' => array(__DIR__.'/libraries')
+            'directories' => array(__DIR__.'/libraries'),
+            'namespaces'  => array('App' => __DIR__.'/bundles/App')
         ),
     ));
 
