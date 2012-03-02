@@ -122,7 +122,7 @@ class View extends AppContainer {
 	 * @return	string
 	 */
 	protected function url($path, $echo=true) {
-		$url = $this->app["router"]->url($path);
+		$url = $this->app["router"]->route_url($path);
 
 		if($echo) echo $url;
 		

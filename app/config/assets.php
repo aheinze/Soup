@@ -16,6 +16,7 @@ $app["assets"]->addReference("base.css", array(
 
 $app["assets"]->auto_route("main", array(
 	//add references
+	array("file" => "ref:soup"),
 	array("file" => "ref:jquery"),
 	array("file" => "ref:base.css"),
 

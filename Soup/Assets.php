@@ -55,7 +55,7 @@ class Assets extends \Soup\AppContainer {
 
 	public function script($name, $echo=true) {
 		
-		$script = '<script type="text/javascript" src="'.$this->app["router"]->url("/assets/$name.js").'"></script>';
+		$script = '<script type="text/javascript" src="'.$this->app["router"]->route_url("/assets/$name.js").'"></script>';
 
 		if($echo){
 			echo $script;
@@ -65,7 +65,7 @@ class Assets extends \Soup\AppContainer {
 	}
 
 	public function style($name, $echo=true) {
-		$style = '<link rel="stylesheet" type="text/css" href="'.$this->app["router"]->url("/assets/$name.css").'" />';
+		$style = '<link rel="stylesheet" type="text/css" href="'.$this->app["router"]->route_url("/assets/$name.css").'" />';
 
 		if($echo){
 			echo $style;
@@ -107,22 +107,28 @@ class Assets extends \Soup\AppContainer {
 				 ));
 		}
 
-		$output    = array();
+		$output = array();
 
 		foreach ($this->assets[$name] as $asset) {
 
-		  //handle references
-		  if(substr($asset['file'], 0,4)=="ref:"){
-		   
-		   list($prefix, $ref_name) = explode(":", $asset['file']);
-		   
-		   if(!isset($this->references[$ref_name]) || isset($this->dumped_references[$ref_name])) continue;
+			//handle references
+			if(substr($asset['file'], 0,4)=="ref:"){
 
-		   $this->dumped_references[$ref_name] = true;
-		   
-		   $asset = $this->references[$ref_name];
+				list($prefix, $ref_name) = explode(":", $asset['file'],2);
 
-		  }
+				if(isset($this->dumped_references[$ref_name])) continue;
+
+				$this->dumped_references[$ref_name] = true;
+
+				if($ref_name=='soup'){
+						continue;
+				}elseif(isset($this->references[$ref_name])){
+					$asset = $this->references[$ref_name];
+				}else{
+					 continue;
+				}
+
+			}
 
 		  $asset = array_merge(array(
 			"app"       => $this->app,
@@ -175,6 +181,29 @@ class Assets extends \Soup\AppContainer {
 		  }
 
 		  $output[$type][] = $content;
+		}
+
+		if(isset($this->dumped_references["soup"])){
+			
+			if($type=="js"){
+
+				$base_route = $this->app["base_route_path"];
+				$base_url   = $this->app["base_url_path"];
+				
+				$output['js'][] = ";(function(w){ 
+
+					w['Soup']       = w['Soup'] || {}; 
+					Soup.base_route = '{$base_route}';
+					Soup.base_url   = '{$base_url}';
+					Soup.route      = function(path){ return this.base_route+path;};
+					Soup.url        = function(url){ return this.base_url+url;};
+
+				})(this);";
+			}
+
+			if($type=="css"){
+				// todo
+			}
 		}
 
 		$response = new Response(null, array(

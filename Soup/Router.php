@@ -183,7 +183,7 @@ class Router extends AppContainer {
         return $this->app["base_url_path"].$path;
     }
 	
-    public function url($path) {
+    public function route_url($path) {
 		
 		$path = '/'.ltrim($path, '/');
 		
