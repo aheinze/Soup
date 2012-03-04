@@ -17,12 +17,15 @@
             "locale"  => __DIR__.'/locale',
             "views"   => __DIR__.'/views',
             "tests"   => __DIR__.'/tests',
-            "cache"   => __DIR__.'/tmp/cache'
+            "cache"   => __DIR__.'/tmp/cache',
+            "log"     => __DIR__.'/tmp/log'
         ),
 
         'autoload' => array(
-            'directories' => array(__DIR__.'/libraries'),
-            'namespaces'  => array('App' => __DIR__.'/bundles/App')
+            'directories' => array(__DIR__.'/libraries', __DIR__.'/bundles'),
+            'namespaces'  => array(
+                'App' => __DIR__.'/bundles/App'
+            )
         ),
     ));
 

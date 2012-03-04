@@ -24,3 +24,15 @@ $app["assets"]->auto_route("main", array(
 	array("file" => "root:css/app.css"),
 
 ), $app["debug"] ? 0:600);
+
+//bind route to /assets/bootstrap.(js|css)
+
+$app["assets"]->auto_route("bootstrap", array(
+	//add references
+	array("file" => "ref:jquery"),
+
+	array("file" => "root:assets/bootstrap/js/bootstrap.min.js"),
+	array("file" => "root:assets/bootstrap/css/bootstrap.min.css"),
+	array("file" => "root:assets/bootstrap/css/bootstrap-responsive.min.css"),
+
+), $app["debug"] ? 0:600);

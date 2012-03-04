@@ -74,6 +74,16 @@ class Assets extends \Soup\AppContainer {
 		return $style;
 	}
 
+	public function style_and_script($name, $echo=true) {
+		
+		$ret = '';
+
+		$ret .= $this->style($name, $echo);
+		$ret .= $this->script($name, $echo);
+
+		return $ret;
+	}
+
 	/**
 	 * Register an asset reference
 	 *

@@ -1,7 +1,8 @@
 
-<div class="row">
+<div class="row-fluid">
 	
-	<div class="eight columns">
+	<div class="span8">
+		
 		<h2> Congratulations</h2>
 
 		<h3 class="soft">
@@ -13,28 +14,30 @@
 			<h3>Getting started</h3>
 
 			<p>
-				<ul class="nice">
-					<li>Please make sure that the folder <span class="black label">app/tmp</span> and its sub-folders are writable.</li>
-					<li>You can find the app configuration in  <span class="black label">app/config/bootstrap.php</span></li>
-					<li>You can find the default layout in <span class="black label">app/views/default.php</span></li>
-					<li>You can find the controller for this page in <span class="black label">app/modules/App/Controller/Start.php</span></li>
-					<li>You can find the view for this page in <span class="black label">app/modules/App/views/Start/index.php</span></li>
+				<ul class="unstyled">
+					<li>Please make sure that the folder <span class="label label-info">app/tmp</span> and its sub-folders are writable.</li>
+					<li>You can find the app configuration in  <span class="label label-info">app/config/bootstrap.php</span></li>
+					<li>You can find the default layout in <span class="label label-info">app/views/default.php</span></li>
+					<li>You can find the controller for this page in <span class="label label-info">app/bundles/App/Controller/Start.php</span></li>
+					<li>You can find the view for this page in <span class="label label-info">app/bundles/App/views/Start/index.php</span></li>
 				</ul>
 			</p>
 		</div>
 
-		<h4>Some batteries included:</h4>
+		<div class="well">
+			<h4>Some batteries included:</h4>
 
-		<p>
-			<ul class="square">
-				<li>jQuery</li>
-				<li>Solid css framework (based on Zurb foundation CSS framework)</li>
-				<li>Support for TDD out of the box. <a href="<?php $this->url("/--soup/tests");?>">Run some tests</a></li>
-			</ul>
-		</p>
+			<p>
+				<ul class="square">
+					<li>jQuery</li>
+					<li>Bootstrap 2.0</li>
+					<li>Support for TDD out of the box. <a href="<?php $this->url("/--soup/tests");?>">Run some tests</a></li>
+				</ul>
+			</p>
+		</div>
 
 	</div>
-	<div class="four columns">
+	<div class="span4">
 		
 		<div>
 			<p>

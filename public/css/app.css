@@ -3,6 +3,10 @@ body {
 	color: #444;
 }
 
+ul > li {
+	margin-bottom: 5px;
+}
+
 #logo {
 	font-size: 18px;
 	font-weight: bold;
