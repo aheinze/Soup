@@ -255,7 +255,7 @@ class App extends DI{
 
 		$response = $this["router"]->dispatch($this["route"]);
 		
-		if(is_object($response) && method_exists($response, 'send')) {
+		if($response && is_object($response) && method_exists($response, 'send')) {
 			
 			$this["event"]->trigger("before_send", array($response));
 

@@ -143,7 +143,13 @@ class Router extends AppContainer {
                             }
                     }
 
-                    return $this->invoke($controller, $action, $params);
+                    $result = $this->invoke($controller, $action, $params);
+
+                    if($result && !is_object($result)) {
+                        $result = new Response($result);
+                    }
+
+                    return $result;
                 }
             }
         }
@@ -218,7 +224,7 @@ class Router extends AppContainer {
           if(substr($path,0,1)!='/'){
             $path = '/'.$path;
           }
-          $path = $this->url($path);
+          $path = $this->route_url($path);
         }
 
         header('Location: '.$path);
@@ -255,7 +261,7 @@ class Router extends AppContainer {
         $return = call_user_func_array(array(&$Controller, $action), $params);
         
         if(!$Controller->after_filter()) return false;
-        
+
         return $return;
 	}
 
