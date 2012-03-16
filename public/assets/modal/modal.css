@@ -1,0 +1,28 @@
+#modal-win{
+	position: absolute;
+	visibility: hidden;
+	top: -1000px;
+	left: -1000px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 4px;
+	border: 1px #f7f7f7;
+	box-shadow: 0px 0px 10px #333;
+	z-index: 8100;
+}
+
+#modal-overlay{
+	z-index: 8000;
+	background: #222;
+}
+
+#modal-win > div.modal-close {
+	position: absolute;
+	background: transparent url(images/dlg-close.png) 50% 50% no-repeat;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	right: -18px;
+	top: -18px;
+	
+}

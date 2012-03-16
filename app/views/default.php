@@ -4,24 +4,21 @@
 	<title>&#9832; Soup - framework</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
-	<?php $this->app["assets"]->style_and_script("bootstrap");?>
-	<?php $this->app["assets"]->style_and_script("main");?>
+	<?php $this->app["assets"]->style_and_script("system");?>
 </head>
 <body>
 	<div id="header">
-		<div class="container">
-			<div class="row-fluid">
-				<div class="span6">
-					<h1 id="logo">
-						&#9832; Soup <span>framework</span>
-					</h1>
-				</div>
-				<div class="span6">
-					<ul id="topnav">
-						<li><a href="https://github.com/aheinze/Soup/wiki">Documentation</a></li>
-						<li><a href="https://github.com/aheinze/Soup">Github</a></li>
-					</ul>
-				</div>
+		<div class="row">
+			<div class="six columns">
+				<h1 id="logo">
+					&#9832; Soup <span>framework</span>
+				</h1>
+			</div>
+			<div class="six columns">
+				<ul id="topnav">
+					<li><a href="https://github.com/aheinze/Soup/wiki">Documentation</a></li>
+					<li><a href="https://github.com/aheinze/Soup">Github</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>

@@ -127,7 +127,7 @@ class Router extends AppContainer {
 
                         case 1:
 
-                            $controller = $namespace.'\\Controller\\';
+                            $controller = $namespace.'\\Controller\\'.$namespace;
                             break;
 
                         case 2:
@@ -253,13 +253,13 @@ class Router extends AppContainer {
 			return false;
 		  }
         }
-        
+
         $Controller->invoked_action = $action;
         
         if(!$Controller->before_filter()) return false;
         
         $return = call_user_func_array(array(&$Controller, $action), $params);
-        
+
         if(!$Controller->after_filter()) return false;
 
         return $return;

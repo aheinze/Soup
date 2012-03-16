@@ -12,27 +12,31 @@ $app["assets"]->addReference("base.css", array(
 	"file" => "root:assets/base.css"
 ));
 
+// Soup app helper
+$app["assets"]->addReference("soup.app.helper", array(
+	"file" => "root:assets/app.js"
+));
+
 //bind route to /assets/main.(js|css)
 
-$app["assets"]->auto_route("main", array(
+$app["assets"]->auto_route("system", array(
 	//add references
 	array("file" => "ref:soup"),
 	array("file" => "ref:jquery"),
 	array("file" => "ref:base.css"),
+	array("file" => "ref:soup.app.helper"),
 
-	array("file" => "root:js/app.js"),
-	array("file" => "root:css/app.css"),
+	array("file" => "root:assets/topbox/topbox.js"),
+	array("file" => "root:assets/topbox/topbox.css"),
 
-), $app["debug"] ? 0:600);
+	array("file" => "root:assets/modal/modal.js"),
+	array("file" => "root:assets/modal/modal.css"),
 
-//bind route to /assets/bootstrap.(js|css)
+	array("file" => "root:assets/tipsy/tipsy.js"),
+	array("file" => "root:assets/tipsy/tipsy.css"),
 
-$app["assets"]->auto_route("bootstrap", array(
-	//add references
-	array("file" => "ref:jquery"),
-
-	array("file" => "root:assets/bootstrap/js/bootstrap.min.js"),
-	array("file" => "root:assets/bootstrap/css/bootstrap.min.css"),
-	array("file" => "root:assets/bootstrap/css/bootstrap-responsive.min.css"),
+	array("file" => "root:css/bootstrap.css"),
+	array("file" => "root:js/bootstrap.js"),
+	
 
 ), $app["debug"] ? 0:600);

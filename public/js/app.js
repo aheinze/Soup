@@ -1,6 +1,0 @@
-;(function($){
-	
-	// App code
-
-
-})(jQuery);

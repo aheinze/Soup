@@ -1,7 +1,7 @@
 
-<div class="row-fluid">
+<div class="row">
 	
-	<div class="span8">
+	<div class="eight columns">
 		
 		<h2> Congratulations</h2>
 
@@ -30,14 +30,14 @@
 			<p>
 				<ul class="square">
 					<li>jQuery</li>
-					<li>Bootstrap 2.0</li>
+					<li>Simple CSS framework (based on Zurb foundation)</li>
 					<li>Support for TDD out of the box. <a href="<?php $this->url("/--soup/tests");?>">Run some tests</a></li>
 				</ul>
 			</p>
 		</div>
 
 	</div>
-	<div class="span4">
+	<div class="four columns">
 		
 		<div>
 			<p>
