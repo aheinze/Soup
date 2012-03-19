@@ -38,6 +38,6 @@ $app["assets"]->auto_route("system", array(
 	array("file" => "root:css/bootstrap.css"),
 	array("file" => "root:js/bootstrap.js"),
 
-	array("file" => "root:animated.css"),
+	array("file" => "root:animate.css"),
 	
 ), $app["debug"] ? 0:600);
