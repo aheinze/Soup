@@ -22,7 +22,7 @@ class Event {
     
     if(!isset($this->events[$event])) $this->events[$event] = array();
     
-    if(!is_null(identifier)){
+    if(!is_null($identifier)){
       $this->events[$event][$identifier] = $callback;
     }else{
       $this->events[$event][] = $callback;
