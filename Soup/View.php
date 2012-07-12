@@ -59,7 +59,6 @@ class View extends AppContainer {
 			
         }
 		
-		
 		return $output;
 	}
 
@@ -97,6 +96,21 @@ class View extends AppContainer {
 		}
 
 		return $block;
+	}
+
+	public function blaze($content, $params=array(), $sandbox=true){
+		return Blaze::render($content, $params, $sandbox);
+	}
+
+	public function blaze_file($template, $params=array(), $sandbox=true){
+        if (strpos($template, ':') !== false && $file = $this->app["path"]->get($template)) {
+            
+            $template = $file;
+
+            return Blaze::render_file($template, $params, $sandbox);
+        }
+
+        return 'template not found: '.$template;
 	}
 
 	/**
@@ -169,6 +183,9 @@ class View extends AppContainer {
 	protected function delete($index=null, $default = null) {
 		return $this->app['request']->delete($index, $default);
 	}
+    protected function db($name = "default") {
+		return $this->app["storage:$name"];
+    }
 
 	// output escaped
 	protected function e($string, $charset=null) {

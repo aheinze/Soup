@@ -51,7 +51,7 @@ class DI implements \ArrayAccess{
      * @param Closure $callable A closure to protect from being evaluated
      * @return Closure The protected closure
      */
-	protected function _protect(Closure $callable) {
+	protected function _protect($callable) {
         return function ($c) use ($callable) {
             return $callable;
         };

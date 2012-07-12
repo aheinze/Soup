@@ -14,12 +14,13 @@ class Upload {
 	public $mime_types;
 
 	public function __construct($name='', $settings=array()){
-		$this->name = $name;
-		$this->exists = isset($_FILES[$name]);
-
+		
 		foreach ($settings as $key => $value) {
 			$this->{$key} = $value;
-		}
+		}		
+
+		$this->name = $name;
+		$this->exists = isset($_FILES[$name]);
 
 		if(!$this->exists){
 			return;
@@ -61,9 +62,12 @@ class Upload {
 		}
 
 		if($this->mime_types){
+			
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+
 			foreach ($this->files as $file) {
 				
-				$type = mime_content_type($file["tmp_name"]);
+				$type = finfo_file($finfo, $file["tmp_name"]);
 
 				if(!in_array($type, $this->mime_types)){
 					return false;

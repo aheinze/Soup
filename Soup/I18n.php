@@ -261,6 +261,91 @@ class I18n extends AppContainer {
 		"ZW" => "Zimbabwe"
 	);
 
+	public static $currencies = array(
+		'ALL' => 'Lek',
+		'ARS' => '$',
+		'AWG' => 'f',
+		'AUD' => '$',
+		'BSD' => '$',
+		'BBD' => '$',
+		'BYR' => 'p.',
+		'BZD' => 'BZ$',
+		'BMD' => '$',
+		'BOB' => '$b',
+		'BAM' => 'KM',
+		'BWP' => 'P',
+		'BRL' => 'R$',
+		'BND' => '$',
+		'CAD' => '$',
+		'KYD' => '$',
+		'CLP' => '$',
+		'CNY' => '¥',
+		'COP' => '$',
+		'CRC' => 'c',
+		'HRK' => 'kn',
+		'CZK' => 'Kc',
+		'DKK' => 'kr',
+		'DOP' => 'RD$',
+		'XCD' => '$',
+		'EGP' => '£',
+		'SVC' => '$',
+		'EEK' => 'kr',
+		'EUR' => '€',
+		'FKP' => '£',
+		'FJD' => '$',
+		'GBP' => '£',
+		'GHC' => 'c',
+		'GIP' => '£',
+		'GTQ' => 'Q',
+		'GGP' => '£',
+		'GYD' => '$',
+		'HNL' => 'L',
+		'HKD' => '$',
+		'HUF' => 'Ft',
+		'ISK' => 'kr',
+		'IDR' => 'Rp',
+		'IMP' => '£',
+		'JMD' => 'J$',
+		'JPY' => '¥',
+		'JEP' => '£',
+		'LVL' => 'Ls',
+		'LBP' => '£',
+		'LRD' => '$',
+		'LTL' => 'Lt',
+		'MYR' => 'RM',
+		'MXN' => '$',
+		'MZN' => 'MT',
+		'NAD' => '$',
+		'ANG' => 'f',
+		'NZD' => '$',
+		'NIO' => 'C$',
+		'NOK' => 'kr',
+		'PAB' => 'B/.',
+		'PYG' => 'Gs',
+		'PEN' => 'S/.',
+		'PLN' => 'zl',
+		'RON' => 'lei',
+		'SHP' => '£',
+		'SGD' => '$',
+		'SBD' => '$',
+		'SOS' => 'S',
+		'ZAR' => 'R',
+		'SEK' => 'kr',
+		'CHF' => 'CHF',
+		'SRD' => '$',
+		'SYP' => '£',
+		'TWD' => 'NT$',
+		'TTD' => 'TT$',
+		'TRY' => 'TL',
+		'TRL' => '£',
+		'TVD' => '$',
+		'GBP' => '£',
+		'USD' => '$',
+		'UYU' => '$U',
+		'VEF' => 'Bs',
+		'ZWD' => 'Z$'
+	);
+
 
 	/**
 	 * Class Constructor.
@@ -289,12 +374,35 @@ class I18n extends AppContainer {
 		
 		if(!isset($this->_languages[$this->locale])){
 
+		  $content = array();
+
 		  if($path = $this->app["path"]->get("locale:".$this->locale.'/table.php')){
 			
-			$this->_languages[$this->locale] = include($path);
+			$content = include($path);
 		  }
+
+		  $this->_languages[$this->locale] = $content;
 		}
 		
 		return isset($this->_languages[$this->locale][$key]) ? $this->_languages[$this->locale][$key]:$alternative;
+	}
+
+	public function load($name) {
+
+		if($path = $this->app["path"]->get("locale:".$this->locale.'/'.$name.'.php')){
+			
+			if(!isset($this->_languages[$this->locale])){
+				$this->_languages[$this->locale] = array();
+			}
+
+			$content = include($path);
+
+			$this->_languages[$this->locale] = array_merge($this->_languages[$this->locale], (array)$content);
+
+			return true;
+		}
+
+		return false;
+
 	}
 }

@@ -60,7 +60,7 @@ class App extends DI{
 	 * @param	string $class	Classname
 	 * @return	Object
 	 */
-	public function pickashost($class) {
+	public function pickAsHost($class) {
 		return new $class($this);
 	}
 
@@ -316,6 +316,14 @@ class App extends DI{
 		$output[] = '<div>';
 
 		echo implode("\n",$output);
+	}
+
+	public function crypt($str) {
+		return Sec::rc4($str, $this["key"], true);
+	}
+
+	public function hash($str) {
+		return md5($this->crypt($str));
 	}
 }
 

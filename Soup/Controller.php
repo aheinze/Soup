@@ -79,6 +79,10 @@ class Controller extends AppContainer {
         $this->app["router"]->reroute($url);
     }
 	
+    protected function is($type) {
+        return $this->app['request']->is($type);
+    }
+
 	protected function get($index=null, $default = null) {
 		return $this->app['request']->get($index, $default);
 	}

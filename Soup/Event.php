@@ -18,7 +18,7 @@ class Event {
   * ...
   *
   */ 
-  public function register($event,$callback,$identifier=null){
+  public function on($event,$callback,$identifier=null){
     
     if(!isset($this->events[$event])) $this->events[$event] = array();
     

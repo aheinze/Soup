@@ -111,7 +111,8 @@ class Assets extends \Soup\AppContainer {
 
 		if($cache_time && $cached = $this->app['cache']->read($cache_key)) {
 		  return new Response(null, array(
-				  'body' => $cached,
+				  'body' => "/* -CACHED- */\n".$cached,
+				  'etag' => true,
 				  'gzip' => true,
 				  'mime' => $type,
 				 ));
@@ -219,11 +220,12 @@ class Assets extends \Soup\AppContainer {
 		$response = new Response(null, array(
 		  'body' => implode("", $output[$type]),
 		  'gzip' => true,
+		  'etag' => true,
 		  'mime' => $type,
 		));
 
 		if($cache_time) {
-		  $response->body = "/* -CACHED- */\n".$response->body;
+		  $response->body = $response->body;
 		  $this->app['cache']->write($cache_key, $response->body, $cache_time);
 		}
 

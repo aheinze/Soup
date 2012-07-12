@@ -29,7 +29,6 @@ class Apc extends \Soup\AppContainer {
       'expire' => $expire,
       'value' => serialize($value)
     );
-    
 
     return apc_store($key, serialize($safe_var), $expire);
   }

@@ -29,7 +29,7 @@ class AppContainer implements \ArrayAccess {
 	
 		$this->_container = array();
 		$this->app        = $app;
-	}	
+	}
 	
 	// ArrayAccess implementation
 	

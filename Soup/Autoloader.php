@@ -18,6 +18,17 @@ class Autoloader extends \Soup\AppContainer {
 	protected $directories = array();
 
 
+	public function addIncludePath($path){
+	    
+		if(is_array($path)){
+			foreach($path as $p){
+				set_include_path(get_include_path() . PATH_SEPARATOR . $p);
+			}
+		}else{
+			set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+		}
+	}
+
 	public function load($resource) {
 
 			if (isset($this->aliases[$resource])){
