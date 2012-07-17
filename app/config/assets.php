@@ -25,6 +25,8 @@ $app["assets"]->auto_route("system", array(
 	array("file" => "root:assets/foundation/modernizr.foundation.js"),
 	array("file" => "root:assets/foundation/foundation.js"),
 
+	array("file" => "root:assets/base.css"),
+
 	array("file" => "root:assets/topbox/topbox.js"),
 	array("file" => "root:assets/topbox/topbox.css"),
 
