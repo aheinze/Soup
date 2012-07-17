@@ -1,4 +1,9 @@
+* {
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
 body {
+	font-family: OpenSansLight;
 	background: #eee;
 	color: #444;
 }
@@ -9,7 +14,6 @@ ul > li {
 
 #logo {
 	font-size: 18px;
-	font-weight: bold;
 	display:inline-block;
 	color:#000;
 	padding:25px 15px 25px 10px;
@@ -26,7 +30,6 @@ ul > li {
 #topnav {
 	list-style: none;
 	font-size: 12px;
-	font-weight: bold;
 	float: right;
 	margin: 20px 0px 0px 0px;
 }
@@ -38,11 +41,11 @@ ul > li {
 }
 #topnav > li > a {
 	color: #000;
+	font-size: 12px;
 	display: inline-block;
 	padding: 2px 8px;
 	text-decoration: none;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
+	border-radius: 2px;
 }
 #topnav > li > a:hover {
 	color: #fff;
@@ -62,3 +65,65 @@ ul > li {
 .soft {
 	color: #999;
 }
+
+/* + Correction margins + */
+.m10 { margin: 10px 0; }
+.m15 { margin: 15px 0; }
+.m20 { margin: 20px 0; }
+
+.mr5 { margin-right: 5px; }
+.mr10 { margin-right: 10px; }
+.mr15 { margin-right: 15px; }
+.mr20 { margin-right: 20px; }
+.mr25 { margin-right: 25px; }
+.mr30 { margin-right: 30px; }
+
+.mb0 { margin-bottom: 0; }
+.mb5 { margin-bottom: 5px; }
+.mb10 { margin-bottom: 10px; }
+.mb15 { margin-bottom: 15px; }
+.mb20 { margin-bottom: 20px; }
+.mb25 { margin-bottom: 25px; }
+.mb30 { margin-bottom: 30px; }
+.mb40 { margin-bottom: 40px; }
+
+
+.mt0 { margin-top: 0; }
+.mt5 { margin-top: 5px; }
+.mt10 { margin-top: 10px; }
+.mt12 { margin-top: 12px; }
+.mt15 { margin-top: 15px; }
+.mt20 { margin-top: 20px; }
+.mt25 { margin-top: 25px; }
+.mt30 { margin-top: 30px; }
+
+.ml5 { margin-left: 5px; }
+.ml10 { margin-left: 10px; }
+.ml15 { margin-left: 15px; }
+.ml20 { margin-left: 20px; }
+.ml25 { margin-left: 25px; }
+.ml30 { margin-left: 30px; }
+
+.mr5 { margin-right: 5px; }
+.mr10 { margin-right: 10px; }
+.mr15 { margin-right: 15px; }
+.mr20 { margin-right: 20px; }
+.mr25 { margin-right: 25px; }
+.mr30 { margin-right: 30px; }
+
+/* + Correction paddings + */
+.pb0 { padding-bottom: 0!important; }
+.pb5 { padding-bottom: 5px; }
+.pb10 { padding-bottom: 10px; }
+.pb15 { padding-bottom: 15px; }
+.pb20 { padding-bottom: 20px; }
+.pb25 { padding-bottom: 25px; }
+.pb30 { padding-bottom: 30px; }
+
+.pt0 { padding-top: 0; }
+.pt5 { padding-top: 5px; }
+.pt10 { padding-top: 10px; }
+.pt15 { padding-top: 15px; }
+.pt20 { padding-top: 20px; }
+.pt25 { padding-top: 25px; }
+.pt30 { padding-top: 30px; }

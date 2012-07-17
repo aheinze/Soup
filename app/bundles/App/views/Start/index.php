@@ -1,16 +1,8 @@
-
 <div class="row">
 	
 	<div class="eight columns">
-		
-		<h2> Congratulations</h2>
 
-		<h3 class="soft">
-			You installed a flexible framework for building prototypes and production code.
-			And yes, you're ready to start coding your app.
-		</h3>
-
-		<div class="panel" style="margin:30px 0px;">
+		<div class="panel mb30">
 			<h3>Getting started</h3>
 
 			<p>
@@ -30,7 +22,7 @@
 			<p>
 				<ul class="square">
 					<li>jQuery</li>
-					<li>Simple CSS framework (based on Zurb foundation)</li>
+					<li>Solid CSS framework (Zurb foundation)</li>
 					<li>Support for TDD out of the box. <a href="<?php $this->url("/--soup/tests");?>">Run some tests</a></li>
 				</ul>
 			</p>

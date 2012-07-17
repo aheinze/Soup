@@ -14,6 +14,9 @@ class Blaze {
 	
 	protected static $allowed_calls = array(
 		
+		// core
+		'true','false',		
+
 		// string functions
 		'explode','implode','strtolower','strtoupper','substr','stristr','strpos','print','print_r','number_format','htmlentities',
 		'md5','strip_tags',
@@ -75,7 +78,7 @@ class Blaze {
 
 			while (($this->_pos = strpos($this->_line, "@", $offset)) !== false) {
 
-				foreach (array('$', 'noparse','(','foreach', 'for', 'if', 'else', 'end', 'set') as $token) {
+				foreach (array('$', 'noparse','(','foreach', 'for', 'if', 'elseif', 'else', 'end', 'set') as $token) {
 					
 					if($this->isNextToken($token)){
 
@@ -140,7 +143,13 @@ class Blaze {
 								}
 
 								break;
+							case "elseif":
+								$this->_line = substr_replace($this->_line, '<?php } elseif ', $this->_pos, strlen($token)+1);
 
+								if(($cmdend = strpos($this->_line, '):', $this->_pos))!==false) {
+									$this->_line = substr_replace($this->_line, ' { ?>', $cmdend+1, 3);
+								}
+								break;
 							case "else":
 								
 								$this->_line = substr_replace($this->_line, '<?php } else { ?>', $this->_pos, strlen($token)+1);
@@ -171,10 +180,9 @@ class Blaze {
 			}
 
 			$linenumber++;
-
 		}
 
-		$code = implode("\n", $lines);
+		$code = implode("\n", $lines); //echo $code;
 
 		if($errors = $this->check_syntax($code)) {
 			return implode("\n", $errors);
@@ -201,12 +209,11 @@ class Blaze {
 
 					case T_STRING:
 
-						if(!in_array($toc[1], self::$allowed_calls)){
+						if(!in_array(strtolower($toc[1]), self::$allowed_calls)){
 		            		
 		            		$prevtoc = $tokens[$index-1];
 
 							if(!isset($prevtoc[1]) || (isset($prevtoc[1]) &&$prevtoc[1]!='->')){
-		            			
 		            			$errors[] = $toc[1];
 		            		}
 		            	}
@@ -226,7 +233,7 @@ class Blaze {
 		            case T_INCLUDE: 
 		            case T_EVAL: 
 		            case T_FUNCTION:
-		            	if(!in_array($toc[1], self::$allowed_calls)){
+		            	if(!in_array(strtolower($toc[1]), self::$allowed_calls)){
 		            		$errors[] = 'illegal call: '.$toc[1];
 		            	}
 		            	break;
